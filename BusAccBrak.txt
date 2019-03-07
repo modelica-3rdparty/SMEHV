@@ -1,0 +1,8 @@
+#1
+
+# time (s) speed (km/h)
+double Cycle(4,2)
+    0.0 90
+    17.8  90
+    18  0
+    50 0  
