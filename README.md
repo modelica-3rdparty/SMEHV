@@ -9,7 +9,7 @@ This makes this repository a special type of Modelica library: it is oriented to
 
 Content of the repository:
 - wbEHPTLib.mo: it is a one-file modelica archive containing all library models
-- wbEHVPkg.mo: it is a one-file modelica archive containing many examples of usage of models from weEHPTLib library
+- wbEHVPkg.mo: it is a one-file modelica archive containing many examples of usage of models from wbEHPTLib library
 - SMEHV tutorial.pdf containing a full guide to the usage of all the library models and examples 
 
 The main reason for the existence  this repository is that it can be updated much faster than the webbook chapter. 
