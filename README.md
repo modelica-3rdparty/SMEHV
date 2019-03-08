@@ -11,6 +11,7 @@ Content of the repository:
 - wbEHPTLib.mo: it is a one-file modelica archive containing all library models
 - wbEHVPkg.mo: it is a one-file modelica archive containing many examples of usage of models from wbEHPTLib library
 - SMEHV tutorial.pdf containing a full guide to the usage of all the library models and examples 
+- folder AllTextFiles: contains txt files needed to run several of the library models. Their usage is described in detail in SMEHV tutorial.pdf
 
 The main reason for the existence  this repository is that it can be updated much faster than the webbook chapter. 
 Perodically, updates made on the files in this repository are transferred in the webbook chapter.
