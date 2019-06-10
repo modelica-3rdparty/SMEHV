@@ -1,4 +1,4 @@
-﻿package wbEHPTlib "Electric and Hybrid Power train library Rev March 2017"
+﻿package wbEHPTlib "Electric and Hybrid Power train library Rev March 2019"
   package SupportModels "Useful addtional models"
     extends Modelica.Icons.Package;
     // extends EHPowerTrain.Icons.SupportIcon;
@@ -468,10 +468,12 @@ has a 3D icon (e.g., used in Blocks.Logical library).
           Placement(visible = true, transformation(origin = {0, -40}, extent = {{52, -10}, {72, 10}}, rotation = 0)));
         Modelica.Blocks.Interfaces.RealOutput tauRef(unit = "N.m") annotation(
           Placement(visible = true, transformation(extent = {{100, -10}, {120, 10}}, rotation = 0), iconTransformation(extent = {{100, -10}, {120, 10}}, rotation = 0)));
-        Modelica.Blocks.Interfaces.RealOutput accelTau annotation(
+        Modelica.Blocks.Interfaces.RealOutput accelTau(unit = "N.m") annotation(
           Placement(visible = true, transformation(origin = {110, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(extent = {{100, 52}, {120, 72}}, rotation = 0)));
-        Modelica.Blocks.Interfaces.RealOutput brakeTau annotation(
+        Modelica.Blocks.Interfaces.RealOutput brakeTau(unit = "N.m") annotation(
           Placement(visible = true, transformation(origin = {110, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(extent = {{100, -70}, {120, -50}}, rotation = 0)));
+        Modelica.Blocks.Nonlinear.Limiter limiter1(limitsAtInit = true,uMax = yMax) annotation(
+          Placement(visible = true, transformation(origin = {4, 0}, extent = {{52, -10}, {72, 10}}, rotation = 0)));
       equation
         connect(V, feedback.u2) annotation(
           Line(points = {{0, -66}, {0, -66}, {0, -8}, {0, -8}}, color = {0, 0, 127}));
@@ -489,8 +491,10 @@ has a 3D icon (e.g., used in Blocks.Logical library).
           Line(points = {{50, -40}, {40, -40}, {40, 0}, {35, 0}, {35, 0}}, color = {0, 0, 127}));
         connect(limAcc.u, gain.y) annotation(
           Line(points = {{52, 40}, {40, 40}, {40, 0}, {35, 0}, {35, 0}}, color = {0, 0, 127}));
-        connect(gain.y, tauRef) annotation(
-          Line(points = {{35, 0}, {110, 0}, {110, 0}}, color = {0, 0, 127}));
+  connect(limiter1.u, gain.y) annotation(
+          Line(points = {{54, 0}, {34, 0}, {34, 0}, {36, 0}}, color = {0, 0, 127}));
+  connect(limiter1.y, tauRef) annotation(
+          Line(points = {{78, 0}, {102, 0}, {102, 0}, {110, 0}}, color = {0, 0, 127}));
         annotation(
           Documentation(info = "<html><head></head><body><p>Simple driver model.</p><p>It reads a reference cycle from a file then controls speed with a simple proportional feedback law.</p>
             </body></html>"),
@@ -636,7 +640,7 @@ has a 3D icon (e.g., used in Blocks.Logical library).
     </table>
     </html>"),
           Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}, grid = {2, 2}), graphics),
-          Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {95, 95, 95}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {78, -100}}), Line(origin = {2, -2}, points = {{-92, 7}, {-56, 7}}, color = {0, 0, 255}), Rectangle(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, fillPattern = FillPattern.Solid, extent = {{-82, -3}, {-65, -10}}), Line(points = {{-73, 63}, {98, 64}}, color = {0, 0, 255}), Rectangle(lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{38, 69}, {68, 57}}), Rectangle(lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-37.5, 68}, {-6.5, 56}}), Line(points = {{-19.5, 49}, {-19.5, 32}}, color = {0, 0, 255}), Line(points = {{-54.5, 63}, {-54.5, 41}, {-25.5, 41}}, color = {0, 0, 255}), Line(points = {{9.5, 62}, {9.5, 40}, {-19.5, 40}}, color = {0, 0, 255}), Line(points = {{-73, 63}, {-73, 5}}, color = {0, 0, 255}), Line(points = {{-73, -6}, {-73, -60}, {96, -60}}, color = {0, 0, 255}), Line(points = {{26, 63}, {26, -61}}, color = {0, 0, 255}), Line(points = {{-25.5, 49}, {-25.5, 32}}, color = {0, 0, 255}), Polygon(lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, points = {{26, 22}, {14, 4}, {26, -14}, {38, 4}, {26, 22}}), Line(points = {{20, 4}, {32, 4}}, color = {0, 0, 255}), Polygon(lineColor = {0, 0, 255}, points = {{22, -20}, {30, -20}, {26, -32}, {22, -20}}), Text(lineColor = {0, 0, 255}, extent = {{-100, 150}, {100, 110}}, textString = "%name")}));
+          Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(lineColor = {95, 95, 95}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {78, -100}}), Line(origin = {2, -2}, points = {{-92, 7}, {-56, 7}}, color = {0, 0, 255}), Rectangle(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, fillPattern = FillPattern.Solid, extent = {{-82, -3}, {-65, -10}}), Line(points = {{-73, 63}, {98, 64}}, color = {0, 0, 255}), Rectangle(lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{38, 69}, {68, 57}}), Rectangle(lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-37.5, 68}, {-6.5, 56}}), Line(points = {{-19.5, 49}, {-19.5, 32}}, color = {0, 0, 255}), Line(points = {{-54.5, 63}, {-54.5, 41}, {-25.5, 41}}, color = {0, 0, 255}), Line(points = {{9.5, 62}, {9.5, 40}, {-19.5, 40}}, color = {0, 0, 255}), Line(points = {{-73, 63}, {-73, 5}}, color = {0, 0, 255}), Line(points = {{-73, -6}, {-73, -60}, {96, -60}}, color = {0, 0, 255}), Line(points = {{26, 63}, {26, -61}}, color = {0, 0, 255}), Line(points = {{-25.5, 49}, {-25.5, 32}}, color = {0, 0, 255}), Polygon(lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, points = {{26, 22}, {14, 4}, {26, -14}, {38, 4}, {26, 22}}), Line(points = {{20, 4}, {32, 4}}, color = {0, 0, 255}), Polygon(lineColor = {0, 0, 255}, points = {{22, -20}, {30, -20}, {26, -32}, {22, -20}}), Text(lineColor = {0, 0, 255}, extent = {{-100, 150}, {100, 110}}, textString = "%name"), Text(origin = {-53, -1}, lineColor = {238, 46, 47}, extent = {{-3, 3}, {9, -13}}, textString = "E", fontName = "Times New Roman"), Text(origin = {-25, 83}, lineColor = {238, 46, 47}, extent = {{-3, 3}, {9, -13}}, textString = "R1", fontName = "Times New Roman"), Text(origin = {-23, 29}, lineColor = {238, 46, 47}, extent = {{-3, 3}, {9, -13}}, textString = "C1", fontName = "Times New Roman"), Text(origin = {47, 9}, lineColor = {238, 46, 47}, extent = {{-3, 3}, {9, -13}}, textString = "Ip", fontName = "Times New Roman"), Text(origin = {51, 83}, lineColor = {238, 46, 47}, extent = {{-3, 3}, {9, -13}}, textString = "R0", fontName = "Times New Roman")}));
       end Batt1;
 
       model Batt1Conn "Battery model based on Batt0 but with electric dynamics order = 1"
@@ -841,6 +845,29 @@ has a 3D icon (e.g., used in Blocks.Logical library).
           Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics = {Polygon(points = {{-98, 10}, {22, 10}, {22, 41}, {92, 0}, {22, -41}, {22, -10}, {-98, -10}, {-98, 10}}, lineColor = {0, 127, 0}, fillColor = {215, 215, 215}, fillPattern = FillPattern.Solid), Line(points = {{-90, -90}, {-70, -88}, {-50, -82}, {-30, -72}, {-10, -58}, {10, -40}, {30, -18}, {50, 8}, {70, 38}, {90, 72}}, color = {0, 0, 255}, thickness = 0.5), Text(extent = {{-82, 90}, {80, 50}}, lineColor = {0, 0, 255}, textString = "%name"), Line(points = {{32, 48}, {-62, -38}, {64, -40}}, color = {238, 46, 47}, thickness = 0.5), Polygon(points = {{-20, 0}, {-8, -10}, {0, -26}, {2, -38}, {-62, -38}, {-20, 0}}, lineColor = {238, 46, 47}, fillColor = {128, 128, 128}, fillPattern = FillPattern.Solid)}),
           Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 60}}), graphics = {Text(extent = {{-58, -30}, {68, -48}}, lineColor = {0, 0, 0}, lineThickness = 0.5, fillColor = {128, 128, 128}, fillPattern = FillPattern.Solid, textString = "Connections of sToAngle made internally")}));
       end DragForceAngle;
+
+      model AronSensor "Two port three-phase power sensor"
+        Modelica.Electrical.MultiPhase.Interfaces.PositivePlug pc "Positive plug, current path" annotation(
+          Placement(transformation(extent = {{-110, -10}, {-90, 10}}), iconTransformation(extent = {{-110, -10}, {-90, 10}})));
+        Modelica.Electrical.MultiPhase.Interfaces.NegativePlug nc(final m = 3) "Negative plug, current path" annotation(
+          Placement(transformation(extent = {{90, 12}, {110, -8}}, rotation = 0), iconTransformation(extent = {{90, 10}, {110, -10}})));
+        Modelica.Blocks.Interfaces.RealOutput y(final unit = "W") annotation(
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {-20, -110})));
+      equation
+        for ph in 1:3 loop
+          pc.pin[ph].i + nc.pin[ph].i = 0;
+          pc.pin[ph].v = nc.pin[ph].v;
+        end for;
+//Aron formula for power (common wire is wire 2):
+        y = pc.pin[1].i * (pc.pin[1].v - pc.pin[2].v) + pc.pin[3].i * (pc.pin[3].v - pc.pin[2].v);
+        annotation(
+          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
+          Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics = {Line(points = {{-104, 0}, {96, 0}}, color = {0, 0, 255}), Ellipse(extent = {{-70, 70}, {70, -70}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Line(points = {{0, 70}, {0, 40}}, color = {0, 0, 0}), Line(points = {{22.9, 32.8}, {40.2, 57.3}}, color = {0, 0, 0}), Line(points = {{-22.9, 32.8}, {-40.2, 57.3}}, color = {0, 0, 0}), Line(points = {{37.6, 13.7}, {65.8, 23.9}}, color = {0, 0, 0}), Line(points = {{-37.6, 13.7}, {-65.8, 23.9}}, color = {0, 0, 0}), Line(points = {{0, 0}, {9.02, 28.6}}, color = {0, 0, 0}), Polygon(points = {{-0.48, 31.6}, {18, 26}, {18, 57.2}, {-0.48, 31.6}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid), Ellipse(extent = {{-5, 5}, {5, -5}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid), Text(extent = {{-39, -3}, {40, -66}}, lineColor = {0, 0, 0}, textString = "P3"), Line(points = {{-20, -104}, {-20, -66}}, color = {0, 0, 127}, smooth = Smooth.None), Text(origin = {0, 10}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 102}, {100, 62}}, textString = "%name")}),
+          Documentation(info = "<html>
+<p><code><span style=\"font-family: Courier New,courier;\">&nbsp;Uses the <span style=\"color: #006400;\">Aron&nbsp;formula&nbsp;for&nbsp;power&nbsp;(common&nbsp;wire&nbsp;is&nbsp;wire&nbsp;2):</span></code></p>
+<pre><span style=\"font-family: Courier New,courier; color: #006400;\">y=i1*(v1-v2) + i3*(v3-v2)</span></pre>
+</html>"));
+      end AronSensor;
     end Miscellaneous;
 
     package ConnectorRelated
@@ -970,7 +997,6 @@ has a 3D icon (e.g., used in Blocks.Logical library).
     model IceT01 "Simple  map-based ice model with connector"
       import Modelica.Constants.*;
       extends Partial.PartialIce(toLimTau(table = maxIceTau, tableOnFile = tablesOnFile, tableName = "maxIceTau", fileName = mapsFileName), toSpecCons(tableOnFile = tablesOnFile, fileName = mapsFileName, tableName = "specificCons"));
-      parameter Modelica.SIunits.AngularVelocity wIceStart = 167;
       Modelica.Blocks.Interfaces.RealInput nTauRef "normalized torque request" annotation(
         Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 90, origin = {-60, -100}), iconTransformation(extent = {{-20, -20}, {20, 20}}, rotation = 90, origin = {-60, -100})));
       Modelica.Blocks.Interfaces.RealOutput fuelCons "Fuel consumption (g/h)" annotation(
@@ -1082,12 +1108,12 @@ has a 3D icon (e.g., used in Blocks.Logical library).
     model Genset "GenSet GMS+GEN+SEngine"
       import Modelica.Constants.inf;
       import Modelica.Constants.pi;
-      parameter Modelica.SIunits.Time OptiTime "Time parameter of the PI OptiSpeed controller";
+      parameter Real gsRatio = 2 "IdealGear speed reduction factor";
       parameter String mapsFileName = "maps.txt" "Name of the file containing data maps (names: maxIceTau, specificCons, optiSpeed)";
-      parameter Modelica.SIunits.AngularVelocity wIceStart = 167;
       parameter Modelica.SIunits.AngularVelocity maxGenW = 1e6;
       parameter Modelica.SIunits.Torque maxTau = 200 "Max mechanical torque";
       parameter Modelica.SIunits.Power maxPow = 20e3 "Max mechanical power";
+      parameter Modelica.SIunits.AngularVelocity wIceStart = 167;
       Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor annotation(
         Placement(transformation(extent = {{-8, -8}, {8, 8}}, rotation = 180, origin = {-24, -20})));
       Modelica.Mechanics.Rotational.Sensors.PowerSensor IcePow annotation(
@@ -1102,8 +1128,8 @@ has a 3D icon (e.g., used in Blocks.Logical library).
         Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = 90, origin = {-80, 54})));
       ECUs.GMS myGMS(mapsFileName = mapsFileName) annotation(
         Placement(transformation(extent = {{-70, 10}, {-50, 30}})));
-      OneFlange gen(wMax = maxGenW, mapsFileName = mapsFileName, mapsOnFile = true, powMax = maxPow, tauMax = maxTau, effTableName = "gensetDriveEffTable") annotation(
-        Placement(transformation(extent = {{68, 16}, {48, -4}})));
+      wbEHPTlib.MapBased.OneFlange gen(wMax = maxGenW, mapsFileName = mapsFileName, mapsOnFile = true, powMax = maxPow, tauMax = maxTau, effTableName = "gensetDriveEffTable") annotation(
+        Placement(visible = true, transformation(extent = {{68, 18}, {48, -2}}, rotation = 0)));
       IceT01 mBiceT(tablesOnFile = true, mapsFileName = mapsFileName, wIceStart = wIceStart) annotation(
         Placement(transformation(extent = {{-34, -2}, {-14, 18}})));
       Modelica.Blocks.Math.Gain gain(k = -1) annotation(
@@ -1112,7 +1138,17 @@ has a 3D icon (e.g., used in Blocks.Logical library).
         Placement(visible = true, transformation(origin = {-60, -8}, extent = {{-6, -6}, {6, 6}}, rotation = 90)));
       Modelica.Blocks.Continuous.Integrator toGrams(k = 1 / 3600) annotation(
         Placement(transformation(extent = {{18, -42}, {38, -22}})));
+      Modelica.Mechanics.Rotational.Components.IdealGear idealGear(ratio = gsRatio) annotation(
+        Placement(visible = true, transformation(extent = {{0, 2}, {18, 20}}, rotation = 0)));
     equation
+      connect(gen.pin_p, pin_n) annotation(
+        Line(points = {{68, 4.66667}, {70, 4.66667}, {70, 2.66667}, {78, 2.66667}, {78, -60}, {102, -60}}, color = {0, 0, 255}));
+      connect(gain.y, gen.tauRef) annotation(
+        Line(points = {{7, 40}, {75.4, 40}, {75.4, 5.5556}, {69.4, 5.5556}, {69.4, 9.11111}}, color = {0, 0, 127}));
+      connect(gen.pin_n, pin_p) annotation(
+        Line(points = {{68, 13.5556}, {80, 13.5556}, {80, 60}, {100, 60}}, color = {0, 0, 255}));
+      connect(IcePow.flange_b, gen.flange_a) annotation(
+        Line(points = {{42, 7}, {46, 7}, {46, 9.11111}, {48, 9.11111}}));
       connect(gain1.u, speedSensor.w) annotation(
         Line(points = {{-60, -15.2}, {-60, -20}, {-32.8, -20}}, color = {0, 0, 127}));
       connect(myGMS.Wmecc, gain1.y) annotation(
@@ -1121,24 +1157,18 @@ has a 3D icon (e.g., used in Blocks.Logical library).
         Line(points = {{-80, 66}, {-80, 80}, {61, 80}, {61, 115}}, color = {0, 0, 127}, smooth = Smooth.None));
       connect(limiter.y, myGMS.pRef) annotation(
         Line(points = {{-80, 43}, {-80, 20}, {-72, 20}}, color = {0, 0, 127}, smooth = Smooth.None));
-      connect(IcePow.flange_b, gen.flange_a) annotation(
-        Line(points = {{42, 7}, {46, 7}, {46, 7.11111}, {48, 7.11111}}, color = {0, 0, 0}));
-      connect(gen.pin_n, pin_p) annotation(
-        Line(points = {{68, 11.5556}, {80, 11.5556}, {80, 60}, {100, 60}}, color = {0, 0, 255}));
-      connect(gen.pin_p, pin_n) annotation(
-        Line(points = {{68, 2.66667}, {78, 2.66667}, {78, -60}, {102, -60}}, color = {0, 0, 255}));
       connect(mBiceT.nTauRef, myGMS.throttle) annotation(
         Line(points = {{-30, -2}, {-30, -6}, {-49, -6}, {-49, 14}}, color = {0, 0, 127}));
-      connect(IcePow.flange_a, mBiceT.flange_a) annotation(
-        Line(points = {{24, 7}, {6, 7}, {6, 10}, {-14, 10}}, color = {0, 0, 0}));
       connect(speedSensor.flange, mBiceT.flange_a) annotation(
         Line(points = {{-16, -20}, {-6, -20}, {-6, 10}, {-14, 10}}, color = {0, 0, 0}));
       connect(gain.u, myGMS.tRef) annotation(
         Line(points = {{-16, 40}, {-40, 40}, {-40, 26}, {-49, 26}}, color = {0, 0, 127}));
-      connect(gain.y, gen.tauRef) annotation(
-        Line(points = {{7, 40}, {69.4, 40}, {69.4, 7.11111}}, color = {0, 0, 127}));
       connect(toGrams.u, mBiceT.fuelCons) annotation(
         Line(points = {{16, -32}, {12, -32}, {8, -32}, {8, -6}, {-18, -6}, {-18, -1}}, color = {0, 0, 127}));
+      connect(idealGear.flange_a, mBiceT.flange_a) annotation(
+        Line(points = {{0, 11}, {-4, 11}, {-4, 10}, {-14, 10}}, color = {0, 0, 0}));
+      connect(idealGear.flange_b, IcePow.flange_a) annotation(
+        Line(points = {{18, 11}, {22, 11}, {22, 7}, {24, 7}}, color = {0, 0, 0}));
       annotation(
         Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -60}, {100, 100}})),
         experiment(StopTime = 20, Interval = 0.01),
@@ -1154,18 +1184,10 @@ has a 3D icon (e.g., used in Blocks.Logical library).
       import Modelica.Constants.inf;
       import Modelica.Constants.pi;
       parameter Real gsRatio = 2 "IdealGear speed reduction factor";
-      parameter Boolean mapsOnFile = false;
       parameter String mapsFileName = "maps.txt" "Name of the file containing data maps (names: maxIceTau, specificCons, optiSpeed)";
-      parameter Modelica.SIunits.Torque iceTauMaxReq = 1e4 "Maximum torque ems requests from ICE";
-      parameter Modelica.SIunits.Torque maxGensetTau = 200 "Max mechanical torque";
-      parameter Modelica.SIunits.Power maxPow = 20e3 "Max mechanical power";
       parameter Modelica.SIunits.AngularVelocity maxGenW = 1e6;
-      parameter Real maxIceTau[:, :] = [0, 80; 100, 80; 350, 95; 500, 95] "First column: speed, 2nd column: torque" annotation(
-        Dialog(enable = not mapsOnFile));
-      parameter Real specConsumption[:, :] = [0.0, 100, 200, 300, 400, 500; 10, 630, 580, 550, 580, 630; 20, 430, 420, 400, 400, 450; 30, 320, 325, 330, 340, 350; 40, 285, 285, 288, 290, 300; 50, 270, 265, 265, 270, 275; 60, 255, 248, 250, 255, 258; 70, 245, 237, 238, 243, 246; 80, 245, 230, 233, 237, 240; 90, 235, 230, 228, 233, 235] "first row: speed, 1st column: torque, body: sp. consumption" annotation(
-        Dialog(enable = not mapsOnFile));
-      parameter Real optiTable[:, :] = [0, 800; 20000, 850; 40000, 1100; 60000, 1250; 80000, 1280; 100000, 1340; 120000, 1400; 140000, 1650; 160000, 2130] "first row: speed, 1st column: torque, body: sp. consumption" annotation(
-        Dialog(enable = not mapsOnFile));
+      parameter Modelica.SIunits.Torque maxTau = 200 "Max mechanical torque";
+      parameter Modelica.SIunits.Power maxPow = 20e3 "Max mechanical power";
       parameter Modelica.SIunits.AngularVelocity wIceStart = 300;
       Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor annotation(
         Placement(visible = true, transformation(origin = {-26, -40}, extent = {{-8, -8}, {8, 8}}, rotation = 180)));
@@ -1183,9 +1205,9 @@ has a 3D icon (e.g., used in Blocks.Logical library).
         Placement(visible = true, transformation(extent = {{88, -50}, {108, -30}}, rotation = 0), iconTransformation(extent = {{92, -70}, {112, -50}}, rotation = 0)));
       Modelica.Blocks.Nonlinear.Limiter limiter(uMax = inf, uMin = 0) annotation(
         Placement(visible = true, transformation(origin = {-82, 36}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
-      ECUs.GMSoo gms(tauMax = iceTauMaxReq, mapsFileName = mapsFileName, throttlePerWerr = 0.1, tablesOnFile = true) annotation(
+      ECUs.GMSoo gms(mapsFileName = mapsFileName, throttlePerWerr = 0.1, tablesOnFile = true) annotation(
         Placement(visible = true, transformation(extent = {{-72, -10}, {-52, 10}}, rotation = 0)));
-      OneFlange gen(wMax = maxGenW, mapsFileName = mapsFileName, mapsOnFile = true, powMax = maxPow, tauMax = maxGensetTau, effTableName = "gensetDriveEffTable") annotation(
+      OneFlange gen(wMax = maxGenW, mapsFileName = mapsFileName, mapsOnFile = true, powMax = maxPow, tauMax = maxTau, effTableName = "gensetDriveEffTable") annotation(
         Placement(visible = true, transformation(extent = {{68, 2}, {48, -18}}, rotation = 0)));
       IceT01 mbIce(wIceStart = wIceStart, mapsFileName = mapsFileName, iceJ = 10, tablesOnFile = true) annotation(
         Placement(visible = true, transformation(extent = {{-36, -22}, {-16, -2}}, rotation = 0)));
@@ -1326,7 +1348,7 @@ has a 3D icon (e.g., used in Blocks.Logical library).
           Dialog(enable = mapsOnFile, loadSelector(filter = "Text files (*.txt)", caption = "Open file in which required tables are")));
         parameter String effTableName = "noName" "Name of the on-file maximum torque as a function of speed" annotation(
           Dialog(enable = mapsOnFile));
-        parameter Real effTable[:, :] = [0,0,1;0,1,1;1,1,1] annotation(
+        parameter Real effTable[:, :] = [0, 0, 1; 0, 1, 1; 1, 1, 1] annotation(
           Dialog(enable = not mapsOnFile));
         SupportModels.MapBasedRelated.LimTau limTau(tauMax = tauMax, wMax = wMax, powMax = powMax) annotation(
           Placement(transformation(extent = {{-58, -8}, {-36, 14}})));
@@ -1485,7 +1507,7 @@ has a 3D icon (e.g., used in Blocks.Logical library).
           Placement(visible = true, transformation(origin = {80, -2}, extent = {{8, -8}, {-8, 8}}, rotation = 90)));
         Modelica.Blocks.Math.Abs abs1 annotation(
           Placement(transformation(extent = {{60, -30}, {40, -10}})));
-        SupportModels.MapBasedRelated.TauLim limTau(tauMax = tauMax, powMax = powMax) annotation(
+        SupportModels.MapBasedRelated.LimTau limTau(tauMax = tauMax, powMax = powMax) annotation(
           Placement(transformation(extent = {{6, -32}, {-14, -10}})));
         SupportModels.MapBasedRelated.EfficiencyT toElePow(tauMax = tauMax, wMax = wMax, powMax = powMax, mapsFileName = mapsFileName, effMapName = effMapName) annotation(
           Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = 0, origin = {-40, -54})));
@@ -1514,7 +1536,7 @@ has a 3D icon (e.g., used in Blocks.Logical library).
           Line(points = {{-50.6, -54}, {-58.6, -54}, {-58.6, -26}, {-44, -26}, {-44, 0}, {-52, 0}}, color = {0, 0, 127}));
         assert(wMax >= powMax / tauMax, "\n****\n" + "PARAMETER VERIFICATION ERROR:\nwMax must be not lower than powMax/tauMax" + "\n***\n");
         connect(limTau.w, abs1.y) annotation(
-          Line(points = {{8, -14.4}, {28, -14.4}, {28, -20}, {39, -20}}, color = {0, 0, 127}, smooth = Smooth.None));
+          Line(points = {{8, -21}, {28, -21}, {28, -20}, {39, -20}}, color = {0, 0, 127}, smooth = Smooth.None));
         connect(powSensor.flange_b, flange_a) annotation(
           Line(points = {{70, 20}, {94, 20}, {94, 0}, {100, 0}}, color = {0, 0, 0}, smooth = Smooth.None));
         connect(inertia.flange_a, torque.flange) annotation(
@@ -1621,7 +1643,7 @@ reference \nand computes consumption")}));
           Dialog(enable = mapsOnFile, loadSelector(filter = "Text files (*.txt)", caption = "Open file in which required tables are")));
         parameter String effTableName = "noName" "Name of the on-file maximum torque as a function of speed" annotation(
           Dialog(enable = mapsOnFile));
-        parameter Real effTable[:, :] = [0,0,1; 0,1,1; 1,1,1] annotation(
+        parameter Real effTable[:, :] = [0, 0, 1; 0, 1, 1; 1, 1, 1] "rows: speeds; columns: torques; both p.u. of max" annotation(
           Dialog(enable = not mapsOnFile));
         Modelica.Mechanics.Rotational.Interfaces.Flange_a flange_a "Left flange of shaft" annotation(
           Placement(transformation(extent = {{88, 50}, {108, 70}}, rotation = 0), iconTransformation(extent = {{90, -10}, {110, 10}})));
@@ -1685,7 +1707,6 @@ reference \nand computes consumption")}));
 <p>The input signal is the requested normalised torque (1 means nominal torque)</p>
 </html>"));
       end PartialOneFlange;
-
 
       partial model PartialMBice "Simple  map-based Internal Combustion Engine model"
         import Modelica.Constants.*;
@@ -2485,9 +2506,7 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
         Modelica.Blocks.Tables.CombiTable1D optiSpeed(columns = {2}, smoothness = Modelica.Blocks.Types.Smoothness.ContinuousDerivative, table = optiTable, fileName = mapsFileName, tableOnFile = tablesOnFile, tableName = "optiSpeed") "gives the optimal spees ad a function of requested power" annotation(
           Placement(visible = true, transformation(extent = {{-66, -22}, {-46, -2}}, rotation = 0)));
         Modelica.Blocks.Math.Division division annotation(
-          Placement(visible = true, transformation(origin = {4, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
-        Modelica.Blocks.Nonlinear.Limiter limiter(uMax = tauMax) annotation(
-          Placement(visible = true, transformation(origin = {52, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+          Placement(visible = true, transformation(origin = {4, 16}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
         Modelica.Blocks.Interfaces.RealInput Wmecc annotation(
           Placement(visible = true, transformation(origin = {0, -96}, extent = {{-20, -20}, {20, 20}}, rotation = 90), iconTransformation(origin = {1, -115}, extent = {{-15, -15}, {15, 15}}, rotation = 90)));
         Modelica.Blocks.Interfaces.RealInput pRef annotation(
@@ -2510,6 +2529,14 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
           Placement(visible = true, transformation(extent = {{-60, -60}, {-40, -40}}, rotation = 0)));
         Modelica.Blocks.Nonlinear.Limiter limMinW(uMax = 1e9, uMin = 10) annotation(
           Placement(visible = true, transformation(origin = {4, -48}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
+        Modelica.Blocks.Tables.CombiTable1D maxTau(tableOnFile = true, columns = {2}, fileName = mapsFileName, tableName = "maxIceTau") "gives the optimal spees ad a function of requested power" annotation(
+          Placement(transformation(extent = {{14, 38}, {34, 58}})));
+        Modelica.Blocks.Math.Gain gain1(k = -1) annotation(
+          Placement(transformation(extent = {{34, 4}, {50, 20}})));
+        Modelica.Blocks.Nonlinear.VariableLimiter tauLimiter annotation(
+          Placement(transformation(extent = {{62, 26}, {82, 46}})));
+        Modelica.Blocks.Sources.RealExpression realExpression(y = Wmecc) annotation(
+          Placement(transformation(extent = {{-24, 36}, {-4, 56}})));
       equation
         connect(to_rpm.u, Wmecc) annotation(
           Line(points = {{34, -62}, {34, -70}, {0, -70}, {0, -96}}, color = {0, 0, 127}));
@@ -2527,18 +2554,26 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
           Line(points = {{43, -20}, {64, -20}}, color = {0, 0, 127}));
         connect(throttle, gain.y) annotation(
           Line(points = {{110, -40}, {98, -40}, {98, -20}, {87, -20}}, color = {0, 0, 127}));
-        connect(limiter.y, tRef) annotation(
-          Line(points = {{63, 40}, {110, 40}}, color = {0, 0, 127}));
-        connect(limiter.u, division.y) annotation(
-          Line(points = {{40, 40}, {4, 40}, {4, 31}}, color = {0, 0, 127}));
         connect(division.u1, optiSpeed.u[1]) annotation(
-          Line(points = {{-2, 8}, {-80, 8}, {-80, -12}, {-68, -12}}, color = {0, 0, 127}));
+          Line(points = {{-2, 4}, {-80, 4}, {-80, -12}, {-68, -12}}, color = {0, 0, 127}));
         connect(optiSpeed.u[1], pRef) annotation(
           Line(points = {{-68, -12}, {-80, -12}, {-80, -40}, {-120, -40}}, color = {0, 0, 127}));
         connect(limMinW.u, Wmecc) annotation(
           Line(points = {{4, -60}, {4, -70}, {0, -70}, {0, -96}}, color = {0, 0, 127}));
         connect(limMinW.y, division.u2) annotation(
-          Line(points = {{4, -37}, {6, -37}, {6, -34}, {6, 8}, {10, 8}}, color = {0, 0, 127}));
+          Line(points = {{4, -37}, {6, -37}, {6, 4}, {10, 4}}, color = {0, 0, 127}));
+        connect(tauLimiter.y, tRef) annotation(
+          Line(points = {{83, 36}, {96, 36}, {96, 40}, {110, 40}}, color = {0, 0, 127}));
+        connect(maxTau.y[1], tauLimiter.limit1) annotation(
+          Line(points = {{35, 48}, {60, 48}, {60, 44}}, color = {0, 0, 127}));
+        connect(tauLimiter.limit2, gain1.y) annotation(
+          Line(points = {{60, 28}, {58, 28}, {58, 26}, {50.8, 26}, {50.8, 12}}, color = {0, 0, 127}));
+        connect(gain1.u, tauLimiter.limit1) annotation(
+          Line(points = {{32.4, 12}, {26, 12}, {26, 30}, {44, 30}, {44, 48}, {60, 48}, {60, 44}}, color = {0, 0, 127}));
+        connect(division.y, tauLimiter.u) annotation(
+          Line(points = {{4, 27}, {4, 36}, {60, 36}}, color = {0, 0, 127}));
+        connect(realExpression.y, maxTau.u[1]) annotation(
+          Line(points = {{-3, 46}, {4, 46}, {4, 48}, {12, 48}}, color = {0, 0, 127}));
         annotation(
           Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -80}, {100, 60}})),
           experiment(StopTime = 3, Interval = 0.01),
@@ -2736,8 +2771,1037 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
         Icon(graphics = {Ellipse(extent = {{-38, 38}, {38, -38}}, lineColor = {0, 0, 0}), Line(points = {{2, 80}, {-8, 80}, {-12, 70}, {-26, 66}, {-36, 76}, {-48, 68}, {-44, 56}, {-56, 44}, {-68, 48}, {-76, 34}, {-68, 28}, {-70, 14}, {-80, 10}, {-80, 0}}, color = {0, 0, 0}, smooth = Smooth.None), Line(points = {{2, -80}, {-8, -80}, {-12, -70}, {-26, -66}, {-36, -76}, {-48, -68}, {-44, -56}, {-56, -44}, {-68, -48}, {-76, -34}, {-68, -28}, {-70, -14}, {-80, -10}, {-80, 0}}, color = {0, 0, 0}, smooth = Smooth.None), Line(points = {{0, -80}, {10, -80}, {14, -70}, {28, -66}, {38, -76}, {50, -68}, {46, -56}, {58, -44}, {70, -48}, {78, -34}, {70, -28}, {72, -14}, {82, -10}, {82, 0}}, color = {0, 0, 0}, smooth = Smooth.None), Line(points = {{0, 80}, {10, 80}, {14, 70}, {28, 66}, {38, 76}, {50, 68}, {46, 56}, {58, 44}, {70, 48}, {78, 34}, {70, 28}, {72, 14}, {82, 10}, {82, 0}}, color = {0, 0, 0}, smooth = Smooth.None)}));
     end SupportIcon;
   end Icons;
+
+  package ElectricDrives
+    package TestingModels
+      extends Modelica.Icons.ExamplesPackage;
+
+      model StartASMA "Compares U/f=cost and mains start-ups"
+        //
+        import Modelica.Constants.pi;
+        Modelica.Electrical.Machines.Utilities.TerminalBox terminalBox annotation(
+          Placement(visible = true, transformation(extent = {{4, 38}, {24, 58}}, rotation = 0)));
+        Modelica.Electrical.Machines.BasicMachines.AsynchronousInductionMachines.AIM_SquirrelCage aimc annotation(
+          Placement(visible = true, transformation(extent = {{4, 8}, {24, 28}}, rotation = 0)));
+        Modelica.Electrical.Analog.Basic.Ground ground annotation(
+          Placement(visible = true, transformation(extent = {{-112, -6}, {-92, 14}}, rotation = 0)));
+        Modelica.Electrical.MultiPhase.Basic.Star star annotation(
+          Placement(visible = true, transformation(origin = {-102, 38}, extent = {{-10, -10}, {10, 10}}, rotation = 270)));
+        Modelica.Mechanics.Rotational.Sources.Torque torque annotation(
+          Placement(visible = true, transformation(origin = {78, 18}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
+        Modelica.Blocks.Sources.Constant tauLoad(k = -150) annotation(
+          Placement(visible = true, transformation(origin = {111, -11}, extent = {{-9, -9}, {9, 9}}, rotation = 180)));
+        SupportModels.Miscellaneous.AronSensor pUp annotation(
+          Placement(visible = true, transformation(extent = {{-52, 44}, {-34, 62}}, rotation = 0)));
+        Modelica.Electrical.MultiPhase.Sources.SignalVoltage signalV annotation(
+          Placement(visible = true, transformation(origin = {-72, 53}, extent = {{-10, -9}, {10, 9}}, rotation = 180)));
+        Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor annotation(
+          Placement(visible = true, transformation(origin = {61, -1}, extent = {{-7, -7}, {7, 7}}, rotation = 270)));
+        Modelica.Mechanics.Rotational.Sources.Torque torque1 annotation(
+          Placement(visible = true, transformation(origin = {76, -56}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
+        Modelica.Electrical.Machines.Utilities.TerminalBox terminalBox1 annotation(
+          Placement(visible = true, transformation(extent = {{10, -36}, {30, -16}}, rotation = 0)));
+        Modelica.Electrical.Machines.BasicMachines.AsynchronousInductionMachines.AIM_SquirrelCage aimc0 annotation(
+          Placement(visible = true, transformation(extent = {{10, -66}, {30, -46}}, rotation = 0)));
+        Modelica.Electrical.MultiPhase.Sensors.CurrentSensor Idown annotation(
+          Placement(visible = true, transformation(origin = {-6, -30}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
+        Modelica.Electrical.Analog.Basic.Ground ground2 annotation(
+          Placement(visible = true, transformation(extent = {{-118, -78}, {-98, -58}}, rotation = 0)));
+        Modelica.Electrical.MultiPhase.Basic.Star star2 annotation(
+          Placement(visible = true, transformation(origin = {-98, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
+        Modelica.Electrical.MultiPhase.Sources.SineVoltage sineVoltage(freqHz = 50 * ones(3), V = 100 * sqrt(2) * ones(3)) annotation(
+          Placement(visible = true, transformation(extent = {{-78, -44}, {-58, -24}}, rotation = 0)));
+        Modelica.Electrical.MultiPhase.Sensors.CurrentSensor iUp annotation(
+          Placement(visible = true, transformation(origin = {-14, 54}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
+        SupportModels.Miscellaneous.AronSensor pDown annotation(
+          Placement(visible = true, transformation(extent = {{-48, -44}, {-30, -26}}, rotation = 0)));
+        Modelica.Mechanics.Rotational.Components.Inertia inertia(J = 0.5) annotation(
+          Placement(visible = true, transformation(extent = {{34, 8}, {54, 28}}, rotation = 0)));
+        Modelica.Mechanics.Rotational.Components.Inertia inertia0(J = 0.5) annotation(
+          Placement(visible = true, transformation(extent = {{38, -66}, {58, -46}}, rotation = 0)));
+        ASMArelated.ControlLogic logic(iMax = 150, Lstray = 0.2036 / 314.16, Rr = aimc.Rr, Rs = aimc.Rs, uBase = 100 * sqrt(3), pp = 2, wmMax = 314.16 / 2) annotation(
+          Placement(visible = true, transformation(extent = {{-32, 0}, {-52, 20}}, rotation = 0)));
+        Modelica.Blocks.Sources.Constant const1(k = 220) annotation(
+          Placement(visible = true, transformation(origin = {-14, 10}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        ASMArelated.GenSines actuator annotation(
+          Placement(visible = true, transformation(extent = {{-62, 0}, {-84, 20}}, rotation = 0)));
+      equation
+        connect(tauLoad.y, torque1.tau) annotation(
+          Line(points = {{101.1, -11}, {98, -11}, {98, -24}, {94, -24}, {94, -56}, {88, -56}}, color = {0, 0, 127}));
+        connect(tauLoad.y, torque.tau) annotation(
+          Line(points = {{101.1, -11}, {98, -11}, {98, 18}, {90, 18}}, color = {0, 0, 127}));
+        connect(torque1.flange, inertia0.flange_b) annotation(
+          Line(points = {{66, -56}, {66, -56}, {58, -56}}));
+        connect(aimc0.flange, inertia0.flange_a) annotation(
+          Line(points = {{30, -56}, {38, -56}}));
+        connect(Idown.plug_n, terminalBox1.plugSupply) annotation(
+          Line(points = {{2, -30}, {20, -30}}, color = {0, 0, 255}));
+        connect(terminalBox1.plug_sn, aimc0.plug_sn) annotation(
+          Line(points = {{14, -32}, {14, -46}}, color = {0, 0, 255}));
+        connect(terminalBox1.plug_sp, aimc0.plug_sp) annotation(
+          Line(points = {{26, -32}, {26, -46}}, color = {0, 0, 255}));
+        connect(pDown.nc, Idown.plug_p) annotation(
+          Line(points = {{-30, -35}, {-14, -35}, {-14, -30}}, color = {0, 0, 255}));
+        connect(pDown.pc, sineVoltage.plug_n) annotation(
+          Line(points = {{-48, -35}, {-48.09, -35}, {-48.09, -34}, {-58, -34}}, color = {0, 0, 255}));
+        connect(sineVoltage.plug_p, star2.plug_p) annotation(
+          Line(points = {{-78, -34}, {-88, -34}}, color = {0, 0, 255}));
+        connect(ground2.p, star2.pin_n) annotation(
+          Line(points = {{-108, -58}, {-108, -34}}, color = {0, 0, 255}));
+        connect(inertia.flange_b, torque.flange) annotation(
+          Line(points = {{54, 18}, {62, 18}, {68, 18}}));
+        connect(speedSensor.flange, torque.flange) annotation(
+          Line(points = {{61, 6}, {61, 12}, {60, 12}, {60, 18}, {68, 18}}));
+        connect(logic.Wm, speedSensor.w) annotation(
+          Line(points = {{-42.1, -1.3}, {-42.1, -14}, {61, -14}, {61, -8.7}}, color = {0, 0, 127}));
+        connect(inertia.flange_a, aimc.flange) annotation(
+          Line(points = {{34, 18}, {24, 18}}));
+        connect(iUp.plug_n, terminalBox.plugSupply) annotation(
+          Line(points = {{-6, 54}, {-6, 54}, {14, 54}, {14, 44}}, color = {0, 0, 255}));
+        connect(terminalBox.plug_sp, aimc.plug_sp) annotation(
+          Line(points = {{20, 42}, {20, 28}}, color = {0, 0, 255}));
+        connect(terminalBox.plug_sn, aimc.plug_sn) annotation(
+          Line(points = {{8, 42}, {8, 28}}, color = {0, 0, 255}));
+        connect(ground.p, star.pin_n) annotation(
+          Line(points = {{-102, 14}, {-102, 28}}, color = {0, 0, 255}));
+        connect(iUp.plug_p, pUp.nc) annotation(
+          Line(points = {{-22, 54}, {-34, 54}, {-34, 53}}, color = {0, 0, 255}));
+        connect(logic.Tstar, const1.y) annotation(
+          Line(points = {{-30.1, 9.9}, {-28, 9.9}, {-28, 10}, {-25, 10}}, color = {0, 0, 127}));
+        connect(actuator.Ustar, logic.Ustar) annotation(
+          Line(points = {{-60.57, 4.1}, {-62.25, 4.1}, {-62.25, 4}, {-53, 4}}, color = {0, 0, 127}));
+        connect(actuator.Westar, logic.Westar) annotation(
+          Line(points = {{-60.57, 15.9}, {-61.35, 15.9}, {-61.35, 16}, {-53, 16}}, color = {0, 0, 127}));
+        connect(actuator.U, signalV.v) annotation(
+          Line(points = {{-85.1, 10}, {-88, 10}, {-88, 12}, {-88, 40}, {-72, 40}, {-72, 46.7}}, color = {0, 0, 127}));
+        connect(pUp.pc, signalV.plug_p) annotation(
+          Line(points = {{-52, 53}, {-62, 53}}, color = {0, 0, 255}));
+        connect(signalV.plug_n, star.plug_p) annotation(
+          Line(points = {{-82, 53}, {-102, 53}, {-102, 48}}, color = {0, 0, 255}));
+        annotation(
+          experimentSetupOutput,
+          Documentation(info = "<html>
+<p>This system simulates variable-frequency start-up of an asyncronous motor.</p>
+<p>Two different sources for the machine are compared.</p>
+<p>The motor supply is constituted by a three-phase system of quasi-sinusoidal shapes, created according to the following equations:</p>
+<p>WEl=WMecc*PolePairs+DeltaWEl</p>
+<p>U=U0+(Un-U0)*WEl/WNom</p>
+<p>where:</p>
+<ul>
+<li>U0, Un U, are initial, nominal actual voltage amplitudes</li>
+<li>WMecc, WEl, are machine, mechanical and supply, electrical angular speeds</li>
+<li>PolePairs are the machine pole pairs</li>
+<li>delta WEl is a fixed parameter during the simulation, except when the final speed is reached</li>
+</ul>
+<p>When the final speed is reached, the feeding frequenccy and voltage are kept constant (no flux weaking simulated)</p>
+</html>"),
+          experimentSetupOutput,
+          Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}})),
+          Diagram(coordinateSystem(extent = {{-120, -80}, {120, 80}}, preserveAspectRatio = false, initialScale = 0.1)),
+          experiment(StartTime = 0, StopTime = 3, Tolerance = 0.0001, Interval = 0.0006));
+      end StartASMA;
+
+      model SmaDriveFW "Synchrnous Machine electric drive with flux weakening"
+        //  extends Modelica.Icons.Example;
+        Modelica.Mechanics.Rotational.Components.Inertia inertia(J = 0.29, phi(fixed = true, start = 0), w(fixed = true, start = 0)) annotation(
+          Placement(transformation(extent = {{72, -20}, {92, 0}})));
+        Modelica.Electrical.Analog.Basic.Ground ground annotation(
+          Placement(transformation(extent = {{88, 28}, {108, 48}})));
+        Modelica.Mechanics.Rotational.Sources.QuadraticSpeedDependentTorque tRes(w_nominal(displayUnit = "rpm") = 157.07963267949, tau_nominal = -100) annotation(
+          Placement(transformation(extent = {{118, -20}, {98, 0}})));
+        Modelica.Electrical.Machines.BasicMachines.SynchronousInductionMachines.SM_PermanentMagnet smpm(useDamperCage = false) annotation(
+          Placement(transformation(extent = {{30, -20}, {50, 0}}, rotation = 0)));
+        Modelica.Electrical.Machines.Utilities.TerminalBox terminalBox1(terminalConnection = "Y") annotation(
+          Placement(transformation(extent = {{30, 8}, {50, 28}}, rotation = 0)));
+        Modelica.Electrical.MultiPhase.Sources.SignalCurrent signalCurr1(final m = 3) annotation(
+          Placement(transformation(origin = {40, 42}, extent = {{-10, 10}, {10, -10}}, rotation = 270)));
+        Modelica.Electrical.MultiPhase.Basic.Star star1(final m = 3) annotation(
+          Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = 180, origin = {72, 52})));
+        Modelica.Blocks.Sources.Constant uDC(k = 200) annotation(
+          Placement(transformation(extent = {{-96, 32}, {-76, 52}})));
+        Modelica.Mechanics.Rotational.Sensors.SpeedSensor wMeccSens annotation(
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = -90, origin = {62, -24})));
+        Modelica.Blocks.Continuous.Integrator integrator annotation(
+          Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = -90, origin = {-10, -6})));
+        ElectricDrives.SMArelated.FromPark fromPark(p = smpm.p) annotation(
+          Placement(transformation(extent = {{-20, 32}, {0, 52}})));
+        Modelica.Electrical.Analog.Basic.Ground groundM1 annotation(
+          Placement(transformation(origin = {14, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 270)));
+        ElectricDrives.SMArelated.MTPAi myMTPA(Umax = 100, Ipm = smpm.permanentMagnet.Ie, pp = smpm.p, Rs = smpm.Rs, Ld = smpm.Lmd) annotation(
+          Placement(visible = true, transformation(extent = {{-48, 32}, {-28, 52}}, rotation = 0)));
+        Modelica.Blocks.Continuous.FirstOrder firstOrder1[3](T = 0.2e-4 * {1, 1, 1}) annotation(
+          Placement(visible = true, transformation(origin = {18, 42}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp tqRef(height = 100, duration = 1) annotation(
+          Placement(transformation(extent = {{-96, -38}, {-76, -18}})));
+      equation
+        connect(myMTPA.wMech, integrator.u) annotation(
+          Line(points = {{-50, 36}, {-58, 36}, {-58, -28}, {-10, -28}, {-10, -18}}, color = {0, 0, 127}));
+        connect(fromPark.Xq, myMTPA.Iq) annotation(
+          Line(points = {{-22, 36}, {-24, 36}, {-24, 36}, {-27, 36}}, color = {0, 0, 127}));
+        connect(fromPark.Xd, myMTPA.Id) annotation(
+          Line(points = {{-22, 48}, {-27, 48}}, color = {0, 0, 127}));
+        connect(myMTPA.uDC, uDC.y) annotation(
+          Line(points = {{-50, 42}, {-75, 42}}, color = {0, 0, 127}));
+        connect(inertia.flange_b, tRes.flange) annotation(
+          Line(points = {{92, -10}, {98, -10}}, color = {0, 0, 0}, smooth = Smooth.None));
+        connect(terminalBox1.plug_sn, smpm.plug_sn) annotation(
+          Line(points = {{34, 12}, {34, 0}}, color = {0, 0, 255}));
+        connect(terminalBox1.plug_sp, smpm.plug_sp) annotation(
+          Line(points = {{46, 12}, {46, 0}}, color = {0, 0, 255}));
+        connect(star1.plug_p, signalCurr1.plug_p) annotation(
+          Line(points = {{62, 52}, {40, 52}}, color = {0, 0, 255}));
+        connect(star1.pin_n, ground.p) annotation(
+          Line(points = {{82, 52}, {98, 52}, {98, 48}}, color = {0, 0, 255}));
+        connect(inertia.flange_a, smpm.flange) annotation(
+          Line(points = {{72, -10}, {50, -10}}, color = {0, 0, 0}));
+        connect(signalCurr1.plug_n, terminalBox1.plugSupply) annotation(
+          Line(points = {{40, 32}, {40, 14}}, color = {0, 0, 255}));
+        connect(wMeccSens.flange, smpm.flange) annotation(
+          Line(points = {{62, -14}, {62, -10}, {50, -10}}, color = {0, 0, 0}));
+        connect(wMeccSens.w, integrator.u) annotation(
+          Line(points = {{62, -35}, {62, -40}, {12, -40}, {12, -28}, {-10, -28}, {-10, -18}}, color = {0, 0, 127}));
+        connect(integrator.y, fromPark.phi) annotation(
+          Line(points = {{-10, 5}, {-10, 30}}, color = {0, 0, 127}));
+        connect(groundM1.p, terminalBox1.starpoint) annotation(
+          Line(points = {{24, 14}, {31, 14}}, color = {0, 0, 255}));
+        connect(firstOrder1.u, fromPark.y) annotation(
+          Line(points = {{8.4, 42}, {1, 42}}, color = {0, 0, 127}));
+        connect(firstOrder1.y, signalCurr1.i) annotation(
+          Line(points = {{26.8, 42}, {33, 42}}, color = {0, 0, 127}));
+        connect(tqRef.y, myMTPA.torqueReq) annotation(
+          Line(points = {{-75, -28}, {-66, -28}, {-66, 48}, {-50, 48}}, color = {0, 0, 127}));
+        annotation(
+          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -80}, {120, 80}}, initialScale = 0.1), graphics = {Text(origin = {-56, -50}, lineColor = {238, 46, 47}, extent = {{30, -4}, {98, -20}}, textString = "torque constant=1.564 Nm/A"), Rectangle(lineColor = {238, 46, 47}, pattern = LinePattern.Dash, extent = {{6, 62}, {54, 26}}), Text(lineColor = {238, 46, 47}, pattern = LinePattern.Dash, extent = {{52, 70}, {8, 66}}, textString = "simulates inverter")}),
+          __Dymola_experimentSetupOutput,
+          Documentation(info = "<html>
+<p>Permanent magnet synchronous machine drive with MTPA control specifically designed for isotropic machines.</p>
+<p>Initially the transient has low speed and no Id is needed: the control chose therefore Id=0.</p>
+<p>Later speed increases and the control logic requires a negative Id to control machine voltage.</p>
+<p>Here no control on current amplitude is implemented, and therefore during the end of the simulation current slightly overcomes machine&apos;s nominal value.</p>
+</html>"),
+          Icon(coordinateSystem(extent = {{-100, -80}, {120, 80}})),
+          experiment(StopTime = 4, Interval = 0.001),
+          __OpenModelica_commandLineOptions = "");
+      end SmaDriveFW;
+
+      model SmaDriveLim
+        //  extends Modelica.Icons.Example;
+        Modelica.Mechanics.Rotational.Components.Inertia inertia(J = 0.29, phi(fixed = true, start = 0), w(fixed = true, start = 0)) annotation(
+          Placement(transformation(extent = {{70, 84}, {90, 104}})));
+        Modelica.Electrical.Analog.Basic.Ground ground annotation(
+          Placement(transformation(extent = {{86, 132}, {106, 152}})));
+        Modelica.Electrical.Machines.BasicMachines.SynchronousInductionMachines.SM_PermanentMagnet smpm1(useDamperCage = false, Lmd = 1.91e-3, Lmq = 1.91e-3) annotation(
+          Placement(transformation(extent = {{28, 84}, {48, 104}}, rotation = 0)));
+        Modelica.Electrical.Machines.Utilities.TerminalBox terminalBox1(terminalConnection = "Y") annotation(
+          Placement(transformation(extent = {{28, 112}, {48, 132}}, rotation = 0)));
+        Modelica.Electrical.MultiPhase.Sources.SignalCurrent signalCurr1(final m = 3) annotation(
+          Placement(transformation(origin = {38, 146}, extent = {{-10, 10}, {10, -10}}, rotation = 270)));
+        Modelica.Electrical.MultiPhase.Basic.Star star1(final m = 3) annotation(
+          Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = 180, origin = {70, 156})));
+        Modelica.Blocks.Sources.Constant uDC(k = 200) annotation(
+          Placement(transformation(extent = {{-98, 136}, {-78, 156}})));
+        Modelica.Mechanics.Rotational.Sensors.SpeedSensor wMeccSens annotation(
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = -90, origin = {60, 80})));
+        Modelica.Blocks.Continuous.Integrator integrator annotation(
+          Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = -90, origin = {-12, 98})));
+        SMArelated.FromPark fromPark(p = smpm1.p) annotation(
+          Placement(transformation(extent = {{-22, 136}, {-2, 156}})));
+        Modelica.Electrical.Analog.Basic.Ground groundM1 annotation(
+          Placement(transformation(origin = {12, 118}, extent = {{-10, -10}, {10, 10}}, rotation = 270)));
+        SMArelated.MTPAal myMTPA(Umax = 100, Ipm = smpm1.permanentMagnet.Ie, pp = smpm1.p, Rs = smpm1.Rs, Ld = smpm1.Lmd, Lq = smpm1.Lmq) annotation(
+          Placement(visible = true, transformation(extent = {{-50, 136}, {-30, 156}}, rotation = 0)));
+        Modelica.Blocks.Continuous.FirstOrder firstOrder1[3](T = 0.2e-4 * {1, 1, 1}) annotation(
+          Placement(visible = true, transformation(origin = {16, 146}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
+        Modelica.Blocks.Sources.Trapezoid tqRef(rising = 2, period = 1e6, amplitude = 180, falling = 2, startTime = 1, width = 4) annotation(
+          Placement(transformation(extent = {{-98, 100}, {-78, 120}})));
+        Modelica.Mechanics.Rotational.Sources.QuadraticSpeedDependentTorque tRes(tau_nominal = -150, w_nominal(displayUnit = "rpm") = 157.07963267949) annotation(
+          Placement(transformation(extent = {{116, 84}, {96, 104}})));
+      equation
+        connect(myMTPA.wMech, integrator.u) annotation(
+          Line(points = {{-52, 140}, {-60, 140}, {-60, 76}, {-12, 76}, {-12, 86}}, color = {0, 0, 127}));
+        connect(fromPark.Xq, myMTPA.Iq) annotation(
+          Line(points = {{-24, 140}, {-29, 140}}, color = {0, 0, 127}));
+        connect(fromPark.Xd, myMTPA.Id) annotation(
+          Line(points = {{-24, 152}, {-29, 152}}, color = {0, 0, 127}));
+        connect(myMTPA.uDC, uDC.y) annotation(
+          Line(points = {{-52, 146}, {-77, 146}}, color = {0, 0, 127}));
+        connect(terminalBox1.plug_sn, smpm1.plug_sn) annotation(
+          Line(points = {{32, 116}, {32, 104}}, color = {0, 0, 255}));
+        connect(terminalBox1.plug_sp, smpm1.plug_sp) annotation(
+          Line(points = {{44, 116}, {44, 104}}, color = {0, 0, 255}));
+        connect(star1.plug_p, signalCurr1.plug_p) annotation(
+          Line(points = {{60, 156}, {38, 156}}, color = {0, 0, 255}));
+        connect(star1.pin_n, ground.p) annotation(
+          Line(points = {{80, 156}, {96, 156}, {96, 152}}, color = {0, 0, 255}));
+        connect(inertia.flange_a, smpm1.flange) annotation(
+          Line(points = {{70, 94}, {48, 94}}, color = {0, 0, 0}));
+        connect(signalCurr1.plug_n, terminalBox1.plugSupply) annotation(
+          Line(points = {{38, 136}, {38, 118}}, color = {0, 0, 255}));
+        connect(wMeccSens.flange, smpm1.flange) annotation(
+          Line(points = {{60, 90}, {60, 94}, {48, 94}}, color = {0, 0, 0}));
+        connect(wMeccSens.w, integrator.u) annotation(
+          Line(points = {{60, 69}, {60, 64}, {10, 64}, {10, 76}, {-12, 76}, {-12, 86}}, color = {0, 0, 127}));
+        connect(integrator.y, fromPark.phi) annotation(
+          Line(points = {{-12, 109}, {-12, 134}}, color = {0, 0, 127}));
+        connect(groundM1.p, terminalBox1.starpoint) annotation(
+          Line(points = {{22, 118}, {29, 118}}, color = {0, 0, 255}));
+        connect(firstOrder1.u, fromPark.y) annotation(
+          Line(points = {{6.4, 146}, {-1, 146}}, color = {0, 0, 127}));
+        connect(firstOrder1.y, signalCurr1.i) annotation(
+          Line(points = {{24.8, 146}, {31, 146}}, color = {0, 0, 127}));
+        connect(tqRef.y, myMTPA.torqueReq) annotation(
+          Line(points = {{-77, 110}, {-68, 110}, {-68, 152}, {-52, 152}}, color = {0, 0, 127}));
+        connect(inertia.flange_b, tRes.flange) annotation(
+          Line(points = {{90, 94}, {96, 94}}, color = {0, 0, 0}));
+        annotation(
+          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, 40}, {120, 180}}), graphics = {Rectangle(extent = {{4, 166}, {52, 130}}, lineColor = {238, 46, 47}, pattern = LinePattern.Dash), Text(extent = {{50, 172}, {6, 170}}, lineColor = {238, 46, 47}, pattern = LinePattern.Dash, textString = "simulates inverter")}),
+          __Dymola_experimentSetupOutput,
+          Documentation(info = "<html>
+<p>Permanent magnet synchronous machine drive with MTPA control specifically designed for isotropic machines.</p>
+<p>Initially the transient has low speed and no Id is needed: the control chose therefore Id=0.</p>
+<p>Later speed increases and the control logic requires a negative Id to control machine voltage.</p>
+<p>Here control on current amplitude <b>is </b>implemented, which becomes active during the central part of the simulation; in this case only part of the requested toque is delivered.</p>
+</html>"),
+          Icon(coordinateSystem(extent = {{-100, 40}, {120, 180}})),
+          experiment(StopTime = 10, Interval = 0.001),
+          __OpenModelica_commandLineOptions = "");
+      end SmaDriveLim;
+
+      model tqFollowing "Compares U/f=cost and mains start-ups"
+        //
+        import Modelica.Constants.pi;
+        Modelica.Electrical.Machines.Utilities.TerminalBox terminalBox annotation(
+          Placement(visible = true, transformation(extent = {{4, 14}, {24, 34}}, rotation = 0)));
+        Modelica.Electrical.Machines.BasicMachines.AsynchronousInductionMachines.AIM_SquirrelCage aimc annotation(
+          Placement(visible = true, transformation(extent = {{4, -16}, {24, 4}}, rotation = 0)));
+        Modelica.Electrical.Analog.Basic.Ground ground annotation(
+          Placement(visible = true, transformation(extent = {{-98, -36}, {-78, -16}}, rotation = 0)));
+        Modelica.Electrical.MultiPhase.Basic.Star star annotation(
+          Placement(visible = true, transformation(origin = {-88, 8}, extent = {{-10, -10}, {10, 10}}, rotation = 270)));
+        Modelica.Electrical.MultiPhase.Sensors.AronSensor pUp annotation(
+          Placement(visible = true, transformation(extent = {{-38, 14}, {-20, 32}}, rotation = 0)));
+        Modelica.Electrical.MultiPhase.Sources.SignalVoltage signalV annotation(
+          Placement(visible = true, transformation(origin = {-58, 23}, extent = {{-10, -9}, {10, 9}}, rotation = 180)));
+        Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor annotation(
+          Placement(visible = true, transformation(origin = {61, -25}, extent = {{-7, -7}, {7, 7}}, rotation = 270)));
+        Modelica.Electrical.MultiPhase.Sensors.CurrentSensor iUp annotation(
+          Placement(visible = true, transformation(origin = {-6, 40}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
+        Modelica.Mechanics.Rotational.Components.Inertia inertia(J = 0.5) annotation(
+          Placement(visible = true, transformation(extent = {{34, -16}, {54, 4}}, rotation = 0)));
+        wbEHPTlib.ElectricDrives.ASMArelated.ControlLogic logic(Lstray = aimc.Lssigma + aimc.Lrsigma, Rr = aimc.Rr, Rs = aimc.Rs, iMax = 150, pp = aimc.p, uBase = 100 * sqrt(3), weBase = 314.16, wmMax = 314.16 / 2) annotation(
+          Placement(visible = true, transformation(extent = {{-18, -54}, {-38, -34}}, rotation = 0)));
+        wbEHPTlib.ElectricDrives.ASMArelated.GenSines genSines annotation(
+          Placement(visible = true, transformation(origin = {-59, -6}, extent = {{11, -10}, {-11, 10}}, rotation = -90)));
+        Modelica.Blocks.Sources.Trapezoid tqReq(amplitude = 150, falling = 2, offset = 50, period = 100, rising = 2, startTime = 2, width = 3) annotation(
+          Placement(visible = true, transformation(origin = {10, -44}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        Modelica.Mechanics.Rotational.Sources.QuadraticSpeedDependentTorque tqRes(tau_nominal = -150, w_nominal = 157.08) annotation(
+          Placement(visible = true, transformation(origin = {90, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      equation
+        connect(speedSensor.flange, inertia.flange_b) annotation(
+          Line(points = {{61, -18}, {60, -18}, {60, -6}, {54, -6}, {54, -6}}));
+        connect(inertia.flange_b, tqRes.flange) annotation(
+          Line(points = {{54, -6}, {80, -6}}));
+        connect(logic.Tstar, tqReq.y) annotation(
+          Line(points = {{-16.7, -44.1}, {-10, -44.1}, {-10, -44}, {-1, -44}}, color = {0, 0, 127}));
+        connect(genSines.Westar, logic.Westar) annotation(
+          Line(points = {{-53.1, -18.43}, {-54.1, -18.43}, {-54.1, -36.43}, {-52.6, -36.43}, {-52.6, -38}, {-39, -38}}, color = {0, 0, 127}));
+        connect(genSines.U, signalV.v) annotation(
+          Line(points = {{-59, 6.1}, {-58, 6.1}, {-58, 16.7}}, color = {0, 0, 127}));
+        connect(genSines.Ustar, logic.Ustar) annotation(
+          Line(points = {{-64.9, -18.43}, {-63.9, -18.43}, {-63.9, -50}, {-39, -50}}, color = {0, 0, 127}));
+        connect(terminalBox.plug_sn, aimc.plug_sn) annotation(
+          Line(points = {{8, 18}, {8, 4}}, color = {0, 0, 255}));
+        connect(terminalBox.plug_sp, aimc.plug_sp) annotation(
+          Line(points = {{20, 18}, {20, 4}}, color = {0, 0, 255}));
+        connect(iUp.plug_n, terminalBox.plugSupply) annotation(
+          Line(points = {{2, 40}, {14, 40}, {14, 20}}, color = {0, 0, 255}));
+        connect(inertia.flange_a, aimc.flange) annotation(
+          Line(points = {{34, -6}, {24, -6}}));
+        connect(ground.p, star.pin_n) annotation(
+          Line(points = {{-88, -16}, {-88, -2}}, color = {0, 0, 255}));
+        connect(signalV.plug_n, star.plug_p) annotation(
+          Line(points = {{-68, 23}, {-88, 23}, {-88, 18}}, color = {0, 0, 255}));
+        connect(logic.Wm, speedSensor.w) annotation(
+          Line(points = {{-28.1, -55.3}, {-28.1, -62.3}, {61, -62.3}, {61, -32.7}}, color = {0, 0, 127}));
+        connect(pUp.plug_p, signalV.plug_p) annotation(
+          Line(points = {{-38, 24}, {-48, 24}, {-48, 24}, {-48, 24}}, color = {0, 0, 255}));
+        connect(pUp.plug_n, iUp.plug_p) annotation(
+          Line(points = {{-20, 24}, {-18, 24}, {-18, 40}, {-14, 40}, {-14, 40}}, color = {0, 0, 255}));
+        annotation(
+          experimentSetupOutput,
+          Documentation(info = "<html><head></head><body><p><font size=\"5\">This system simulates variable-frequency start-up of an asyncronous motor.</font></p>
+      <p><font size=\"5\">Two different sources for the machine are compared.</font></p>
+      <p><font size=\"5\">The motor supply is constituted by a three-phase system of quasi-sinusoidal shapes, created according to the following equations:</font></p>
+      <p><font size=\"5\">WEl=WMecc*PolePairs+DeltaWEl</font></p>
+      <p><font size=\"5\">U=U0+(Un-U0)*WEl/WNom</font></p>
+      <p><font size=\"5\">where:</font></p>
+      <p></p><ul>
+      <li><font size=\"5\">U0, Un U, are initial, nominal actual voltage amplitudes</font></li>
+      <li><font size=\"5\">WMecc, WEl, are machine, mechanical and supply, electrical angular speeds</font></li>
+      <li><font size=\"5\">PolePairs are the machine pole pairs</font></li>
+      <li><font size=\"5\">delta WEl is a fixed parameter during the simulation, except when the final speed is reached</font></li>
+      </ul><p></p>
+      <p><font size=\"5\">When the final speed is reached, the feeding frequency and voltage are kept constant (no flux weaking simulated)</font></p>
+      </body></html>"),
+          experimentSetupOutput,
+          Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -80}, {100, 60}})),
+          Diagram(coordinateSystem(extent = {{-100, -80}, {100, 60}}, preserveAspectRatio = false), graphics = {Rectangle(origin = {-57, 26}, lineColor = {255, 0, 0}, pattern = LinePattern.Dash, extent = {{-15, 10}, {15, -48}}), Text(origin = {-30, -1}, extent = {{-8, 3}, {8, -3}}, textString = "inverter")}),
+          experiment(StartTime = 0, StopTime = 12, Tolerance = 0.0001, Interval = 0.0024),
+          __OpenModelica_commandLineOptions = "");
+      end tqFollowing;
+    end TestingModels;
+
+    package ASMArelated "Models related to Asynchronous Machine Drives"
+      model DWToI "Delta Omega to I"
+        // follows eq. 12.13 from FEPE Book
+        parameter Modelica.SIunits.Resistance Rr "rotor resistance in stato units";
+        parameter Integer pp "pole pairs";
+        parameter Real Kw "constant Komega of FEPE Book";
+        parameter Modelica.SIunits.Current iMax "maximum calue of rms current";
+        parameter Modelica.SIunits.Inductance Lstray "combined stray inductance";
+        Modelica.SIunits.Current I "current before limitation";
+        Modelica.Blocks.Interfaces.RealInput u annotation(
+          Placement(transformation(extent = {{-140, -20}, {-100, 20}})));
+        Modelica.Blocks.Interfaces.RealOutput y annotation(
+          Placement(transformation(extent = {{100, -10}, {120, 10}})));
+        Modelica.Blocks.Sources.RealExpression I_(y = I) annotation(
+          Placement(transformation(extent = {{-10, -10}, {10, 10}})));
+        Modelica.Blocks.Nonlinear.Limiter limiter(uMax = iMax, uMin = 0) annotation(
+          Placement(transformation(extent = {{42, -10}, {62, 10}})));
+      equation
+        I = sqrt(u ^ 2 * Kw ^ 2 / ((pp * u * Lstray) ^ 2 + Rr ^ 2));
+        connect(I_.y, limiter.u) annotation(
+          Line(points = {{11, 0}, {26, 0}, {40, 0}}, color = {0, 0, 127}));
+        connect(y, limiter.y) annotation(
+          Line(points = {{110, 0}, {86, 0}, {63, 0}}, color = {0, 0, 127}));
+        annotation(
+          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -40}, {100, 40}})),
+          Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Line(points = {{-62, -62}, {-62, 64}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-70, 54}, {-62, 66}, {-56, 54}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-76, -54}, {68, -54}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-7, -6}, {1, 6}, {7, -6}}, color = {0, 0, 127}, smooth = Smooth.None, origin = {65, -54}, rotation = 270), Line(points = {{-68, -62}, {2, 28}, {54, 28}}, color = {0, 0, 127}, smooth = Smooth.None), Text(extent = {{-50, 68}, {-14, 40}}, lineColor = {0, 0, 127}, textString = "I"), Line(points = {{-69, 27}, {-53, 27}}, color = {0, 0, 127}, smooth = Smooth.None), Text(extent = {{-100, 144}, {98, 106}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, textString = "%name")}),
+          __OpenModelica_commandLineOptions = "");
+      end DWToI;
+
+      block GenSines "Generates three-phase sine waves"
+        import Modelica.Constants.pi;
+        Modelica.Blocks.Interfaces.RealInput Westar annotation(
+          Placement(transformation(extent = {{-140, 28}, {-100, 68}}), iconTransformation(extent = {{-13, -13}, {13, 13}}, rotation = 0, origin = {-113, 59})));
+        Modelica.Blocks.Interfaces.RealOutput U[3] annotation(
+          Placement(transformation(extent = {{100, -10}, {120, 10}}), iconTransformation(extent = {{100, -10}, {120, 10}})));
+        Modelica.Blocks.Interfaces.RealInput Ustar "RMS phase" annotation(
+          Placement(transformation(extent = {{-140, -60}, {-100, -20}}), iconTransformation(extent = {{-13, -13}, {13, 13}}, rotation = 0, origin = {-113, -59})));
+        Modelica.Blocks.Math.Add add1[3] annotation(
+          Placement(transformation(extent = {{0, 38}, {20, 58}})));
+        Modelica.Blocks.Math.Sin sin[3] annotation(
+          Placement(transformation(extent = {{34, 38}, {54, 58}})));
+        Modelica.Blocks.Continuous.Integrator integrator annotation(
+          Placement(transformation(extent = {{-72, 38}, {-52, 58}})));
+        Modelica.Blocks.Routing.Replicator replicator(nout = 3) annotation(
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {60, 8})));
+        Modelica.Blocks.Math.Product product[3] annotation(
+          Placement(transformation(extent = {{72, 28}, {92, 48}})));
+        Modelica.Blocks.Math.Gain ToPeak(k = sqrt(2)) annotation(
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {60, -22})));
+        Modelica.Blocks.Sources.Constant phase[3](k = 2 * pi / 3 * {0, -1, 1}) annotation(
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {-10, 8})));
+        Modelica.Blocks.Routing.Replicator replicator1(nout = 3) annotation(
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {-30, 48})));
+      equation
+        connect(sin.u, add1.y) annotation(
+          Line(points = {{32, 48}, {21, 48}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(product.y, U) annotation(
+          Line(points = {{93, 38}, {102, 38}, {102, 0}, {110, 0}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(product.u2, replicator.y) annotation(
+          Line(points = {{70, 32}, {60, 32}, {60, 19}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(ToPeak.y, replicator.u) annotation(
+          Line(points = {{60, -11}, {60, -4}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(sin.y, product.u1) annotation(
+          Line(points = {{55, 48}, {62, 48}, {62, 44}, {70, 44}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(add1.u1, replicator1.y) annotation(
+          Line(points = {{-2, 54}, {-10, 54}, {-10, 48}, {-19, 48}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(add1.u2, phase.y) annotation(
+          Line(points = {{-2, 42}, {-10, 42}, {-10, 19}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(replicator1.u, integrator.y) annotation(
+          Line(points = {{-42, 48}, {-51, 48}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(integrator.u, Westar) annotation(
+          Line(points = {{-74, 48}, {-82, 48}, {-88, 48}, {-120, 48}}, color = {0, 0, 127}));
+        connect(ToPeak.u, Ustar) annotation(
+          Line(points = {{60, -34}, {60, -34}, {60, -40}, {-120, -40}}, color = {0, 0, 127}));
+        annotation(
+          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -80}, {100, 80}})),
+          Icon(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1), graphics = {Rectangle(lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 144}, {98, 106}}, textString = "%name"), Line(points = {{-4, 28}, {8, 48}, {28, 48}, {48, 8}, {70, 8}, {82, 28}}), Line(points = {{-6, 4}, {6, 24}, {26, 24}, {46, -16}, {68, -16}, {80, 4}}), Line(points = {{-8, -16}, {4, 4}, {24, 4}, {44, -36}, {66, -36}, {78, -16}}), Rectangle(extent = {{-88, 10}, {-60, -4}}), Polygon(points = {{-60, 18}, {-34, 4}, {-60, -10}, {-60, 18}}), Text(lineColor = {0, 0, 127}, extent = {{-60, -78}, {-102, -46}}, textString = "U"), Text(origin = {0, -4}, lineColor = {0, 0, 127}, extent = {{-62, 48}, {-98, 78}}, textString = "W")}),
+          Documentation(info = "<html>
+<p>This class produces a three-phase voltage system to variable-frequency control of an asynchronous motor.</p>
+<p>The output voltages constitute a three-phase system of quasi-sinusoidal shapes, created according to the following equations:</p>
+<p>Wel=Wmecc*PolePairs+DeltaWel</p>
+<p>U=U0+(Un-U0)*(Wel)/Wnom</p>
+<p>where:</p>
+<p><ul>
+<li>U0, Un U, are initial, nominal actual voltage amplitudes</li>
+<li>Wmecc, Wel are machine (mechanical) and supply (electrical) angular speeds</li>
+<li>PolePairs are the number of machine pole pairs</li>
+<li>DeltaWel is an input variable and depends on the desired torque</li>
+</ul></p>
+</html>"));
+      end GenSines;
+
+      model TorqueToDW "Torque to Delta Omega"
+        parameter Modelica.SIunits.Resistance Rr "Rotor resistance in stato units";
+        parameter Integer pp "Pole pairs";
+        parameter Real Kw "Constant Komega of FEPE Book";
+        parameter Modelica.SIunits.AngularVelocity wmBase = 314.16 "Base electric frequency";
+        parameter Modelica.SIunits.Inductance Lstray "Combined stray inductance";
+        //The following is 12.11 of FEPE book, when U1=Kw*W (LS stands for low speed)
+        Modelica.SIunits.Torque Tmax;
+      public
+        Modelica.Blocks.Interfaces.RealInput u annotation(
+          Placement(transformation(extent = {{-140, 40}, {-100, 80}})));
+        Modelica.Blocks.Interfaces.RealOutput y annotation(
+          Placement(transformation(extent = {{100, -10}, {120, 10}})));
+        Modelica.Blocks.Interfaces.RealInput Wm annotation(
+          Placement(transformation(extent = {{-140, -80}, {-100, -40}})));
+        Modelica.Blocks.Interfaces.BooleanOutput tauIsMax annotation(
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = -90, origin = {0, -110})));
+      equation
+        if Wm < wmBase then
+          Tmax = 3 * Kw ^ 2 / (2 * pp * Lstray);
+        else
+//The following is 12.11 of FEPE book
+          Tmax = 3 * (Kw * wmBase) ^ 2 / (2 * pp * Wm ^ 2 * Lstray);
+        end if;
+//Se la coppia richiesta supera la massima mi attesto al deltaW
+//che corrisponde al picco di coppia
+        if u > Tmax then
+          Tmax = 3 * Rr * y * Kw ^ 2 / ((pp * y * Lstray) ^ 2 + Rr ^ 2);
+//    y = Rr / (pp*Lstray);
+          tauIsMax = true;
+        elseif u < (-Tmax) then
+          -Tmax = 3 * Rr * y * Kw ^ 2 / ((pp * y * Lstray) ^ 2 + Rr ^ 2);
+//    y = -Rr / (pp * Lstray);
+          tauIsMax = true;
+        else
+/* La seguente riga è eq. 12.14 di FEPE Book. Naturalmente essa 
+        determina una richiesta di coppia corretta a pieno flusso, zona nella quale 
+        vale la 12.14, mentre è approssimata in deflussaggio. Peraltro essendo 
+        normalmente il controllo in velocità in retroazione, in questo modello 
+        semplificato si accetta questo tipo di delta_omega, che determina una 
+        potenza decrescente invece che costante come potrebbe essere.       
+      */
+          u = 3 * Rr * y * Kw ^ 2 / ((pp * y * Lstray) ^ 2 + Rr ^ 2);
+/*  Si potrebbe completare il controllo facendo in modo che al di sopra della 
+        velocità base si applichi la formula 12.10 di FEPE in cui U1=Kw*wmBase.
+        Al posto di W0 si può mettere Wm+y.
+        Le formule si complicano e quindi per ragioni didattiche non lo facciamo.
+        
+        Si riporta comunque qui sotto un'implementazione provvisoria con coppia 
+        valida in tutte le regioni, da ultimare e verificare:
+        */
+//u=3*(Kw*wmBase)^2*Rr*y/(y^2*pp^2*(Wm+y)^2*Lstray^2+Rr^2*(Wm+y));
+          tauIsMax = false;
+        end if;
+        annotation(
+          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
+          Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{-100, 144}, {98, 106}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, textString = "%name"), Line(points = {{-67, -26}, {-51, -26}, {-51, -22}, {-49, -15}, {-40, -8}, {18, 25}, {26, 32}, {29, 37}, {29, 42}, {49, 42}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-66, 8}, {78, 8}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-12, -44}, {-12, 82}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-20, 72}, {-12, 84}, {-6, 72}}, color = {0, 0, 127}, smooth = Smooth.None), Text(extent = {{16, 72}, {52, 44}}, lineColor = {0, 0, 127}, textString = "DW"), Line(points = {{-7, -6}, {1, 6}, {7, -6}}, color = {0, 0, 127}, smooth = Smooth.None, origin = {75, 8}, rotation = 270), Text(extent = {{60, -6}, {96, -34}}, lineColor = {0, 0, 127}, textString = "T")}));
+      end TorqueToDW;
+
+      block ControlLogic "Follows upper fig. 12.15 from FEPE Book"
+        import Modelica.Constants.pi;
+        parameter Modelica.SIunits.Resistance Rr(start = 0.04) "Rotor resistance";
+        parameter Modelica.SIunits.Resistance Rs(start = 0.03) "Stator resistance";
+        parameter Modelica.SIunits.Voltage uBase(start = 400) "Base phase-to-phase RMS voltage";
+        parameter Modelica.SIunits.Current iMax(start = 150) "Maximum value of RMS current";
+        parameter Modelica.SIunits.AngularVelocity weBase = 314.16 "Base electric frequency";
+        parameter Modelica.SIunits.Inductance Lstray(start = 0.2036 / weBase) "Combined stray inductance";
+        parameter Modelica.SIunits.AngularVelocity wmMax = 314.16 "Maximum mechanical Speed";
+        parameter Integer pp(min = 1, start = 2) "number of pole pairs (Integer)";
+        //La seguente keyword final consente fra l'altro di far scomparire questi parametri dalla maschera.
+        final parameter Real Kw(fixed = true) = uBase / sqrt(3) / (weBase / pp) "Ratio U/Wmecc";
+        Modelica.Blocks.Interfaces.RealInput Wm annotation(
+          Placement(transformation(extent = {{-160, -80}, {-120, -40}}), iconTransformation(extent = {{-13, -13}, {13, 13}}, rotation = 90, origin = {1, -113})));
+        Modelica.Blocks.Interfaces.RealOutput Ustar annotation(
+          Placement(transformation(extent = {{120, -50}, {140, -30}}), iconTransformation(extent = {{100, -70}, {120, -50}})));
+        Modelica.Blocks.Interfaces.RealInput Tstar annotation(
+          Placement(transformation(extent = {{-160, 40}, {-120, 80}}), iconTransformation(extent = {{-13, -13}, {13, 13}}, rotation = 0, origin = {-119, -1})));
+        Modelica.Blocks.Math.Add add annotation(
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {-38, 56})));
+        Modelica.Blocks.Nonlinear.Limiter limWm(limitsAtInit = true, uMax = wmMax, uMin = uBase / sqrt(3) / 100 / Kw) annotation(
+          Placement(transformation(extent = {{0, 50}, {20, 70}})));
+        Modelica.Blocks.Interfaces.RealOutput Westar annotation(
+          Placement(transformation(extent = {{120, 50}, {140, 70}}), iconTransformation(extent = {{100, 50}, {120, 70}})));
+        ASMArelated.TorqueToDW tauToDW(Rr = Rr, pp = pp, Kw = Kw, Lstray = Lstray, wmBase = weBase / pp) annotation(
+          Placement(transformation(extent = {{-100, 50}, {-80, 70}})));
+        Modelica.Blocks.Math.Gain gain(k = pp) annotation(
+          Placement(transformation(extent = {{62, 50}, {82, 70}})));
+        Modelica.Blocks.Math.Add add1(k1 = Rs, k2 = Kw) annotation(
+          Placement(transformation(extent = {{40, 10}, {60, -10}})));
+        Modelica.Blocks.Nonlinear.Limiter limU(uMax = uBase / sqrt(3), uMin = 0) annotation(
+          Placement(transformation(extent = {{76, -10}, {96, 10}})));
+        Modelica.Blocks.Logical.GreaterThreshold toWeakening(threshold = limU.uMax) annotation(
+          Placement(visible = true, transformation(origin = {66, -36}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+        Modelica.Blocks.Logical.GreaterThreshold toMaxSpeed(threshold = limWm.uMax) annotation(
+          Placement(visible = true, transformation(origin = {-10, 28}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+        Modelica.Blocks.Sources.RealExpression toIstar(y = sqrt(Tstar * tauToDW.y / (3 * Rs))) annotation(
+          Placement(transformation(extent = {{-30, -18}, {8, 0}})));
+      equation
+        connect(toMaxSpeed.u, limWm.u) annotation(
+          Line(points = {{-10, 40}, {-10, 40}, {-10, 60}, {-2, 60}, {-2, 60}, {-2, 60}}, color = {0, 0, 127}));
+        connect(limWm.u, add.y) annotation(
+          Line(points = {{-2, 60}, {-12, 60}, {-12, 72}, {-38, 72}, {-38, 67}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(Tstar, tauToDW.u) annotation(
+          Line(points = {{-140, 60}, {-122, 60}, {-122, 66}, {-102, 66}}, color = {0, 0, 127}));
+        connect(tauToDW.y, add.u1) annotation(
+          Line(points = {{-79, 60}, {-79, 60}, {-74, 60}, {-74, 44}, {-44, 44}}, color = {0, 0, 127}));
+        connect(add.u2, Wm) annotation(
+          Line(points = {{-32, 44}, {-32, 44}, {-32, 14}, {-110, 14}, {-110, -18}, {-110, -18}, {-110, -60}, {-140, -60}}, color = {0, 0, 127}));
+        connect(Westar, gain.y) annotation(
+          Line(points = {{130, 60}, {106, 60}, {83, 60}}, color = {0, 0, 127}));
+        connect(gain.u, limWm.y) annotation(
+          Line(points = {{60, 60}, {50, 60}, {20, 60}, {21, 60}}, color = {0, 0, 127}));
+        connect(add1.y, limU.u) annotation(
+          Line(points = {{61, 0}, {74, 0}}, color = {0, 0, 127}));
+        connect(limU.y, Ustar) annotation(
+          Line(points = {{97, 0}, {102, 0}, {102, -40}, {130, -40}}, color = {0, 0, 127}));
+        connect(tauToDW.Wm, Wm) annotation(
+          Line(points = {{-102, 54}, {-110, 54}, {-110, -60}, {-140, -60}}, color = {0, 0, 127}));
+        connect(add1.u2, limWm.y) annotation(
+          Line(points = {{38, 6}, {34, 6}, {34, 60}, {21, 60}}, color = {0, 0, 127}));
+        connect(toWeakening.u, limU.u) annotation(
+          Line(points = {{66, -24}, {66, 0}, {74, 0}}, color = {0, 0, 127}));
+        connect(toIstar.y, add1.u1) annotation(
+          Line(points = {{9.9, -9}, {22, -9}, {22, -6}, {38, -6}}, color = {0, 0, 127}));
+        annotation(
+          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-120, -80}, {120, 80}}, initialScale = 0.1), graphics = {Text(origin = {0, -4}, lineColor = {0, 0, 127}, extent = {{-48, -12}, {22, -22}}, textString = "This is the first equality \nin 12.14 of FEPE Book")}),
+          Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Line(points = {{-64, -54}, {-64, 72}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-72, 62}, {-64, 74}, {-58, 62}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-78, -46}, {66, -46}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-7, -6}, {1, 6}, {7, -6}}, color = {0, 0, 127}, smooth = Smooth.None, origin = {59, -45}, rotation = 270), Line(points = {{-70, -32}, {0, 36}, {52, 36}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-71, -27}, {-55, -27}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-71, 35}, {-55, 35}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-2, -18}, {-2, -50}, {-2, -40}}, color = {0, 0, 127}, smooth = Smooth.None), Text(extent = {{-102, 144}, {96, 106}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, textString = "%name"), Text(extent = {{58, 72}, {94, 44}}, lineColor = {0, 0, 127}, textString = "W"), Text(extent = {{64, -48}, {96, -74}}, lineColor = {0, 0, 127}, textString = "U")}),
+          Documentation(info = "<html>
+<p>This class produces a three-phase voltage system to variable-frequency control of an asynchronous motor.</p>
+<p>The output voltages constitute a three-phase system of quasi-sinusoidal shapes, created according to the following equations:</p>
+<p>Wel=Wmecc*PolePairs+DeltaWel</p>
+<p>U=U0+(Un-U0)*(Wel)/Wnom</p>
+<p>where:</p>
+<p><ul>
+<li>U0, Un U, are initial, nominal actual voltage amplitudes</li>
+<li>Wmecc, Wel are machine (mechanical) and supply (electrical) angular speeds</li>
+<li>PolePairs are the number of machine pole pairs</li>
+<li>DeltaWel is an input variable and depends on the desired torque</li>
+</ul></p>
+</html>"),
+          experiment(StopTime = 500, Interval = 0.1));
+      end ControlLogic;
+      annotation(
+        Icon(graphics = {Ellipse(extent = {{-100, 100}, {100, -98}}, lineColor = {0, 0, 0}, lineThickness = 0.5, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{-100, 38}, {100, -40}}, lineColor = {28, 108, 200}, lineThickness = 0.5, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, textStyle = {TextStyle.Bold}, textString = "A")}));
+    end ASMArelated;
+
+    package SMArelated "Models related to Synchronos Machine Electric Drives"
+      model MTPAi "MTPA logic for an isotropic machine"
+        // Non-Ascii Symbol to cause UTF-8 saving by Dymola: €
+        //Implements block 1 of figure 11.28 of FEPE book
+        import PI = Modelica.Constants.pi;
+        parameter Modelica.SIunits.Current Ipm = 1.5;
+        parameter Integer pp = 1 "Pole pairs";
+        parameter Modelica.SIunits.Resistance Rs "Stator resistance";
+        parameter Modelica.SIunits.Inductance Ld "Direct-axis inductance";
+        parameter Modelica.SIunits.Voltage Umax "Max rms voltage per phase to the motor";
+      protected
+        parameter Modelica.SIunits.Voltage UmaxPk = sqrt(2) * Umax "Nominal voltage (peak per phase)";
+        //The following voltage Ulim is set to be equal to Udc without margins
+        //since this model implementation allows it. In practice, obviously
+        //some coefficient will be included since the voltage control is not
+        // "perfect" and instantaneous
+        parameter Modelica.SIunits.MagneticFlux Psi = Ipm * Ld "psi=Ipm*Ld";
+        Modelica.SIunits.Current absI = sqrt(Id ^ 2 + Iq ^ 2);
+      public
+        Modelica.SIunits.Voltage Ulim = min(uDC / sqrt(3), UmaxPk) "tensione limite (fase-picco) fa attivare il deflussaggio;";
+        Modelica.SIunits.Angle gammaStar(start = 0);
+        //  Real Is "corrente rapportata al valore nominale (es. rms/rms)";
+        Modelica.SIunits.Voltage Vd, Vq;
+        Modelica.SIunits.Current IdFF "Id FullFlux (i.e. before flux weaking evaluation)";
+        Modelica.SIunits.Current IqFF "Iq FullFlux (i.e. before flux weaking evaluation)";
+        Modelica.SIunits.Voltage VdFF "Vd FullFlux (i.e. before flux weaking evaluation)";
+        Modelica.SIunits.Voltage VqFF "Vq FullFlux (i.e. before flux weaking evaluation)";
+        Modelica.SIunits.Current IparkFF(start = 0) "Ipark amplitude FullFlux (i.e. before flux weaking evaluation)";
+        Modelica.SIunits.Voltage VparkFF "Vpark amplitude FullFlux (i.e. before flux weaking evaluation)";
+        Modelica.SIunits.Current Ipark(start = 70) "Ipark amplitude (=sqrt(Id^2+Iq^2))";
+        Modelica.SIunits.Voltage Vpark "Vpark amplitude (=sqrt(Vd^2+Vq^2))";
+        Modelica.SIunits.AngularVelocity w = pp * wMech;
+        Real weakening;
+        //weakening should be boolean. It is assumed to be real because otherwise this
+        //model will not work under OpenModelica 1.9.2.
+        Modelica.Blocks.Interfaces.RealInput torqueReq annotation(
+          Placement(transformation(extent = {{-140, 40}, {-100, 80}}), iconTransformation(extent = {{-140, 40}, {-100, 80}})));
+        Modelica.Blocks.Interfaces.RealInput wMech annotation(
+          Placement(transformation(extent = {{-140, -80}, {-100, -40}}), iconTransformation(extent = {{-140, -80}, {-100, -40}})));
+        Modelica.Blocks.Interfaces.RealOutput Id annotation(
+          Placement(transformation(extent = {{100, 50}, {120, 70}}), iconTransformation(extent = {{100, 50}, {120, 70}})));
+        Modelica.Blocks.Interfaces.RealOutput Iq annotation(
+          Placement(transformation(extent = {{100, -70}, {120, -50}}), iconTransformation(extent = {{100, -70}, {120, -50}})));
+        Modelica.Blocks.Interfaces.RealInput uDC "DC voltage" annotation(
+          Placement(transformation(extent = {{-140, -20}, {-100, 20}})));
+      equation
+//Computations with full flux.
+//Computation of  Id, Iq, Vd, Vq, V
+        IparkFF = torqueReq / (1.5 * pp * Psi);
+        IdFF = 0;
+        IqFF = IparkFF;
+        VdFF = Rs * IdFF - w * Ld * IqFF;
+        VqFF = Rs * IqFF + w * Psi;
+        VparkFF = sqrt(VdFF ^ 2 + VqFF ^ 2);
+        if VparkFF < Ulim then
+          weakening = 0;
+//weakening should be boolean. It is assumed to be real because otherwise this
+//model will not work under OpenModelica 1.9.2.
+          0 = gammaStar;
+          Id = IdFF;
+          Iq = IqFF;
+          Vd = VdFF;
+          Vq = VqFF;
+          Vpark = VparkFF;
+        else
+          weakening = 1;
+//weakening should be boolean. It is assumed to be real because otherwise this
+//model will not work under OpenModelica 1.9.2.
+          Id = -Ipark * sin(gammaStar);
+          Iq = Ipark * cos(gammaStar);
+          Vd = Rs * Id - w * Ld * Iq;
+          Vq = Rs * Iq + w * (Psi + Ld * Id);
+          Vpark = sqrt(Vd ^ 2 + Vq ^ 2);
+          Vpark = Ulim;
+//   gammaFilt+tauFilt*der(gammaFilt)=gammaStar;
+        end if;
+        torqueReq = 1.5 * pp * Psi * Ipark * cos(gammaStar);
+        assert(gammaStar < 0.98 * PI / 2, "\n***\nmaximum gamma reached\n***\n");
+        annotation(
+          Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{-100, 142}, {100, 106}}, lineColor = {0, 0, 127}, textString = "%name"), Text(extent = {{-98, 28}, {98, -28}}, lineColor = {0, 0, 127}, textString = "MTPAi")}),
+          Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2})));
+      end MTPAi;
+
+      model MTPAa "MTPA logic for a generic (anisotropic) machine"
+        // Non-Ascii Symbol to cause UTF-8 saving by Dymola: €
+        parameter Modelica.SIunits.Current Ipm = 1.5 "Permanent magnet current";
+        parameter Integer pp = 1 "Pole pairs";
+        parameter Modelica.SIunits.Resistance Rs = 0.02 "Stator resistance";
+        parameter Modelica.SIunits.Inductance Ld = 0.4 "Basic direct-axis inductance";
+        parameter Modelica.SIunits.Inductance Lq = 1.1 "Basic quadrature-axis inductance";
+        parameter Modelica.SIunits.Voltage Umax = 100 "Max rms voltage per phase to the motor";
+      protected
+        parameter Modelica.SIunits.Voltage UmaxPk = sqrt(2) * Umax "nominal voltage (peak per phase)";
+        //The following voltage Ulimi is set to be equal to Udc without margins
+        //since this model implementation allows it. In pcactice, obviously
+        //some safety coefficient will be included since the voltage control is not
+        // "perfect" and instantaneous
+      public
+        Modelica.SIunits.Voltage Ulim = min(uDC / sqrt(3), UmaxPk) "tensione limite (fase-picco) fa attivare il deflussaggio;";
+        Modelica.SIunits.Angle gammaFF(start = 0), gammaStar(start = 0);
+        //  Real Is "corrente rapportata al valore nominale (es. rms/rms)";
+        Modelica.SIunits.Voltage Vd, Vq;
+        Modelica.SIunits.Current IdFF "Id FullFlux (i.e. before flux weaking evalation)";
+        Modelica.SIunits.Current IqFF "Iq FullFlux (i.e. before flux weaking evalation)";
+        Modelica.SIunits.Voltage VdFF "Vd FullFlux (i.e. before flux weaking evalation)";
+        Modelica.SIunits.Voltage VqFF "Vq FullFlux (i.e. before flux weaking evalation)";
+        Modelica.SIunits.Current IparkFF(start = 0) "Ipark amplitude FullFlux (i.e. before flux weaking evalation)";
+        Modelica.SIunits.Voltage VparkFF "Vpark amplitude FullFlux (i.e. before flux weaking evalation)";
+        //  Real Ipark(start = 70) "Ipark amplitude (=sqrt(Id^2+Iq^2))";
+        Modelica.SIunits.Voltage Vpark "Vpark amplitude (=sqrt(Vd^2+Vq^2))";
+        Modelica.SIunits.Torque T1 "Torque due to PM field";
+        Modelica.SIunits.Torque T2 "Torque due to anisotropy (reluctance torque)";
+        Modelica.SIunits.AngularVelocity w = pp * wMech;
+        Real weakening;
+        //weakening should be boolean. It is assumed to be real because otherwise this
+        //model will not work under OpenModelica 1.9.2.
+      protected
+        parameter Real Psi = Ipm * Ld "psi=Ipm*Ld";
+      public
+        Modelica.Blocks.Interfaces.RealInput torqueReq annotation(
+          Placement(transformation(extent = {{-140, 40}, {-100, 80}}), iconTransformation(extent = {{-140, 40}, {-100, 80}})));
+        Modelica.Blocks.Interfaces.RealInput wMech annotation(
+          Placement(transformation(extent = {{-140, -80}, {-100, -40}}), iconTransformation(extent = {{-140, -80}, {-100, -40}})));
+        Modelica.Blocks.Interfaces.RealOutput Id annotation(
+          Placement(transformation(extent = {{100, 50}, {120, 70}}), iconTransformation(extent = {{100, 50}, {120, 70}})));
+        Modelica.Blocks.Interfaces.RealOutput Iq annotation(
+          Placement(transformation(extent = {{100, -70}, {120, -50}}), iconTransformation(extent = {{100, -70}, {120, -50}})));
+        Modelica.Blocks.Interfaces.RealInput uDC "DC voltage" annotation(
+          Placement(transformation(extent = {{-140, -20}, {-100, 20}}), iconTransformation(extent = {{-140, -20}, {-100, 20}})));
+        Modelica.Blocks.Interfaces.RealOutput Ipark annotation(
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {0, 110}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {0, 110})));
+      equation
+//Computations with full flux.
+//The following two equations determine IparkFF and gammaFF:
+        0 = (-Psi * sin(gammaFF)) + (Lq - Ld) * IparkFF * cos(2 * gammaFF);
+        torqueReq = 1.5 * pp * (Psi * IparkFF * cos(gammaFF) + (Lq - Ld) / 2 * IparkFF ^ 2 * sin(2 * gammaFF));
+//Computation of  Id, Iq, Vd, Vq, V
+        IdFF = -IparkFF * sin(gammaFF);
+        IqFF = IparkFF * cos(gammaFF);
+        VdFF = Rs * IdFF - w * Lq * IqFF;
+        VqFF = Rs * IqFF + w * (Psi + Ld * IdFF);
+        VparkFF = sqrt(VdFF ^ 2 + VqFF ^ 2);
+        if VparkFF < Ulim then
+          weakening = 0;
+//weakening should be boolean. It is assumed to be real because otherwise this
+//model will not work under OpenModelica 1.9.2.
+          0 = (-Psi * sin(gammaStar)) + (Lq - Ld) * IparkFF * cos(2 * gammaStar);
+          Id = IdFF;
+          Iq = IqFF;
+          Vd = VdFF;
+          Vq = VqFF;
+          Vpark = VparkFF;
+        else
+          weakening = 1;
+//weakening should be boolean. It is assumed to be real because otherwise this
+//model will not work under OpenModelica 1.9.2.
+          Id = -Ipark * sin(gammaStar);
+          Iq = Ipark * cos(gammaStar);
+          Vd = Rs * Id - w * Lq * Iq;
+          Vq = Rs * Iq + w * (Psi + Ld * Id);
+          Vpark = sqrt(Vd ^ 2 + Vq ^ 2);
+          Vpark = Ulim;
+//   gammaFilt+tauFilt*der(gammaFilt)=gammaStar;
+        end if;
+//  T1 = 1.5*pp*Psi*Ipark*cos(gammaFilt);
+//  T2 = 1.5*pp*(Lq - Ld)/2*Ipark^2*sin(2*gammaFilt);
+        T1 = 1.5 * pp * Psi * Ipark * cos(gammaStar);
+        T2 = 1.5 * pp * (Lq - Ld) / 2 * Ipark ^ 2 * sin(2 * gammaStar);
+        torqueReq = T1 + T2;
+        annotation(
+          Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics = {Text(extent = {{-98, -110}, {102, -146}}, lineColor = {0, 0, 127}, textString = "%name"), Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{-100, 26}, {100, -26}}, lineColor = {0, 0, 127}, textString = "MTPAa")}),
+          Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2})),
+          experiment(StartTime = 0, StopTime = 8, Tolerance = 0.0001, Interval = 0.0016));
+      end MTPAa;
+
+      model MTPAal "MTPA logic for an anisotropic PMSM machine with current limitation"
+        // Non-Ascii Symbol to cause UTF-8 saving by Dymola: €
+        parameter Real gain(unit = "Nm/A") = 5000 / (1.5 * Ipm * pp) "Current loop gain";
+        parameter Modelica.SIunits.Current Ipm = 1.5 "Permanent magnet current";
+        parameter Integer pp = 1 "Pole pairs";
+        parameter Modelica.SIunits.Resistance Rs = 0.02 "Stator resistance (Ω)";
+        parameter Modelica.SIunits.Inductance Ld = 0.4 "Basic direct-axis inductance (H)";
+        parameter Modelica.SIunits.Inductance Lq = 1.1 "Basic quadrature-axis inductance (H)";
+        parameter Modelica.SIunits.Voltage Umax = 100 "Max rms voltage per phase to the motor";
+        parameter Modelica.SIunits.Current Ilim = 100 "nominal current (rms per phase)";
+      protected
+        parameter Modelica.SIunits.Current IlimPk = sqrt(2) * Ilim "current limit (A peak)";
+      public
+        Modelica.Blocks.Interfaces.RealInput torqueReq annotation(
+          Placement(transformation(extent = {{-140, 40}, {-100, 80}}), iconTransformation(extent = {{-140, 40}, {-100, 80}})));
+        Modelica.Blocks.Interfaces.RealInput wMech annotation(
+          Placement(transformation(extent = {{-140, -80}, {-100, -40}}), iconTransformation(extent = {{-140, -80}, {-100, -40}})));
+        Modelica.Blocks.Interfaces.RealOutput Id annotation(
+          Placement(transformation(extent = {{100, 50}, {120, 70}}), iconTransformation(extent = {{100, 50}, {120, 70}})));
+        Modelica.Blocks.Interfaces.RealOutput Iq annotation(
+          Placement(transformation(extent = {{100, -70}, {120, -50}}), iconTransformation(extent = {{100, -70}, {120, -50}})));
+        Modelica.Blocks.Interfaces.RealInput uDC "DC voltage" annotation(
+          Placement(transformation(extent = {{-140, -20}, {-100, 20}}), iconTransformation(extent = {{-140, -20}, {-100, 20}})));
+        MTPAa mTPAa(Ipm = Ipm, pp = pp, Rs = Rs, Ld = Ld, Lq = Lq, Umax = Umax) annotation(
+          Placement(transformation(extent = {{6, -36}, {26, -16}})));
+        Modelica.Blocks.Math.Feedback feedback annotation(
+          Placement(transformation(extent = {{38, 28}, {58, 48}})));
+        Modelica.Blocks.Sources.Constant Ilim_(k = IlimPk) annotation(
+          Placement(visible = true, transformation(origin = {48, 10}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
+        Modelica.Blocks.Continuous.FirstOrder firstOrder(T = 0.01, k = gain) annotation(
+          Placement(transformation(extent = {{56, 68}, {36, 88}})));
+        Modelica.Blocks.Nonlinear.Limiter limiter1(uMax = 1e99, uMin = 0) annotation(
+          Placement(visible = true, transformation(origin = {2, 80}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        Modelica.Blocks.Math.Add add1(k1 = -1) annotation(
+          Placement(visible = true, transformation(origin = {-34, 22}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+        Modelica.Blocks.Continuous.FirstOrder firstOrder1(T = 0.01, k = 1) annotation(
+          Placement(transformation(extent = {{-70, 70}, {-50, 90}})));
+        Modelica.Blocks.Logical.GreaterThreshold limiting(threshold = IlimPk / 1e6) annotation(
+          Placement(transformation(extent = {{-18, 40}, {2, 60}})));
+      equation
+        connect(Ilim_.y, feedback.u2) annotation(
+          Line(points = {{48, 21}, {48, 21}, {48, 30}}, color = {0, 0, 127}));
+        connect(feedback.u1, mTPAa.Ipark) annotation(
+          Line(points = {{40, 38}, {16, 38}, {16, 32}, {16, 8}, {16, -15}}, color = {0, 0, 127}));
+        connect(firstOrder.u, feedback.y) annotation(
+          Line(points = {{58, 78}, {72, 78}, {72, 38}, {57, 38}}, color = {0, 0, 127}));
+        connect(firstOrder.y, limiter1.u) annotation(
+          Line(points = {{35, 78}, {14, 78}, {14, 80}}, color = {0, 0, 127}));
+        connect(limiter1.y, add1.u1) annotation(
+          Line(points = {{-9, 80}, {-16, 80}, {-28, 80}, {-28, 34}}, color = {0, 0, 127}));
+        connect(firstOrder1.y, add1.u2) annotation(
+          Line(points = {{-49, 80}, {-46, 80}, {-40, 80}, {-40, 34}}, color = {0, 0, 127}));
+        connect(firstOrder1.u, torqueReq) annotation(
+          Line(points = {{-72, 80}, {-86, 80}, {-86, 60}, {-120, 60}}, color = {0, 0, 127}));
+        connect(add1.y, mTPAa.torqueReq) annotation(
+          Line(points = {{-34, 11}, {-34, 11}, {-34, 14}, {-34, -20}, {4, -20}}, color = {0, 0, 127}));
+        connect(mTPAa.uDC, uDC) annotation(
+          Line(points = {{4, -26}, {-68, -26}, {-68, 0}, {-120, 0}}, color = {0, 0, 127}));
+        connect(mTPAa.wMech, wMech) annotation(
+          Line(points = {{4, -32}, {4, -32}, {-34, -32}, {-34, -60}, {-120, -60}}, color = {0, 0, 127}));
+        connect(mTPAa.Id, Id) annotation(
+          Line(points = {{27, -20}, {27, -20}, {86, -20}, {86, 60}, {110, 60}}, color = {0, 0, 127}));
+        connect(mTPAa.Iq, Iq) annotation(
+          Line(points = {{27, -32}, {27, -32}, {86, -32}, {86, -60}, {110, -60}}, color = {0, 0, 127}));
+        connect(limiting.u, add1.u1) annotation(
+          Line(points = {{-20, 50}, {-28, 50}, {-28, 34}}, color = {0, 0, 127}));
+        annotation(
+          Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics = {Text(extent = {{-100, 142}, {100, 106}}, lineColor = {0, 0, 127}, textString = "%name"), Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{-100, 24}, {100, -26}}, lineColor = {0, 0, 127}, textString = "MTPAal")}),
+          Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2})),
+          experiment(StartTime = 0, StopTime = 8, Tolerance = 0.0001, Interval = 0.0016));
+      end MTPAal;
+
+      model FromPark "Semplice PMM con modello funzionale inverter"
+        parameter Integer p "Number or pole pairs";
+        Modelica.Electrical.Machines.SpacePhasors.Blocks.FromSpacePhasor fromSpacePhasor annotation(
+          Placement(transformation(extent = {{60, 0}, {80, 20}})));
+        Modelica.Electrical.Machines.SpacePhasors.Blocks.Rotator rotator annotation(
+          Placement(transformation(extent = {{0, 6}, {20, 26}})));
+        Modelica.Blocks.Routing.Multiplex2 multiplex2_1 annotation(
+          Placement(transformation(extent = {{-40, 0}, {-20, 20}})));
+        Modelica.Blocks.Interfaces.RealOutput y[3] annotation(
+          Placement(transformation(extent = {{100, -10}, {120, 10}}), iconTransformation(extent = {{100, -10}, {120, 10}})));
+        Modelica.Blocks.Interfaces.RealInput Xd annotation(
+          Placement(transformation(extent = {{-140, 40}, {-100, 80}}), iconTransformation(extent = {{-140, 40}, {-100, 80}})));
+        Modelica.Blocks.Interfaces.RealInput Xq annotation(
+          Placement(transformation(extent = {{-140, -80}, {-100, -40}}), iconTransformation(extent = {{-140, -80}, {-100, -40}})));
+        Modelica.Blocks.Interfaces.RealInput phi annotation(
+          Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 90, origin = {0, -120}), iconTransformation(extent = {{-20, -20}, {20, 20}}, rotation = 90, origin = {0, -120})));
+        Modelica.Blocks.Math.Gain gain(k = -p) annotation(
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {10, -50})));
+        Modelica.Blocks.Sources.Constant const annotation(
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {50, -30})));
+      equation
+        connect(multiplex2_1.y, rotator.u) annotation(
+          Line(points = {{-19, 10}, {-10, 10}, {-10, 16}, {-2, 16}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(fromSpacePhasor.u, rotator.y) annotation(
+          Line(points = {{58, 10}, {40, 10}, {40, 16}, {21, 16}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(fromSpacePhasor.y, y) annotation(
+          Line(points = {{81, 10}, {94, 10}, {94, 0}, {110, 0}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(multiplex2_1.u1[1], Xd) annotation(
+          Line(points = {{-42, 16}, {-60, 16}, {-60, 60}, {-120, 60}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(multiplex2_1.u2[1], Xq) annotation(
+          Line(points = {{-42, 4}, {-60, 4}, {-60, -60}, {-120, -60}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(rotator.angle, gain.y) annotation(
+          Line(points = {{10, 4}, {10, -39}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(gain.u, phi) annotation(
+          Line(points = {{10, -62}, {10, -120}, {0, -120}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(fromSpacePhasor.zero, const.y) annotation(
+          Line(points = {{58, 2}, {50, 2}, {50, -19}}, color = {0, 0, 127}, smooth = Smooth.None));
+        annotation(
+          Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}})),
+          experiment(StopTime = 5, Interval = 0.001),
+          Documentation(info = "<html>
+ <p><br/><b>Test example: Permanent magnet synchronous induction machine fed by a current source</b></p>
+
+
+ <p><i><span style='color:red'>NOTA: la macchina ha Lmd=Lmq=0.3(2*pi*f) come definito internamente.</p>
+ <i><span style='color:red'>E&apos; pertanto una macchina isotropa. la miglior maniera di controllarla, quindi, dovrebbe essere di mettere la corrente tutta sull&apos;asse q e mantenere a 0 la componente sull&apos;asse d.</p></i>
+
+
+ <p><br/><br/>A synchronous induction machine with permanent magnets accelerates a quadratic speed dependent load from standstill. The rms values of d- and q-current in rotor fixed coordinate system are converted to threephase currents, and fed to the machine. The result shows that the torque is influenced by the q-current, whereas the stator voltage is influenced by the d-current.</p><p><br/><br/>Default machine parameters of model <i>SM_PermanentMagnet</i> are used. </p>
+ </html>"),
+          __Dymola_experimentSetupOutput,
+          Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(lineColor = {0, 0, 127}, extent = {{-96, 28}, {96, -26}}, textString = "P=>"), Text(lineColor = {0, 0, 255}, extent = {{-108, 150}, {102, 110}}, textString = "%name")}));
+      end FromPark;
+
+      model ToPark "Semplice PMM con modello funzionale inverter"
+        parameter Integer p "number of pole pairs";
+        Modelica.Electrical.Machines.SpacePhasors.Blocks.Rotator rotator annotation(
+          Placement(transformation(extent = {{0, 0}, {20, 20}})));
+        Modelica.Blocks.Interfaces.RealOutput y[2] annotation(
+          Placement(transformation(extent = {{100, -10}, {120, 10}}), iconTransformation(extent = {{100, -10}, {120, 10}})));
+        Modelica.Blocks.Interfaces.RealInput X[3] annotation(
+          Placement(transformation(extent = {{-140, -20}, {-100, 20}}), iconTransformation(extent = {{-140, -20}, {-100, 20}})));
+        Modelica.Blocks.Interfaces.RealInput phi annotation(
+          Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 90, origin = {10, -110}), iconTransformation(extent = {{-20, -20}, {20, 20}}, rotation = 90, origin = {0, -120})));
+        Modelica.Electrical.Machines.SpacePhasors.Blocks.ToSpacePhasor toSpacePhasor annotation(
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {-30, 10})));
+        Modelica.Blocks.Math.Gain gain(k = p) annotation(
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {10, -42})));
+      equation
+        connect(toSpacePhasor.y, rotator.u) annotation(
+          Line(points = {{-19, 10}, {-2, 10}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(rotator.y, y) annotation(
+          Line(points = {{21, 10}, {66, 10}, {66, 0}, {110, 0}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(toSpacePhasor.u, X) annotation(
+          Line(points = {{-42, 10}, {-82, 10}, {-82, 0}, {-120, 0}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(gain.y, rotator.angle) annotation(
+          Line(points = {{10, -31}, {10, -2}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(gain.u, phi) annotation(
+          Line(points = {{10, -54}, {10, -110}}, color = {0, 0, 127}, smooth = Smooth.None));
+        annotation(
+          Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics),
+          experiment(StopTime = 5, Interval = 0.001),
+          Documentation(info = "<html>
+<p><br/><b>Test example: Permanent magnet synchronous induction machine fed by a current source</b></p>
+
+
+<p><i><span style='color:red'>NOTA: la macchina ha Lmd=Lmq=0.3(2*pi*f) come definito internamente.</p>
+<i><span style='color:red'>E&apos; pertanto una macchina isotropa. la miglior maniera di controllarla, quindi, dovrebbe essere di mettere la corrente tutta sull&apos;asse q e mantenere a 0 la componente sull&apos;asse d.</p></i>
+
+
+<p><br/><br/>A synchronous induction machine with permanent magnets accelerates a quadratic speed dependent load from standstill. The rms values of d- and q-current in rotor fixed coordinate system are converted to threephase currents, and fed to the machine. The result shows that the torque is influenced by the q-current, whereas the stator voltage is influenced by the d-current.</p><p><br/><br/>Default machine parameters of model <i>SM_PermanentMagnet</i> are used. </p>
+</html>"),
+          __Dymola_experimentSetupOutput,
+          Icon(graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{-96, 32}, {96, -22}}, lineColor = {0, 0, 127}, textString = "=>P"), Text(extent = {{-106, 144}, {104, 106}}, lineColor = {0, 0, 255}, textString = "%name")}));
+      end ToPark;
+
+      block GenSines "Generates three-phase sine waves"
+        import Modelica.Constants.pi;
+        Modelica.Blocks.Interfaces.RealInput Westar annotation(
+          Placement(transformation(extent = {{-140, 28}, {-100, 68}}), iconTransformation(extent = {{-13, -13}, {13, 13}}, rotation = 0, origin = {-113, 59})));
+        Modelica.Blocks.Interfaces.RealOutput y[3] annotation(
+          Placement(transformation(extent = {{100, -10}, {120, 10}}), iconTransformation(extent = {{100, -10}, {120, 10}})));
+        Modelica.Blocks.Interfaces.RealInput Ustar "RMS phase" annotation(
+          Placement(transformation(extent = {{-140, -60}, {-100, -20}}), iconTransformation(extent = {{-13, -13}, {13, 13}}, rotation = 0, origin = {-113, -59})));
+        Modelica.Blocks.Math.Add add1[3] annotation(
+          Placement(transformation(extent = {{0, 38}, {20, 58}})));
+        Modelica.Blocks.Math.Sin sin[3] annotation(
+          Placement(transformation(extent = {{34, 38}, {54, 58}})));
+        Modelica.Blocks.Continuous.Integrator integrator annotation(
+          Placement(transformation(extent = {{-72, 38}, {-52, 58}})));
+        Modelica.Blocks.Routing.Replicator replicator(nout = 3) annotation(
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {60, 8})));
+        Modelica.Blocks.Math.Product product[3] annotation(
+          Placement(transformation(extent = {{72, 28}, {92, 48}})));
+        Modelica.Blocks.Math.Gain ToPeak(k = sqrt(2)) annotation(
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {60, -22})));
+        Modelica.Blocks.Sources.Constant phase[3](k = 2 * pi / 3 * {0, -1, 1}) annotation(
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {-10, 8})));
+        Modelica.Blocks.Routing.Replicator replicator1(nout = 3) annotation(
+          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {-30, 48})));
+      equation
+        connect(sin.u, add1.y) annotation(
+          Line(points = {{32, 48}, {21, 48}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(product.y, y) annotation(
+          Line(points = {{93, 38}, {102, 38}, {102, 0}, {110, 0}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(product.u2, replicator.y) annotation(
+          Line(points = {{70, 32}, {60, 32}, {60, 19}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(ToPeak.y, replicator.u) annotation(
+          Line(points = {{60, -11}, {60, -4}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(sin.y, product.u1) annotation(
+          Line(points = {{55, 48}, {62, 48}, {62, 44}, {70, 44}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(add1.u1, replicator1.y) annotation(
+          Line(points = {{-2, 54}, {-10, 54}, {-10, 48}, {-19, 48}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(add1.u2, phase.y) annotation(
+          Line(points = {{-2, 42}, {-10, 42}, {-10, 19}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(replicator1.u, integrator.y) annotation(
+          Line(points = {{-42, 48}, {-51, 48}}, color = {0, 0, 127}, smooth = Smooth.None));
+        connect(integrator.u, Westar) annotation(
+          Line(points = {{-74, 48}, {-82, 48}, {-88, 48}, {-120, 48}}, color = {0, 0, 127}));
+        connect(ToPeak.u, Ustar) annotation(
+          Line(points = {{60, -34}, {60, -34}, {60, -40}, {-120, -40}}, color = {0, 0, 127}));
+        annotation(
+          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -80}, {100, 80}})),
+          Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{-100, 144}, {98, 106}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, textString = "%name"), Line(points = {{-4, 28}, {8, 48}, {28, 48}, {48, 8}, {70, 8}, {82, 28}}, color = {0, 0, 0}), Line(points = {{-6, 4}, {6, 24}, {26, 24}, {46, -16}, {68, -16}, {80, 4}}, color = {0, 0, 0}), Line(points = {{-8, -16}, {4, 4}, {24, 4}, {44, -36}, {66, -36}, {78, -16}}, color = {0, 0, 0}), Rectangle(extent = {{-88, 10}, {-60, -4}}, lineColor = {0, 0, 0}), Polygon(points = {{-60, 18}, {-34, 4}, {-60, -10}, {-60, 18}}, lineColor = {0, 0, 0})}),
+          Documentation(info = "<html>
+<p>This class produces a three-phase voltage system to variable-frequency control of an asynchronous motor.</p>
+<p>The output voltages constitute a three-phase system of quasi-sinusoidal shapes, created according to the following equations:</p>
+<p>Wel=Wmecc*PolePairs+DeltaWel</p>
+<p>U=U0+(Un-U0)*(Wel)/Wnom</p>
+<p>where:</p>
+<p><ul>
+<li>U0, Un U, are initial, nominal actual voltage amplitudes</li>
+<li>Wmecc, Wel are machine (mechanical) and supply (electrical) angular speeds</li>
+<li>PolePairs are the number of machine pole pairs</li>
+<li>DeltaWel is an input variable and depends on the desired torque</li>
+</ul></p>
+</html>"));
+      end GenSines;
+      annotation(
+        Icon(graphics = {Ellipse(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 0}, lineThickness = 0.5, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{-100, 40}, {100, -40}}, lineColor = {28, 108, 200}, lineThickness = 0.5, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, textStyle = {TextStyle.Bold}, textString = "S")}));
+    end SMArelated;
+    annotation(
+      Icon(graphics = {Ellipse(extent = {{-100, 100}, {98, -100}}, lineColor = {0, 0, 0}, lineThickness = 0.5, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{-100, 38}, {100, -40}}, lineColor = {28, 108, 200}, lineThickness = 0.5, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, textStyle = {TextStyle.Bold}, textString = "D")}));
+  end ElectricDrives;
   annotation(
-    uses(Modelica(version = "3.2.2"), Complex(version = "3.2.2")),
+    uses(Modelica(version = "3.2.3")),
     Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics = {Polygon(points = {{-60, 16}, {78, 16}, {94, 0}, {96, -16}, {-98, -16}, {-90, 0}, {-76, 12}, {-60, 16}}, lineColor = {0, 0, 0}, smooth = Smooth.None, fillColor = {0, 0, 255}, fillPattern = FillPattern.Solid), Ellipse(extent = {{-70, -4}, {-30, -40}}, lineColor = {95, 95, 95}, fillColor = {95, 95, 95}, fillPattern = FillPattern.Solid), Ellipse(extent = {{34, -6}, {74, -42}}, lineColor = {95, 95, 95}, fillColor = {95, 95, 95}, fillPattern = FillPattern.Solid), Polygon(points = {{-54, 16}, {-18, 46}, {46, 46}, {74, 16}, {-54, 16}}, lineColor = {0, 0, 0}, smooth = Smooth.None, fillColor = {0, 0, 255}, fillPattern = FillPattern.Solid), Ellipse(extent = {{-86, -6}, {-92, 4}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 0}, fillPattern = FillPattern.Solid), Ellipse(extent = {{98, -10}, {92, -4}}, lineColor = {0, 0, 0}, fillColor = {255, 0, 0}, fillPattern = FillPattern.Solid), Polygon(points = {{-46, 20}, {-20, 42}, {16, 42}, {14, 20}, {-46, 20}}, lineColor = {0, 0, 0}, smooth = Smooth.None, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Polygon(points = {{22, 42}, {42, 42}, {60, 20}, {20, 20}, {22, 42}}, lineColor = {0, 0, 0}, smooth = Smooth.None, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Ellipse(extent = {{-60, -12}, {-40, -30}}, lineColor = {95, 95, 95}, fillColor = {215, 215, 215}, fillPattern = FillPattern.Solid), Ellipse(extent = {{44, -14}, {64, -32}}, lineColor = {95, 95, 95}, fillColor = {215, 215, 215}, fillPattern = FillPattern.Solid)}),
     Documentation(info = "<html>
 <p>Library containing models of components, subsystems and full vehicle examples for simulation of electric and Hybrid vehicular power trains.</p>

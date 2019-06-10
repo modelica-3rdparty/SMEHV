@@ -1,4 +1,187 @@
 ﻿package wbEHVpkg "Package containing basic EV models"
+  package ElectricDrives
+    model tqFollowing "Compares U/f=cost and mains start-ups"
+      //
+      import Modelica.Constants.pi;
+      Modelica.Electrical.Machines.Utilities.TerminalBox terminalBox annotation(
+        Placement(visible = true, transformation(extent = {{4, 14}, {24, 34}}, rotation = 0)));
+      Modelica.Electrical.Machines.BasicMachines.AsynchronousInductionMachines.AIM_SquirrelCage aimc annotation(
+        Placement(visible = true, transformation(extent = {{4, -16}, {24, 4}}, rotation = 0)));
+      Modelica.Electrical.Analog.Basic.Ground ground annotation(
+        Placement(visible = true, transformation(extent = {{-98, -36}, {-78, -16}}, rotation = 0)));
+      Modelica.Electrical.MultiPhase.Basic.Star star annotation(
+        Placement(visible = true, transformation(origin = {-88, 8}, extent = {{-10, -10}, {10, 10}}, rotation = 270)));
+      wbEHPTlib.SupportModels.Miscellaneous.AronSensor pUp annotation(
+        Placement(visible = true, transformation(extent = {{-38, 14}, {-20, 32}}, rotation = 0)));
+      Modelica.Electrical.MultiPhase.Sources.SignalVoltage signalV annotation(
+        Placement(visible = true, transformation(origin = {-58, 23}, extent = {{-10, -9}, {10, 9}}, rotation = 180)));
+      Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor annotation(
+        Placement(visible = true, transformation(origin = {61, -25}, extent = {{-7, -7}, {7, 7}}, rotation = 270)));
+      Modelica.Electrical.MultiPhase.Sensors.CurrentSensor iUp annotation(
+        Placement(visible = true, transformation(origin = {-6, 40}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
+      Modelica.Mechanics.Rotational.Components.Inertia inertia(J = 0.5) annotation(
+        Placement(visible = true, transformation(extent = {{34, -16}, {54, 4}}, rotation = 0)));
+      wbEHPTlib.ElectricDrives.ASMArelated.ControlLogic logic(Rr = aimc.Rr, Rs = aimc.Rs, iMax = 150, wmMax = 314.16 / 2, uBase = 100 * sqrt(3), Lstray = aimc.Lssigma + aimc.Lrsigma, pp = aimc.p) annotation(
+        Placement(visible = true, transformation(extent = {{-18, -54}, {-38, -34}}, rotation = 0)));
+      wbEHPTlib.ElectricDrives.ASMArelated.GenSines genSines annotation(
+        Placement(visible = true, transformation(origin = {-59, -6}, extent = {{11, -10}, {-11, 10}}, rotation = -90)));
+      Modelica.Blocks.Sources.Trapezoid tqReq(amplitude = 150, falling = 2, offset = 50, period = 100, rising = 2, startTime = 2, width = 3) annotation(
+        Placement(visible = true, transformation(origin = {10, -44}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      Modelica.Mechanics.Rotational.Sources.QuadraticSpeedDependentTorque tqRes(tau_nominal = -150, w_nominal = 157.08) annotation(
+        Placement(visible = true, transformation(origin = {90, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+    equation
+      connect(speedSensor.flange, inertia.flange_b) annotation(
+        Line(points = {{61, -18}, {60, -18}, {60, -6}, {54, -6}, {54, -6}}));
+      connect(inertia.flange_b, tqRes.flange) annotation(
+        Line(points = {{54, -6}, {80, -6}}));
+      connect(logic.Tstar, tqReq.y) annotation(
+        Line(points = {{-16.7, -44.1}, {-10, -44.1}, {-10, -44}, {-1, -44}}, color = {0, 0, 127}));
+      connect(genSines.Westar, logic.Westar) annotation(
+        Line(points = {{-53.1, -18.43}, {-54.1, -18.43}, {-54.1, -36.43}, {-52.6, -36.43}, {-52.6, -38}, {-39, -38}}, color = {0, 0, 127}));
+      connect(genSines.U, signalV.v) annotation(
+        Line(points = {{-59, 6.1}, {-58, 6.1}, {-58, 16.7}}, color = {0, 0, 127}));
+      connect(genSines.Ustar, logic.Ustar) annotation(
+        Line(points = {{-64.9, -18.43}, {-63.9, -18.43}, {-63.9, -50}, {-39, -50}}, color = {0, 0, 127}));
+      connect(terminalBox.plug_sn, aimc.plug_sn) annotation(
+        Line(points = {{8, 18}, {8, 4}}, color = {0, 0, 255}));
+      connect(terminalBox.plug_sp, aimc.plug_sp) annotation(
+        Line(points = {{20, 18}, {20, 4}}, color = {0, 0, 255}));
+      connect(iUp.plug_n, terminalBox.plugSupply) annotation(
+        Line(points = {{2, 40}, {14, 40}, {14, 20}}, color = {0, 0, 255}));
+      connect(inertia.flange_a, aimc.flange) annotation(
+        Line(points = {{34, -6}, {24, -6}}));
+      connect(ground.p, star.pin_n) annotation(
+        Line(points = {{-88, -16}, {-88, -2}}, color = {0, 0, 255}));
+      connect(signalV.plug_n, star.plug_p) annotation(
+        Line(points = {{-68, 23}, {-88, 23}, {-88, 18}}, color = {0, 0, 255}));
+      connect(pUp.pc, signalV.plug_p) annotation(
+        Line(points = {{-38, 23}, {-42, 23}, {-42, 24}, {-44, 24}, {-44, 23}, {-48, 23}}, color = {0, 0, 255}));
+      connect(iUp.plug_p, pUp.nc) annotation(
+        Line(points = {{-14, 40}, {-20, 40}, {-20, 23}}, color = {0, 0, 255}));
+      connect(logic.Wm, speedSensor.w) annotation(
+        Line(points = {{-28.1, -55.3}, {-28.1, -62.3}, {61, -62.3}, {61, -32.7}}, color = {0, 0, 127}));
+      annotation(
+        experimentSetupOutput,
+        Documentation(info = "<html><head></head><body><p><font size=\"5\">This system simulates variable-frequency start-up of an asyncronous motor.</font></p>
+<p><font size=\"5\">Two different sources for the machine are compared.</font></p>
+<p><font size=\"5\">The motor supply is constituted by a three-phase system of quasi-sinusoidal shapes, created according to the following equations:</font></p>
+<p><font size=\"5\">WEl=WMecc*PolePairs+DeltaWEl</font></p>
+<p><font size=\"5\">U=U0+(Un-U0)*WEl/WNom</font></p>
+<p><font size=\"5\">where:</font></p>
+<p></p><ul>
+<li><font size=\"5\">U0, Un U, are initial, nominal actual voltage amplitudes</font></li>
+<li><font size=\"5\">WMecc, WEl, are machine, mechanical and supply, electrical angular speeds</font></li>
+<li><font size=\"5\">PolePairs are the machine pole pairs</font></li>
+<li><font size=\"5\">delta WEl is a fixed parameter during the simulation, except when the final speed is reached</font></li>
+</ul><p></p>
+<p><font size=\"5\">When the final speed is reached, the feeding frequency and voltage are kept constant (no flux weaking simulated)</font></p>
+</body></html>"),
+        experimentSetupOutput,
+        Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -80}, {100, 60}})),
+        Diagram(coordinateSystem(extent = {{-100, -80}, {100, 60}}, preserveAspectRatio = false), graphics = {Rectangle(origin = {-57, 26}, lineColor = {255, 0, 0}, pattern = LinePattern.Dash, extent = {{-15, 10}, {15, -48}}), Text(origin = {-30, -1}, extent = {{-8, 3}, {8, -3}}, textString = "inverter")}),
+        experiment(StartTime = 0, StopTime = 12, Tolerance = 0.0001, Interval = 0.0024),
+        __OpenModelica_commandLineOptions = "");
+    end tqFollowing;
+
+    model wFollowing "Compares U/f=cost and mains start-ups"
+      //
+      import Modelica.Constants.pi;
+      Modelica.Electrical.Machines.Utilities.TerminalBox terminalBox annotation(
+        Placement(visible = true, transformation(extent = {{4, 14}, {24, 34}}, rotation = 0)));
+      Modelica.Electrical.Machines.BasicMachines.AsynchronousInductionMachines.AIM_SquirrelCage aimc annotation(
+        Placement(visible = true, transformation(extent = {{4, -16}, {24, 4}}, rotation = 0)));
+      Modelica.Electrical.Analog.Basic.Ground ground annotation(
+        Placement(visible = true, transformation(extent = {{-98, -36}, {-78, -16}}, rotation = 0)));
+      Modelica.Electrical.MultiPhase.Basic.Star star annotation(
+        Placement(visible = true, transformation(origin = {-88, 8}, extent = {{-10, -10}, {10, 10}}, rotation = 270)));
+      wbEHPTlib.SupportModels.Miscellaneous.AronSensor pUp annotation(
+        Placement(visible = true, transformation(extent = {{-38, 14}, {-20, 32}}, rotation = 0)));
+      Modelica.Electrical.MultiPhase.Sources.SignalVoltage signalV annotation(
+        Placement(visible = true, transformation(origin = {-58, 23}, extent = {{-10, -9}, {10, 9}}, rotation = 180)));
+      Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor annotation(
+        Placement(visible = true, transformation(origin = {75, -27}, extent = {{-7, -7}, {7, 7}}, rotation = 270)));
+      Modelica.Electrical.MultiPhase.Sensors.CurrentSensor iUp annotation(
+        Placement(visible = true, transformation(origin = {-6, 40}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
+      Modelica.Mechanics.Rotational.Components.Inertia inertia(J = 0.5) annotation(
+        Placement(visible = true, transformation(extent = {{34, -16}, {54, 4}}, rotation = 0)));
+      wbEHPTlib.ElectricDrives.ASMArelated.ControlLogic logic(Rr = aimc.Rr, Rs = aimc.Rs, iMax = 150, wmMax = 314.16 / 2, uBase = 100 * sqrt(3), Lstray = aimc.Lssigma + aimc.Lrsigma, pp = aimc.p) annotation(
+        Placement(visible = true, transformation(extent = {{-28, -54}, {-48, -34}}, rotation = 0)));
+      wbEHPTlib.ElectricDrives.ASMArelated.GenSines genSines annotation(
+        Placement(visible = true, transformation(origin = {-59, -6}, extent = {{11, -10}, {-11, 10}}, rotation = -90)));
+      Modelica.Blocks.Sources.Trapezoid wReq(amplitude = 1000, falling = 2, offset = 0, period = 100, rising = 2, startTime = 2, width = 3) annotation(
+        Placement(visible = true, transformation(origin = {59, -41}, extent = {{7, -7}, {-7, 7}}, rotation = 0)));
+      Modelica.Mechanics.Rotational.Sources.QuadraticSpeedDependentTorque tqRes(tau_nominal = -150, w_nominal = 157.08) annotation(
+        Placement(visible = true, transformation(origin = {100, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      Modelica.Blocks.Math.UnitConversions.From_rpm fromRpm annotation(
+        Placement(visible = true, transformation(origin = {35, -41}, extent = {{7, -7}, {-7, 7}}, rotation = 0)));
+      Modelica.Blocks.Math.Feedback fb annotation(
+        Placement(visible = true, transformation(origin = {10, -40}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      Modelica.Blocks.Math.Gain gain(k = 20) annotation(
+        Placement(visible = true, transformation(origin = {-13, -41}, extent = {{7, -7}, {-7, 7}}, rotation = 0)));
+    equation
+      connect(gain.u, fb.y) annotation(
+        Line(points = {{-4.6, -41}, {1, -41}, {1, -40}}, color = {0, 0, 127}));
+      connect(gain.y, logic.Tstar) annotation(
+        Line(points = {{-20.7, -41}, {-26.7, -41}, {-26.7, -44.1}}, color = {0, 0, 127}));
+      connect(fb.u1, fromRpm.y) annotation(
+        Line(points = {{18, -40}, {28, -40}, {28, -40}, {28, -41}, {27.3, -41}}, color = {0, 0, 127}));
+      connect(fb.u2, speedSensor.w) annotation(
+        Line(points = {{10, -48}, {10, -54}, {80, -54}, {80, -34.7}, {75, -34.7}}, color = {0, 0, 127}));
+      connect(fromRpm.u, wReq.y) annotation(
+        Line(points = {{43.4, -41}, {51.3, -41}}, color = {0, 0, 127}));
+      connect(logic.Wm, speedSensor.w) annotation(
+        Line(points = {{-38.1, -55.3}, {-38.1, -64.3}, {75, -64.3}, {75, -34.7}}, color = {0, 0, 127}));
+      connect(genSines.Ustar, logic.Ustar) annotation(
+        Line(points = {{-64.9, -18.43}, {-63.9, -18.43}, {-63.9, -50}, {-49, -50}}, color = {0, 0, 127}));
+      connect(genSines.Westar, logic.Westar) annotation(
+        Line(points = {{-53.1, -18.43}, {-54.1, -18.43}, {-54.1, -36.43}, {-52.6, -36.43}, {-52.6, -38}, {-49, -38}}, color = {0, 0, 127}));
+      connect(inertia.flange_b, tqRes.flange) annotation(
+        Line(points = {{54, -6}, {90, -6}}));
+      connect(speedSensor.flange, inertia.flange_b) annotation(
+        Line(points = {{75, -20}, {74.5, -20}, {74.5, -8}, {74, -8}, {74, -6}, {54, -6}}));
+      connect(genSines.U, signalV.v) annotation(
+        Line(points = {{-59, 6.1}, {-58, 6.1}, {-58, 16.7}}, color = {0, 0, 127}));
+      connect(terminalBox.plug_sn, aimc.plug_sn) annotation(
+        Line(points = {{8, 18}, {8, 4}}, color = {0, 0, 255}));
+      connect(terminalBox.plug_sp, aimc.plug_sp) annotation(
+        Line(points = {{20, 18}, {20, 4}}, color = {0, 0, 255}));
+      connect(iUp.plug_n, terminalBox.plugSupply) annotation(
+        Line(points = {{2, 40}, {14, 40}, {14, 20}}, color = {0, 0, 255}));
+      connect(inertia.flange_a, aimc.flange) annotation(
+        Line(points = {{34, -6}, {24, -6}}));
+      connect(ground.p, star.pin_n) annotation(
+        Line(points = {{-88, -16}, {-88, -2}}, color = {0, 0, 255}));
+      connect(signalV.plug_n, star.plug_p) annotation(
+        Line(points = {{-68, 23}, {-88, 23}, {-88, 18}}, color = {0, 0, 255}));
+      connect(pUp.pc, signalV.plug_p) annotation(
+        Line(points = {{-38, 23}, {-42, 23}, {-42, 24}, {-44, 24}, {-44, 23}, {-48, 23}}, color = {0, 0, 255}));
+      connect(iUp.plug_p, pUp.nc) annotation(
+        Line(points = {{-14, 40}, {-20, 40}, {-20, 23}}, color = {0, 0, 255}));
+      annotation(
+        experimentSetupOutput,
+        Documentation(info = "<html>
+<p>This system simulates variable-frequency start-up of an asyncronous motor.</p>
+<p>Two different sources for the machine re compared.</p>
+<p>The motor supply is constituted by a three-phase system of quasi-sinusoidal shapes, created according to the following equations:</p>
+<p>WEl=WMecc*PolePairs+DeltaWEl</p>
+<p>U=U0+(Un-U0)*WEl/WNom</p>
+<p>where:</p>
+<p><ul>
+<li>U0, Un U, are initial, nominal actual voltage amplitudes</li>
+<li>WMecc, WEl, are machine, mechanical and supply, electrical angular speeds</li>
+<li>PolePairs are the machine pole pairs</li>
+<li>delta WEl is a fixed parameter during the simulation, except when the final speed is reached</li>
+</ul></p>
+<p>When the final speed is reached, the feeding frequenccy and voltage are kept constant (no flux weaking simulated)</p>
+</html>"),
+        experimentSetupOutput,
+        Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}})),
+        Diagram(coordinateSystem(extent = {{-100, -80}, {120, 60}}, preserveAspectRatio = false), graphics = {Rectangle(origin = {-57, 26}, lineColor = {255, 0, 0}, pattern = LinePattern.Dash, extent = {{-15, 10}, {15, -48}}), Text(origin = {-30, -1}, extent = {{-8, 3}, {8, -3}}, textString = "inverter")}),
+        experiment(StartTime = 0, StopTime = 12, Tolerance = 0.0001, Interval = 0.0024),
+        __OpenModelica_commandLineOptions = "");
+    end wFollowing;
+  end ElectricDrives;
+
   package EV
     model FirstEV "Simulates a very basic Electric Vehicle"
       import Modelica;
@@ -9,7 +192,7 @@
         Placement(visible = true, transformation(origin = {-14, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Modelica.Mechanics.Rotational.Sources.Torque torque annotation(
         Placement(visible = true, transformation(extent = {{-82, 10}, {-62, 30}}, rotation = 0)));
-      wbEHPTlib.SupportModels.Miscellaneous.PropDriver driver(CycleFileName = "Sort1.txt", extrapolation = Modelica.Blocks.Types.Extrapolation.Periodic, k = 1000, yMax = 100000.0) annotation(
+      wbEHPTlib.SupportModels.Miscellaneous.PropDriver driver(CycleFileName = "NEDC.txt", extrapolation = Modelica.Blocks.Types.Extrapolation.Periodic, k = 1000, yMax = 100000.0) annotation(
         Placement(visible = true, transformation(extent = {{-118, 14}, {-98, 34}}, rotation = 0)));
       Modelica.Mechanics.Translational.Components.Mass mass(m = 1300) annotation(
         Placement(visible = true, transformation(extent = {{34, 10}, {54, 30}}, rotation = 0)));
@@ -103,7 +286,7 @@
     model FirstEVpow "Simulates a very basic Electric Vehicle"
       import Modelica;
       extends Modelica.Icons.Example;
-      wbEHPTlib.SupportModels.Miscellaneous.DragForce dragF(Cx = 0.26, S = 2.2, fc = 0.014, m = mass.m, rho (displayUnit = "kg/m3") = 1.226) annotation(
+      wbEHPTlib.SupportModels.Miscellaneous.DragForce dragF(Cx = 0.26, S = 2.2, fc = 0.014, m = mass.m, rho(displayUnit = "kg/m3") = 1.226) annotation(
         Placement(visible = true, transformation(origin = {100, -22}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
       Modelica.Mechanics.Rotational.Components.IdealGear gear(ratio = 4) annotation(
         Placement(visible = true, transformation(origin = {-8, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -192,7 +375,7 @@
         Placement(visible = true, transformation(extent = {{0, -26}, {12, -14}}, rotation = 0)));
       Modelica.Blocks.Nonlinear.Limiter cutNeg(limitsAtInit = true, uMax = 0, uMin = -Modelica.Constants.inf) annotation(
         Placement(visible = true, transformation(origin = {-14, -20}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
-  VehicleData.Car data annotation(
+      VehicleData.Car data annotation(
         Placement(visible = true, transformation(origin = {70, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
       connect(batt1.n, eleDrive.pin_n) annotation(
@@ -249,7 +432,6 @@
         experiment(StartTime = 0, StopTime = 1400, Tolerance = 0.0001, Interval = 0.1),
         __OpenModelica_commandLineOptions = "");
     end MBEVdata;
-
 
     model FirstEVAngle "Simulates a very basic Electric Vehicle"
       import Modelica;
@@ -310,7 +492,7 @@
         Placement(visible = true, transformation(extent = {{-116, -10}, {-96, 10}}, rotation = 0)));
       Modelica.Mechanics.Rotational.Components.IdealRollingWheel wheel(radius = 0.5715) annotation(
         Placement(visible = true, transformation(extent = {{-4, 4}, {16, 24}}, rotation = 0)));
-      wbEHPTlib.MapBased.OneFlange eleDrive(J = 0.25, effTableName = "effTable", mapsFileName = "EVmaps.txt", tauMax = 150, wMax = 500) "Electric Drive" annotation(
+      wbEHPTlib.MapBased.OneFlange eleDrive(J = 0.25, effTableName = "effTable", mapsFileName = "EVmaps.txt", mapsOnFile = true, tauMax = 150, wMax = 500) "Electric Drive" annotation(
         Placement(visible = true, transformation(extent = {{-74, 6}, {-54, 24}}, rotation = 0)));
       wbEHPTlib.SupportModels.Miscellaneous.Batt1 batt1(SOCInit = 0.7, QCellNom = 100 * 3600, ns = 100) annotation(
         Placement(transformation(extent = {{-112, 34}, {-92, 54}})));
@@ -391,8 +573,6 @@
         experiment(StartTime = 0, StopTime = 1400, Tolerance = 0.0001, Interval = 0.1),
         __OpenModelica_commandLineOptions = "");
     end MBEV;
-
-
   end EV;
 
   package sHEV
@@ -419,33 +599,45 @@
         Placement(visible = true, transformation(extent = {{12, 64}, {-4, 80}}, rotation = 0)));
       Modelica.Blocks.Nonlinear.Limiter limiter(uMax = 100e3, uMin = 0) annotation(
         Placement(visible = true, transformation(extent = {{-14, 64}, {-30, 80}}, rotation = 0)));
-      wbEHPTlib.SupportModels.Miscellaneous.PropDriver driver(CycleFileName = "Sort1.txt", extrapolation = Modelica.Blocks.Types.Extrapolation.Periodic, k = 200.0, yMax = 2e3) annotation(
-        Placement(visible = true, transformation(extent = {{-98, 76}, {-78, 96}}, rotation = 0)));
-      wbEHPTlib.MapBased.Genset genset(OptiTime = 1, mapsFileName = "SHEVmaps.txt", maxGenW = 300, maxTau = 400, maxPow = 45000) annotation(
+      wbEHPTlib.SupportModels.Miscellaneous.PropDriver driver(CycleFileName = "Sort1.txt", extrapolation = Modelica.Blocks.Types.Extrapolation.Periodic, k = 500.0, yMax = 2e3) annotation(
+        Placement(visible = true, transformation(extent = {{-94, 76}, {-74, 96}}, rotation = 0)));
+      wbEHPTlib.MapBased.Genset genset(gsRatio = 1,mapsFileName = "SHEVmaps.txt", maxGenW = 300, maxPow = 45000, maxTau = 500, wIceStart = 300) annotation(
         Placement(transformation(extent = {{-80, 8}, {-50, 38}})));
-      wbEHPTlib.SupportModels.Miscellaneous.Batt1 battery(QCellNom = 200 * 3600, ICellMax = 1000, R0Cell = 0.35E-3, efficiency = 0.9, iCellEfficiency = 200, ns = 200) annotation(
-        Placement(transformation(extent = {{0, 18}, {20, 38}})));
-      wbEHPTlib.MapBased.OneFlange drive( effTableName = "motEffTable", mapsFileName = "SHEVmaps.txt", mapsOnFile = true, powMax = 150e3,tauMax = 1000, wMax = 3000) annotation(
-        Placement(visible = true, transformation(extent = {{40, 42}, {60, 22}}, rotation = 0)));
-      Modelica.Mechanics.Rotational.Sensors.PowerSensor drivePow annotation(
-        Placement(transformation(extent = {{66, 40}, {86, 20}})));
+      wbEHPTlib.SupportModels.Miscellaneous.Batt1 battery(ICellMax = 500, QCellNom = 25 * 3600, R0Cell = 0.35E-3, efficiency = 0.9, iCellEfficiency = 100, ns = 100) annotation(
+        Placement(visible = true, transformation(extent = {{0, 20}, {20, 40}}, rotation = 0)));
+      wbEHPTlib.MapBased.OneFlange drive(effTableName = "motEffTable", mapsFileName = "SHEVmaps.txt", mapsOnFile = false, powMax = 150e3, tauMax = 1000, wMax = 3000) annotation(
+        Placement(visible = true, transformation(extent = {{68, 42}, {88, 22}}, rotation = 0)));
       Modelica.Electrical.Analog.Sensors.PowerSensor gsPow annotation(
-        Placement(transformation(extent = {{-32, 22}, {-12, 42}})));
+        Placement(visible = true, transformation(extent = {{-32, 24}, {-12, 44}}, rotation = 0)));
+      Modelica.Electrical.Analog.Sensors.PowerSensor drivePow annotation(
+        Placement(visible = true, transformation(origin = {52, 36}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
-      connect(drive.pin_n, battery.p) annotation(
-        Line(points = {{40, 37.5556}, {36.1, 37.5556}, {36.1, 42}, {20, 42}, {20, 34}}, color = {0, 0, 255}));
-      connect(gsPow.nv, drive.pin_p) annotation(
-        Line(points = {{-22, 22}, {-22, 14}, {40, 14}, {40, 28.6667}}, color = {0, 0, 255}));
-      connect(drivePow.flange_a, drive.flange_a) annotation(
-        Line(points = {{66, 30}, {61, 30}, {61, 33.1111}, {60, 33.1111}}));
-      connect(battery.n, drive.pin_p) annotation(
-        Line(points = {{20.1, 22}, {24, 22}, {24, 14}, {40, 14}, {40, 28.6667}}, color = {0, 0, 255}));
-      connect(genset.pin_n, drive.pin_p) annotation(
-        Line(points = {{-49.7, 14}, {40, 14}, {40, 28.6667}}, color = {0, 0, 255}));
+      connect(battery.n, drivePow.nv) annotation(
+        Line(points = {{20.1, 24}, {24, 24}, {24, 14}, {52, 14}, {52, 26}, {52, 26}}, color = {0, 0, 255}));
+      connect(drive.pin_p, drivePow.nv) annotation(
+        Line(points = {{68, 28.6667}, {61, 28.6667}, {61, 26}, {52, 26}}, color = {0, 0, 255}));
+      connect(drivePow.nc, drive.pin_n) annotation(
+        Line(points = {{62, 36}, {66, 36}, {66, 37.5556}, {68, 37.5556}}, color = {0, 0, 255}));
+      connect(gear.flange_a, drive.flange_a) annotation(
+        Line(points = {{-78, -39}, {-84, -39}, {-84, -14}, {98, -14}, {98, 33.1111}, {88, 33.1111}}));
       connect(drive.tauRef, driver.tauRef) annotation(
-        Line(points = {{38.6, 33.1111}, {38.6, 34}, {32, 34}, {32, 86}, {-77, 86}}, color = {0, 0, 127}));
+        Line(points = {{66.6, 33.1111}, {66.6, 32}, {32, 32}, {32, 86}, {-77, 86}}, color = {0, 0, 127}));
+      connect(gsPow.nv, genset.pin_n) annotation(
+        Line(points = {{-22, 24}, {-22, 24}, {-22, 14}, {-49.7, 14}, {-49.7, 14}}, color = {0, 0, 255}));
+      connect(gsPow.pv, gsPow.pc) annotation(
+        Line(points = {{-22, 44}, {-32, 44}, {-32, 34}}, color = {0, 0, 255}));
+      connect(gsPow.pc, genset.pin_p) annotation(
+        Line(points = {{-32, 34}, {-41, 34}, {-41, 32}, {-50, 32}}, color = {0, 0, 255}));
+      connect(gsPow.nc, battery.p) annotation(
+        Line(points = {{-12, 34}, {-8, 34}, {-8, 48}, {20, 48}, {20, 36}}, color = {0, 0, 255}));
       connect(drivePow.power, powFilt.u) annotation(
-        Line(points = {{68, 41}, {68, 72}, {13.6, 72}}, color = {0, 0, 127}));
+        Line(points = {{44, 25}, {38, 25}, {38, 72}, {13.6, 72}, {13.6, 72}}, color = {0, 0, 127}));
+      connect(drivePow.nv, genset.pin_n) annotation(
+        Line(points = {{52, 26}, {52, 14}, {-49.7, 14}}, color = {0, 0, 255}));
+      connect(drivePow.pv, drivePow.pc) annotation(
+        Line(points = {{52, 46}, {42, 46}, {42, 36}, {42, 36}}, color = {0, 0, 255}));
+      connect(drivePow.pc, battery.p) annotation(
+        Line(points = {{42, 36}, {20, 36}, {20, 36}, {20, 36}}, color = {0, 0, 255}));
       connect(powFilt.y, limiter.u) annotation(
         Line(points = {{-4.8, 72}, {-12.4, 72}}, color = {0, 0, 127}));
       connect(limiter.y, genset.powRef) annotation(
@@ -466,18 +658,10 @@
         Line(points = {{26, -46}, {26, -39}, {10, -39}}, color = {0, 127, 0}, smooth = Smooth.None));
       connect(genset.pin_n, ground1.p) annotation(
         Line(points = {{-49.7, 14}, {-42, 14}, {-42, 6}}, color = {0, 0, 255}, smooth = Smooth.None));
-      connect(drivePow.flange_b, gear.flange_a) annotation(
-        Line(points = {{86, 30}, {90, 30}, {90, -22}, {-86, -22}, {-86, -39}, {-78, -39}}, color = {0, 0, 0}));
-      connect(gsPow.pc, genset.pin_p) annotation(
-        Line(points = {{-32, 32}, {-36, 32}, {-50, 32}}, color = {0, 0, 255}));
-      connect(gsPow.nc, battery.p) annotation(
-        Line(points = {{-12, 32}, {-8, 32}, {-8, 48}, {28, 48}, {28, 34}, {20, 34}}, color = {0, 0, 255}));
-      connect(gsPow.pv, gsPow.pc) annotation(
-        Line(points = {{-22, 42}, {-32, 42}, {-32, 32}}, color = {0, 0, 255}));
       annotation(
-        Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -80}, {100, 100}}), graphics = {Rectangle(extent = {{-90, -28}, {94, -70}}, lineColor = {255, 0, 0}, pattern = LinePattern.Dash), Rectangle(extent = {{-90, 52}, {96, -10}}, lineColor = {255, 0, 0}, pattern = LinePattern.Dash), Rectangle(extent = {{-60, 96}, {94, 58}}, lineColor = {255, 0, 0}, pattern = LinePattern.Dash), Text(extent = {{68, 74}, {94, 66}}, lineColor = {255, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid, textString = "EMS"), Text(extent = {{-96, -60}, {-44, -68}}, lineColor = {255, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid, textString = "MechProp"), Text(extent = {{12, 0}, {58, -8}}, lineColor = {255, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid, textString = "PowerTrain")}),
+        Diagram(coordinateSystem(extent = {{-100, -80}, {100, 100}}, initialScale = 0.1), graphics = {Rectangle(lineColor = {255, 0, 0}, pattern = LinePattern.Dash, extent = {{-90, -28}, {94, -70}}), Rectangle(lineColor = {255, 0, 0}, pattern = LinePattern.Dash, extent = {{-90, 52}, {94, -10}}), Rectangle(lineColor = {255, 0, 0}, pattern = LinePattern.Dash, extent = {{-60, 96}, {94, 58}}), Text(lineColor = {255, 0, 0}, fillPattern = FillPattern.Solid, extent = {{68, 74}, {94, 66}}, textString = "EMS"), Text(lineColor = {255, 0, 0}, fillPattern = FillPattern.Solid, extent = {{-96, -60}, {-44, -68}}, textString = "MechProp"), Text(lineColor = {255, 0, 0}, fillPattern = FillPattern.Solid, extent = {{12, 0}, {58, -8}}, textString = "PowerTrain")}),
         Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics),
-        experiment(StopTime = 1500, StartTime = 0, Tolerance = 1e-06, Interval = 0.75),
+        experiment(StopTime = 400, StartTime = 0, Tolerance = 1e-06, Interval = 0.2),
         experimentSetupOutput(derivatives = false),
         Documentation(info = "<html>
 <p>This is a SHEV model which has an Energy Management System able to control the power flow with basic logic: requests the ICE to deliver the average load power.</p>
@@ -488,101 +672,105 @@
       //€
       extends Modelica.Icons.Example;
       Modelica.Electrical.Analog.Basic.Ground ground1 annotation(
-        Placement(transformation(extent = {{-8, 8}, {8, -8}}, rotation = 0, origin = {-42, -4})));
+        Placement(visible = true, transformation(origin = {-40, -22}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
       Modelica.Mechanics.Rotational.Components.IdealRollingWheel wheel(radius = 0.473) annotation(
-        Placement(transformation(extent = {{-52, -50}, {-40, -38}})));
+        Placement(transformation(extent = {{-52, -66}, {-40, -54}})));
       Modelica.Mechanics.Rotational.Components.IdealGear gear(ratio = 10) annotation(
-        Placement(transformation(extent = {{-78, -50}, {-66, -38}})));
+        Placement(transformation(extent = {{-78, -66}, {-66, -54}})));
       Modelica.Mechanics.Translational.Components.Mass mass(m = 14000) annotation(
-        Placement(transformation(extent = {{-8, -52}, {10, -34}})));
+        Placement(transformation(extent = {{-8, -68}, {10, -50}})));
       Modelica.Mechanics.Translational.Sensors.PowerSensor powProp annotation(
-        Placement(transformation(extent = {{-6, -6}, {6, 6}}, rotation = 0, origin = {-24, -44})));
+        Placement(transformation(extent = {{-6, -6}, {6, 6}}, rotation = 0, origin = {-24, -60})));
       Modelica.Mechanics.Translational.Sensors.PowerSensor powDrag annotation(
-        Placement(transformation(extent = {{-7, -7}, {7, 7}}, rotation = 0, origin = {45, -43})));
+        Placement(transformation(extent = {{-7, -7}, {7, 7}}, rotation = 0, origin = {45, -59})));
       wbEHPTlib.SupportModels.Miscellaneous.DragForce dragForce(S = 6.5, fc = 0.01, Cx = 0.65, m = mass.m) annotation(
-        Placement(transformation(extent = {{-8, -8}, {8, 8}}, rotation = 90, origin = {80, -52})));
+        Placement(transformation(extent = {{-8, -8}, {8, 8}}, rotation = 90, origin = {80, -68})));
       Modelica.Mechanics.Translational.Sensors.SpeedSensor speedSensor1 annotation(
-        Placement(transformation(extent = {{-8, -8}, {8, 8}}, rotation = 270, origin = {26, -58})));
-      wbEHPTlib.SupportModels.Miscellaneous.PropDriver driver(CycleFileName = "NEDC.txt", extrapolation = Modelica.Blocks.Types.Extrapolation.Periodic, k = 200.0, yMax = 2e3) annotation(
-        Placement(visible = true, transformation(extent = {{-100, 94}, {-80, 114}}, rotation = 0)));
-      wbEHPTlib.MapBased.Genset genset(OptiTime = 1, mapsFileName = "SHEVmaps.txt") annotation(
-        Placement(transformation(extent = {{-80, -18}, {-50, 12}})));
-      wbEHPTlib.SupportModels.Miscellaneous.Batt1 battery(ICellMax = 1000, QCellNom = 200 * 3600, R0Cell = 0.35E-3, SOCInit = 0.6, efficiency = 0.9, iCellEfficiency = 200, ns = 200) annotation(
-        Placement(transformation(extent = {{0, -8}, {20, 12}})));
-      wbEHPTlib.MapBased.OneFlange gen(tauMax = 1000, powMax = 150e3, wMax = 3000, mapsFileName = "SHEVmaps.txt", effTableName = "motEffTable") annotation(
-        Placement(visible = true, transformation(extent = {{40, 16}, {60, -4}}, rotation = 0)));
-      Modelica.Mechanics.Rotational.Sensors.PowerSensor drivePow annotation(
-        Placement(transformation(extent = {{66, 18}, {86, -2}})));
+        Placement(transformation(extent = {{-8, -8}, {8, 8}}, rotation = 270, origin = {26, -74})));
+      wbEHPTlib.SupportModels.Miscellaneous.PropDriver driver(CycleFileName = "Sort1.txt", extrapolation = Modelica.Blocks.Types.Extrapolation.Periodic, k = 200.0, yMax = 2e3) annotation(
+        Placement(visible = true, transformation(extent = {{-100, 90}, {-80, 110}}, rotation = 0)));
+      wbEHPTlib.MapBased.Genset genset(gsRatio = 1,mapsFileName = "SHEVmaps.txt", maxGenW = 300, maxPow = 45000, maxTau = 500, wIceStart = 300) annotation(
+        Placement(transformation(extent = {{-80, -34}, {-50, -4}})));
+      wbEHPTlib.SupportModels.Miscellaneous.Batt1 battery(ICellMax = 500, QCellNom = 25 * 3600, R0Cell = 0.35E-3, efficiency = 0.9, iCellEfficiency = 200, ns = 200) annotation(
+        Placement(transformation(extent = {{0, -24}, {20, -4}})));
+      wbEHPTlib.MapBased.OneFlange drive(effTableName = "motEffTable", mapsFileName = "SHEVmaps.txt", mapsOnFile = false, powMax = 150e3, tauMax = 1000, wMax = 3000) annotation(
+        Placement(visible = true, transformation(extent = {{66, -10}, {86, -30}}, rotation = 0)));
       Modelica.Electrical.Analog.Sensors.PowerSensor gsPow annotation(
-        Placement(transformation(extent = {{-32, -4}, {-12, 16}})));
+        Placement(transformation(extent = {{-32, -20}, {-12, 0}})));
       Modelica.Blocks.Math.Feedback fbSOC annotation(
-        Placement(transformation(extent = {{20, 40}, {0, 60}})));
-      Modelica.Blocks.Sources.Constant socRef_(k = 0.6) annotation(
-        Placement(transformation(extent = {{-10, 10}, {10, -10}}, rotation = 180, origin = {38, 50})));
+        Placement(transformation(extent = {{20, 38}, {0, 58}})));
+      Modelica.Blocks.Sources.Constant socRef_(k = 0.5) annotation(
+        Placement(transformation(extent = {{-10, 10}, {10, -10}}, rotation = 180, origin = {38, 48})));
       Modelica.Blocks.Math.Gain socErrToPow(k = 3e6) annotation(
-        Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = 0, origin = {-24, 50})));
+        Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = 0, origin = {-24, 48})));
       Modelica.Blocks.Math.Add add annotation(
-        Placement(visible = true, transformation(origin = {-6, 84}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        Placement(visible = true, transformation(origin = {-6, 80}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
       Modelica.Blocks.Continuous.FirstOrder powFilt(y_start = 20e3, T = 500) annotation(
-        Placement(visible = true, transformation(extent = {{34, 82}, {18, 98}}, rotation = 0)));
+        Placement(visible = true, transformation(extent = {{34, 78}, {18, 94}}, rotation = 0)));
       Modelica.Blocks.Nonlinear.Limiter toPowRef(uMax = 100e3, uMin = 0) annotation(
-        Placement(visible = true, transformation(extent = {{-30, 76}, {-46, 92}}, rotation = 0)));
+        Placement(visible = true, transformation(extent = {{-30, 72}, {-46, 88}}, rotation = 0)));
+      Modelica.Electrical.Analog.Sensors.PowerSensor drivePow annotation(
+        Placement(visible = true, transformation(origin = {50, -8}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
-      connect(gsPow.nv, gen.pin_p) annotation(
-        Line(points = {{-22, -4}, {-22, -12}, {32, -12}, {32, -1}, {40, -1}, {40, 2.66667}}, color = {0, 0, 255}));
-      connect(battery.n, gen.pin_p) annotation(
-        Line(points = {{20.1, -4}, {24, -4}, {24, -12}, {32, -12}, {32, -1}, {40, -1}, {40, 2.66667}}, color = {0, 0, 255}));
-      connect(genset.pin_n, gen.pin_p) annotation(
-        Line(points = {{-49.7, -12}, {32, -12}, {32, -1}, {40, -1}, {40, 2.66667}}, color = {0, 0, 255}));
-      connect(gen.tauRef, driver.tauRef) annotation(
-        Line(points = {{38.6, 7.11111}, {38.6, 6}, {34, 6}, {34, 28}, {62, 28}, {62, 104}, {-79, 104}}, color = {0, 0, 127}));
-      connect(gen.pin_n, battery.p) annotation(
-        Line(points = {{40, 11.5556}, {28, 11.5556}, {28, 8}, {20, 8}}, color = {0, 0, 255}));
-      connect(drivePow.flange_a, gen.flange_a) annotation(
-        Line(points = {{66, 8}, {61, 8}, {61, 7.11111}, {60, 7.11111}}));
-      connect(socErrToPow.y, add.u2) annotation(
-        Line(points = {{-35, 50}, {-46, 50}, {-46, 68}, {12, 68}, {12, 78}, {6, 78}}, color = {0, 0, 127}));
       connect(add.y, toPowRef.u) annotation(
-        Line(points = {{-17, 84}, {-28.4, 84}}, color = {0, 0, 127}));
-      connect(toPowRef.y, genset.powRef) annotation(
-        Line(points = {{-46.8, 84}, {-56, 84}, {-56, 14.25}, {-55.85, 14.25}}, color = {0, 0, 127}));
-      connect(powFilt.y, add.u1) annotation(
-        Line(points = {{17.2, 90}, {6, 90}}, color = {0, 0, 127}));
-      connect(drivePow.power, powFilt.u) annotation(
-        Line(points = {{68, 19}, {68, 90}, {35.6, 90}}, color = {0, 0, 127}));
-      connect(speedSensor1.v, driver.V) annotation(
-        Line(points = {{26, -66.8}, {26, -78}, {-94, -78}, {-94, 44}, {-90, 44}, {-90, 92.8}}, color = {0, 0, 127}));
-      connect(gear.flange_b, wheel.flangeR) annotation(
-        Line(points = {{-66, -44}, {-52, -44}}, color = {0, 0, 0}, smooth = Smooth.None));
-      connect(mass.flange_a, powProp.flange_b) annotation(
-        Line(points = {{-8, -43}, {-12, -43}, {-12, -44}, {-18, -44}}, color = {0, 127, 0}, smooth = Smooth.None));
-      connect(powProp.flange_a, wheel.flangeT) annotation(
-        Line(points = {{-30, -44}, {-40, -44}}, color = {0, 127, 0}, smooth = Smooth.None));
-      connect(powDrag.flange_a, mass.flange_b) annotation(
-        Line(points = {{38, -43}, {10, -43}}, color = {0, 127, 0}, smooth = Smooth.None));
-      connect(powDrag.flange_b, dragForce.flange) annotation(
-        Line(points = {{52, -43}, {66, -43}, {66, -44}, {80, -44}}, color = {0, 127, 0}, smooth = Smooth.None));
-      connect(speedSensor1.flange, mass.flange_b) annotation(
-        Line(points = {{26, -50}, {26, -43}, {10, -43}}, color = {0, 127, 0}, smooth = Smooth.None));
+        Line(points = {{-17, 80}, {-28.4, 80}}, color = {0, 0, 127}));
       connect(genset.pin_n, ground1.p) annotation(
-        Line(points = {{-49.7, -12}, {-42, -12}}, color = {0, 0, 255}, smooth = Smooth.None));
-      connect(drivePow.flange_b, gear.flange_a) annotation(
-        Line(points = {{86, 8}, {90, 8}, {90, -26}, {-86, -26}, {-86, -44}, {-78, -44}}, color = {0, 0, 0}));
+        Line(points = {{-49.7, -28}, {-45.85, -28}, {-45.85, -14}, {-40, -14}}, color = {0, 0, 255}));
+      connect(gsPow.nv, genset.pin_n) annotation(
+        Line(points = {{-22, -20}, {-22, -28}, {-49.7, -28}}, color = {0, 0, 255}));
+      connect(drivePow.nv, drive.pin_p) annotation(
+        Line(points = {{50, -18}, {50, -23.3333}, {66, -23.3333}}, color = {0, 0, 255}));
+      connect(drivePow.pc, battery.p) annotation(
+        Line(points = {{40, -8}, {20, -8}}, color = {0, 0, 255}));
+      connect(drivePow.pv, drivePow.pc) annotation(
+        Line(points = {{50, 2}, {40, 2}, {40, -8}}, color = {0, 0, 255}));
+      connect(drivePow.nc, drive.pin_n) annotation(
+        Line(points = {{60, -8}, {66, -8}, {66, -14.4444}}, color = {0, 0, 255}));
+      connect(gear.flange_a, drive.flange_a) annotation(
+        Line(points = {{-78, -60}, {-84, -60}, {-84, -42}, {96, -42}, {96, -18.8889}, {86, -18.8889}}));
+      connect(drive.tauRef, driver.tauRef) annotation(
+        Line(points = {{64.6, -18.8889}, {64.6, 16}, {64, 16}, {64, 24}, {82, 24}, {82, 100}, {-79, 100}}, color = {0, 0, 127}));
+      connect(battery.n, drive.pin_p) annotation(
+        Line(points = {{20.1, -20}, {24, -20}, {24, -28}, {32, -28}, {32, -23.3333}, {66, -23.3333}}, color = {0, 0, 255}));
+      connect(gsPow.nv, drive.pin_p) annotation(
+        Line(points = {{-22, -20}, {-22, -28}, {32, -28}, {32, -23.3333}, {66, -23.3333}}, color = {0, 0, 255}));
+      connect(socErrToPow.y, add.u2) annotation(
+        Line(points = {{-35, 48}, {-46, 48}, {-46, 66}, {12, 66}, {12, 74}, {6, 74}}, color = {0, 0, 127}));
+      connect(toPowRef.y, genset.powRef) annotation(
+        Line(points = {{-46.8, 80}, {-56, 80}, {-56, -1.75}, {-55.85, -1.75}}, color = {0, 0, 127}));
+      connect(powFilt.y, add.u1) annotation(
+        Line(points = {{17.2, 86}, {6, 86}}, color = {0, 0, 127}));
+      connect(speedSensor1.v, driver.V) annotation(
+        Line(points = {{26, -82.8}, {26, -82}, {-94, -82}, {-94, 40}, {-90, 40}, {-90, 88.8}}, color = {0, 0, 127}));
+      connect(gear.flange_b, wheel.flangeR) annotation(
+        Line(points = {{-66, -60}, {-52, -60}}, color = {0, 0, 0}, smooth = Smooth.None));
+      connect(mass.flange_a, powProp.flange_b) annotation(
+        Line(points = {{-8, -59}, {-12, -59}, {-12, -60}, {-18, -60}}, color = {0, 127, 0}, smooth = Smooth.None));
+      connect(powProp.flange_a, wheel.flangeT) annotation(
+        Line(points = {{-30, -60}, {-40, -60}}, color = {0, 127, 0}, smooth = Smooth.None));
+      connect(powDrag.flange_a, mass.flange_b) annotation(
+        Line(points = {{38, -59}, {10, -59}}, color = {0, 127, 0}, smooth = Smooth.None));
+      connect(powDrag.flange_b, dragForce.flange) annotation(
+        Line(points = {{52, -59}, {66, -59}, {66, -60}, {80, -60}}, color = {0, 127, 0}, smooth = Smooth.None));
+      connect(speedSensor1.flange, mass.flange_b) annotation(
+        Line(points = {{26, -66}, {26, -59}, {10, -59}}, color = {0, 127, 0}, smooth = Smooth.None));
       connect(gsPow.pc, genset.pin_p) annotation(
-        Line(points = {{-32, 6}, {-36, 6}, {-50, 6}}, color = {0, 0, 255}));
+        Line(points = {{-32, -10}, {-50, -10}}, color = {0, 0, 255}));
       connect(gsPow.nc, battery.p) annotation(
-        Line(points = {{-12, 6}, {-8, 6}, {-8, 22}, {28, 22}, {28, 8}, {20, 8}}, color = {0, 0, 255}));
+        Line(points = {{-12, -10}, {-8, -10}, {-8, 6}, {28, 6}, {28, -8}, {20, -8}}, color = {0, 0, 255}));
       connect(gsPow.pv, gsPow.pc) annotation(
-        Line(points = {{-22, 16}, {-32, 16}, {-32, 6}}, color = {0, 0, 255}));
+        Line(points = {{-22, 0}, {-32, 0}, {-32, -10}}, color = {0, 0, 255}));
       connect(battery.SOC, fbSOC.u2) annotation(
-        Line(points = {{-1, 2}, {-4, 2}, {-4, 34}, {-4, 42}, {10, 42}}, color = {0, 0, 127}));
+        Line(points = {{-1, -14}, {-4, -14}, {-4, 40}, {10, 40}}, color = {0, 0, 127}));
       connect(fbSOC.u1, socRef_.y) annotation(
-        Line(points = {{18, 50}, {27, 50}}, color = {0, 0, 127}));
+        Line(points = {{18, 48}, {27, 48}}, color = {0, 0, 127}));
       connect(socErrToPow.u, fbSOC.y) annotation(
-        Line(points = {{-12, 50}, {1, 50}}, color = {0, 0, 127}));
+        Line(points = {{-12, 48}, {1, 48}}, color = {0, 0, 127}));
+      connect(drivePow.power, powFilt.u) annotation(
+        Line(points = {{42, -19}, {42, -18}, {34, -18}, {34, 26}, {60, 26}, {60, 86}, {35.6, 86}}, color = {0, 0, 127}));
       annotation(
-        Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -80}, {100, 120}}), graphics = {Rectangle(extent = {{-90, -32}, {94, -74}}, lineColor = {255, 0, 0}, pattern = LinePattern.Dash), Rectangle(extent = {{-90, 26}, {96, -22}}, lineColor = {255, 0, 0}, pattern = LinePattern.Dash), Rectangle(extent = {{-70, 114}, {96, 32}}, lineColor = {255, 0, 0}, pattern = LinePattern.Dash), Text(extent = {{68, 92}, {94, 84}}, lineColor = {255, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid, textString = "EMS"), Text(extent = {{-96, -64}, {-44, -72}}, lineColor = {255, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid, textString = "MechProp")}),
-        Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics),
+        Diagram(coordinateSystem(extent = {{-100, -100}, {100, 120}}, initialScale = 0.1), graphics = {Rectangle(lineColor = {255, 0, 0}, pattern = LinePattern.Dash, extent = {{-90, -48}, {94, -94}}), Rectangle(lineColor = {255, 0, 0}, pattern = LinePattern.Dash, extent = {{-90, 10}, {92, -38}}), Rectangle(lineColor = {255, 0, 0}, pattern = LinePattern.Dash, extent = {{-70, 116}, {94, 30}}), Text(lineColor = {255, 0, 0}, fillPattern = FillPattern.Solid, extent = {{50, 112}, {76, 104}}, textString = "EMS"), Text(origin = {0, -4}, lineColor = {255, 0, 0}, fillPattern = FillPattern.Solid, extent = {{-96, -80}, {-44, -88}}, textString = "MechProp")}),
+        Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 120}}, initialScale = 0.1), graphics),
         experiment(StopTime = 2000, StartTime = 0, Tolerance = 1e-06, Interval = 4),
         experimentSetupOutput(derivatives = false),
         Documentation(info = "<html>
@@ -611,43 +799,51 @@
         Placement(visible = true, transformation(origin = {76, -50}, extent = {{-8, -8}, {8, 8}}, rotation = 90)));
       Modelica.Mechanics.Translational.Sensors.SpeedSensor speedSensor1 annotation(
         Placement(visible = true, transformation(origin = {26, -56}, extent = {{-8, -8}, {8, 8}}, rotation = 270)));
-      wbEHPTlib.SupportModels.Miscellaneous.Batt1 battery(ICellMax = 1000, QCellNom = 60 * 3600, R0Cell = 0.35E-3, SOCInit = 0.6, efficiency = 0.9, iCellEfficiency = 200, ns = 200) annotation(
+      wbEHPTlib.SupportModels.Miscellaneous.Batt1 battery(ICellMax = 500, QCellNom = 25 * 3600, R0Cell = 0.35E-3, SOCInit = 0.5, efficiency = 0.9, iCellEfficiency = 200, ns = 100) annotation(
         Placement(visible = true, transformation(origin = {-2, 26}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-      wbEHPTlib.MapBased.OneFlange drive(tauMax = 1000, powMax = 150e3, wMax = 3000, mapsFileName = "SHEVmaps.txt", effTableName = "motEffTable") annotation(
-        Placement(visible = true, transformation(extent = {{36, 16}, {56, -4}}, rotation = 0)));
-      Modelica.Mechanics.Rotational.Sensors.PowerSensor drivePow annotation(
-        Placement(visible = true, transformation(extent = {{62, 14}, {82, -6}}, rotation = 0)));
+      wbEHPTlib.MapBased.OneFlange drive(effTableName = "motEffTable", mapsFileName = "SHEVmaps.txt", mapsOnFile = false, powMax = 150e3, tauMax = 1000, wMax = 3000) annotation(
+        Placement(visible = true, transformation(extent = {{64, 16}, {84, -4}}, rotation = 0)));
       Modelica.Electrical.Analog.Sensors.PowerSensor gsPow annotation(
         Placement(visible = true, transformation(extent = {{-36, 0}, {-16, 20}}, rotation = 0)));
-      wbEHPTlib.MapBased.ECUs.EMS ems(powHigh = 60e3, powLow = 30e3, powMax = 200e3, powPerSoc = 300e3, socRef = 0.75) annotation(
+      wbEHPTlib.MapBased.ECUs.EMS ems(powHigh = 60e3, powLow = 30e3, powMax = 200e3, powPerSoc = 300e3, socRef = 0.6) annotation(
         Placement(visible = true, transformation(origin = {-20, 58}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      wbEHPTlib.MapBased.GensetOO genset(iceTauMaxReq = drive.tauMax, maxGensetTau = 700, maxIceTau = [80, 380; 100, 620; 120, 800; 170, 800; 220, 670; 230, 650; 240, 570], specConsumption = [0.0, 0, 80, 100, 120, 170, 220, 230, 240; 0, 999, 999, 999, 999, 999, 999, 999, 999; 100, 280, 280, 280, 280, 280, 280, 280, 280; 200, 215, 213, 219, 225, 231, 252, 255, 260; 300, 210, 208, 208, 207, 214, 228, 230, 237; 400, 213, 204, 204, 199, 204, 218, 218, 222; 500, 213, 205, 205, 198, 202, 213, 214, 215; 600, 213, 213, 213, 198, 205, 212, 213, 214; 700, 213, 213, 213, 198, 204, 210, 211, 214; 800, 213, 213, 213, 213, 213, 210, 211, 214], optiTable = [0, 800; 20000, 850; 40000, 1100; 60000, 1250; 80000, 1280; 100000, 1340; 120000, 1400; 140000, 1650; 160000, 2130], maxPow = 45e3, mapsFileName = "SHEVmaps.txt") annotation(
+      wbEHPTlib.MapBased.GensetOO genset( gsRatio = 1,mapsFileName = "SHEVmaps.txt", maxGenW = 300, maxPow = 45000, maxTau = 500, wIceStart = 300) annotation(
         Placement(visible = true, transformation(extent = {{-84, -14}, {-54, 16}}, rotation = 0)));
       wbEHPTlib.SupportModels.Miscellaneous.PropDriver driver(CycleFileName = "Sort1.txt", extrapolation = Modelica.Blocks.Types.Extrapolation.Periodic, k = 200.0, yMax = 2e3) annotation(
         Placement(visible = true, transformation(origin = {86, 60}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      Modelica.Electrical.Analog.Sensors.PowerSensor drivePow annotation(
+        Placement(visible = true, transformation(origin = {40, 16}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
-      connect(battery.n, drive.pin_p) annotation(
-        Line(points = {{-8, 15.9}, {-8, -8}, {10, -8}, {10, 2.66667}, {36, 2.66667}}, color = {0, 0, 255}));
-      connect(gsPow.nv, drive.pin_p) annotation(
-        Line(points = {{-26, 0}, {-26, -8}, {10, -8}, {10, 2.66667}, {36, 2.66667}}, color = {0, 0, 255}));
       connect(genset.pin_n, drive.pin_p) annotation(
-        Line(points = {{-53.7, -8}, {-32, -8}, {10, -8}, {10, 2.66667}, {36, 2.66667}}, color = {0, 0, 255}));
-      connect(ground1.p, drive.pin_p) annotation(
-        Line(points = {{22, -4}, {22, 2.66667}, {36, 2.66667}}, color = {0, 0, 255}));
-      connect(drivePow.flange_a, drive.flange_a) annotation(
-        Line(points = {{62, 4}, {58, 4}, {58, 7.11111}, {56, 7.11111}}));
-      connect(drive.pin_n, gsPow.nc) annotation(
-        Line(points = {{36, 11.5556}, {22, 11.5556}, {22, 10}, {-16, 10}}, color = {0, 0, 255}));
-      connect(driver.tauRef, drive.tauRef) annotation(
-        Line(points = {{75, 60}, {34.6, 60}, {34.6, 7.11111}}, color = {0, 0, 127}));
-      connect(speedSensor1.v, driver.V) annotation(
-        Line(points = {{26, -64.8}, {26, -74}, {98, -74}, {98, 44}, {86, 44}, {86, 48.8}}, color = {0, 0, 127}));
+        Line(points = {{-53.7, -8}, {10, -8}, {10, 2.66667}, {64, 2.66667}}, color = {0, 0, 255}));
       connect(gsPow.pc, genset.pin_p) annotation(
         Line(points = {{-36, 10}, {-54, 10}}, color = {0, 0, 255}));
       connect(ems.pcPowReq, genset.powRef) annotation(
         Line(points = {{-30.8, 52}, {-60, 52}, {-60, 18.4}}, color = {0, 0, 127}));
       connect(ems.on, genset.ON) annotation(
         Line(points = {{-30.8, 64}, {-78, 64}, {-78, 18.4}}, color = {255, 0, 255}));
+      connect(drive.flange_a, gear.flange_a) annotation(
+        Line(points = {{84, 7.11111}, {94, 7.11111}, {94, -24}, {-94, -24}, {-94, -42}, {-82, -42}, {-82, -42}, {-82, -42}}));
+      connect(drivePow.power, ems.edPow) annotation(
+        Line(points = {{32, 5}, {16, 5}, {16, 64}, {-8, 64}, {-8, 64}}, color = {0, 0, 127}));
+      connect(drivePow.nv, drive.pin_p) annotation(
+        Line(points = {{40, 6}, {40, 6}, {40, 0}, {64, 0}, {64, 2.66667}}, color = {0, 0, 255}));
+      connect(drivePow.pc, battery.p) annotation(
+        Line(points = {{30, 16}, {4, 16}, {4, 16}, {4, 16}}, color = {0, 0, 255}));
+      connect(drivePow.pv, drivePow.nc) annotation(
+        Line(points = {{40, 26}, {50, 26}, {50, 16}, {50, 16}}, color = {0, 0, 255}));
+      connect(drivePow.nc, drive.pin_n) annotation(
+        Line(points = {{50, 16}, {64, 16}, {64, 11.5556}, {64, 11.5556}}, color = {0, 0, 255}));
+      connect(driver.tauRef, drive.tauRef) annotation(
+        Line(points = {{75, 60}, {57, 60}, {57, 4.5}, {62.6, 4.5}, {62.6, 7.11111}}, color = {0, 0, 127}));
+      connect(ground1.p, drive.pin_p) annotation(
+        Line(points = {{22, -4}, {22, 2.66667}, {64, 2.66667}}, color = {0, 0, 255}));
+      connect(gsPow.nv, drive.pin_p) annotation(
+        Line(points = {{-26, 0}, {-26, -8}, {10, -8}, {10, 2.66667}, {64, 2.66667}}, color = {0, 0, 255}));
+      connect(battery.n, drive.pin_p) annotation(
+        Line(points = {{-8, 15.9}, {-8, -8}, {10, -8}, {10, 2.66667}, {64, 2.66667}}, color = {0, 0, 255}));
+      connect(speedSensor1.v, driver.V) annotation(
+        Line(points = {{26, -64.8}, {26, -74}, {98, -74}, {98, 44}, {86, 44}, {86, 48.8}}, color = {0, 0, 127}));
       connect(gear.flange_b, wheel.flangeR) annotation(
         Line(points = {{-62, -42}, {-56, -42}}));
       connect(powProp.flange_a, wheel.flangeT) annotation(
@@ -656,14 +852,10 @@
         Line(points = {{-2, -41}, {-12, -41}}, color = {0, 127, 0}));
       connect(battery.SOC, ems.soc) annotation(
         Line(points = {{-2, 37}, {-2, 52}, {-8, 52}}, color = {0, 0, 127}));
-      connect(ems.edPow, drivePow.power) annotation(
-        Line(points = {{-8, 64}, {38, 64}, {38, 64}, {64, 64}, {64, 15}}, color = {0, 0, 127}));
       connect(gsPow.pv, gsPow.pc) annotation(
         Line(points = {{-26, 20}, {-36, 20}, {-36, 10}}, color = {0, 0, 255}));
       connect(powDrag.flange_b, dragForce.flange) annotation(
         Line(points = {{60, -41}, {60, -42}, {76, -42}}, color = {0, 127, 0}));
-      connect(drivePow.flange_b, gear.flange_a) annotation(
-        Line(points = {{82, 4}, {88, 4}, {88, -18}, {-86, -18}, {-86, -42}, {-82, -42}}));
       connect(speedSensor1.flange, mass.flange_b) annotation(
         Line(points = {{26, -48}, {26, -41}, {16, -41}}, color = {0, 127, 0}));
       connect(powDrag.flange_a, mass.flange_b) annotation(
@@ -671,9 +863,9 @@
       connect(battery.p, gsPow.nc) annotation(
         Line(points = {{4, 16}, {4, 10}, {-16, 10}}, color = {0, 0, 255}));
       annotation(
-        Diagram(coordinateSystem(extent = {{-100, -80}, {100, 80}}, initialScale = 0.1), graphics = {Rectangle(origin = {-2, 4}, lineColor = {255, 0, 0}, pattern = LinePattern.Dash, extent = {{-90, -32}, {94, -74}}), Rectangle(origin = {-4, 0}, lineColor = {255, 0, 0}, pattern = LinePattern.Dash, extent = {{-88, 40}, {96, -22}}), Text(origin = {0, 4}, lineColor = {255, 0, 0}, fillPattern = FillPattern.Solid, extent = {{-96, -64}, {-44, -72}}, textString = "MechProp")}),
+        Diagram(coordinateSystem(extent = {{-100, -80}, {100, 80}}, initialScale = 0.1), graphics = {Rectangle(origin = {-2, 4}, lineColor = {255, 0, 0}, pattern = LinePattern.Dash, extent = {{-88, -32}, {94, -74}}), Rectangle(origin = {-4, 0}, lineColor = {255, 0, 0}, pattern = LinePattern.Dash, extent = {{-88, 40}, {94, -20}}), Text(origin = {0, 4}, lineColor = {255, 0, 0}, fillPattern = FillPattern.Solid, extent = {{-96, -64}, {-44, -72}}, textString = "MechProp")}),
         Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics),
-        experiment(StopTime = 1800, __Dymola_NumberOfIntervals = 2000),
+        experiment(StopTime = 2000, StartTime = 0, Tolerance = 1e-06, Interval = 0.4),
         experimentSetupOutput(derivatives = false),
         Documentation(info = "<html>
 <p>This is a SHEV model which has an Energy Management System able to control the power flow with:</p>
@@ -683,6 +875,106 @@
 </html>"),
         __OpenModelica_commandLineOptions = "");
     end SHEV_OO;
+
+    package Proposte
+      model BusAcc "Ice, Generator, DriveTrain, all map-based"
+        //€
+        extends Modelica.Icons.Example;
+        Modelica.Electrical.Analog.Basic.Ground ground1 annotation(
+          Placement(visible = true, transformation(origin = {22, -12}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
+        Modelica.Mechanics.Rotational.Components.IdealRollingWheel wheel(radius = 0.473) annotation(
+          Placement(visible = true, transformation(origin = {-48, -42}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
+        Modelica.Mechanics.Rotational.Components.IdealGear gear(ratio = 10) annotation(
+          Placement(visible = true, transformation(extent = {{-82, -52}, {-62, -32}}, rotation = 0)));
+        Modelica.Mechanics.Translational.Components.Mass mass(m = 14000) annotation(
+          Placement(visible = true, transformation(extent = {{-2, -50}, {16, -32}}, rotation = 0)));
+        Modelica.Mechanics.Translational.Sensors.PowerSensor powProp annotation(
+          Placement(visible = true, transformation(origin = {-21, -41}, extent = {{-9, -9}, {9, 9}}, rotation = 0)));
+        Modelica.Mechanics.Translational.Sensors.PowerSensor powDrag annotation(
+          Placement(visible = true, transformation(origin = {51, -41}, extent = {{-9, -9}, {9, 9}}, rotation = 0)));
+        wbEHPTlib.SupportModels.Miscellaneous.DragForce dragForce(S = 6.5, fc = 0.01, Cx = 0.65, m = mass.m) annotation(
+          Placement(visible = true, transformation(origin = {76, -50}, extent = {{-8, -8}, {8, 8}}, rotation = 90)));
+        Modelica.Mechanics.Translational.Sensors.SpeedSensor speedSensor1 annotation(
+          Placement(visible = true, transformation(origin = {26, -56}, extent = {{-8, -8}, {8, 8}}, rotation = 270)));
+        wbEHPTlib.SupportModels.Miscellaneous.Batt1 battery(ICellMax = 1000, QCellNom = 25 * 3600, R0Cell = 0.35E-3, SOCInit = 0.5, efficiency = 0.9, iCellEfficiency = 200, ns = 100) annotation(
+          Placement(visible = true, transformation(origin = {-2, 26}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+        wbEHPTlib.MapBased.OneFlange drive(effTableName = "motEffTable", mapsFileName = "SHEVmaps.txt", mapsOnFile = false, powMax = 150e3, tauMax = 1000, wMax = 3000) annotation(
+          Placement(visible = true, transformation(extent = {{64, 16}, {84, -4}}, rotation = 0)));
+        Modelica.Electrical.Analog.Sensors.PowerSensor gsPow annotation(
+          Placement(visible = true, transformation(extent = {{-36, 0}, {-16, 20}}, rotation = 0)));
+        wbEHPTlib.MapBased.ECUs.EMS ems(powHigh = 60e3, powLow = 30e3, powMax = 200e3, powPerSoc = 300e3, socRef = 0.6) annotation(
+          Placement(visible = true, transformation(origin = {-20, 58}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        wbEHPTlib.MapBased.GensetOO genset(gsRatio = 1, mapsFileName = "SHEVmaps.txt") annotation(
+          Placement(visible = true, transformation(extent = {{-84, -14}, {-54, 16}}, rotation = 0)));
+        wbEHPTlib.SupportModels.Miscellaneous.PropDriver driver(CycleFileName = "BusAcc.txt", extrapolation = Modelica.Blocks.Types.Extrapolation.Periodic, k = 400.0, yMax = 2e3) annotation(
+          Placement(visible = true, transformation(origin = {86, 60}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        Modelica.Electrical.Analog.Sensors.PowerSensor drivePow annotation(
+          Placement(visible = true, transformation(origin = {40, 16}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      equation
+        connect(genset.pin_n, drive.pin_p) annotation(
+          Line(points = {{-53.7, -8}, {10, -8}, {10, 2.66667}, {64, 2.66667}}, color = {0, 0, 255}));
+        connect(gsPow.pc, genset.pin_p) annotation(
+          Line(points = {{-36, 10}, {-54, 10}}, color = {0, 0, 255}));
+        connect(ems.pcPowReq, genset.powRef) annotation(
+          Line(points = {{-30.8, 52}, {-60, 52}, {-60, 18.4}}, color = {0, 0, 127}));
+        connect(ems.on, genset.ON) annotation(
+          Line(points = {{-30.8, 64}, {-78, 64}, {-78, 18.4}}, color = {255, 0, 255}));
+        connect(drive.flange_a, gear.flange_a) annotation(
+          Line(points = {{84, 7.11111}, {94, 7.11111}, {94, -24}, {-94, -24}, {-94, -42}, {-82, -42}, {-82, -42}, {-82, -42}}));
+        connect(drivePow.power, ems.edPow) annotation(
+          Line(points = {{32, 5}, {16, 5}, {16, 64}, {-8, 64}, {-8, 64}}, color = {0, 0, 127}));
+        connect(drivePow.nv, drive.pin_p) annotation(
+          Line(points = {{40, 6}, {40, 6}, {40, 0}, {64, 0}, {64, 2.66667}}, color = {0, 0, 255}));
+        connect(drivePow.pc, battery.p) annotation(
+          Line(points = {{30, 16}, {4, 16}, {4, 16}, {4, 16}}, color = {0, 0, 255}));
+        connect(drivePow.pv, drivePow.nc) annotation(
+          Line(points = {{40, 26}, {50, 26}, {50, 16}, {50, 16}}, color = {0, 0, 255}));
+        connect(drivePow.nc, drive.pin_n) annotation(
+          Line(points = {{50, 16}, {64, 16}, {64, 11.5556}, {64, 11.5556}}, color = {0, 0, 255}));
+        connect(driver.tauRef, drive.tauRef) annotation(
+          Line(points = {{75, 60}, {57, 60}, {57, 4.5}, {62.6, 4.5}, {62.6, 7.11111}}, color = {0, 0, 127}));
+        connect(ground1.p, drive.pin_p) annotation(
+          Line(points = {{22, -4}, {22, 2.66667}, {64, 2.66667}}, color = {0, 0, 255}));
+        connect(gsPow.nv, drive.pin_p) annotation(
+          Line(points = {{-26, 0}, {-26, -8}, {10, -8}, {10, 2.66667}, {64, 2.66667}}, color = {0, 0, 255}));
+        connect(battery.n, drive.pin_p) annotation(
+          Line(points = {{-8, 15.9}, {-8, -8}, {10, -8}, {10, 2.66667}, {64, 2.66667}}, color = {0, 0, 255}));
+        connect(speedSensor1.v, driver.V) annotation(
+          Line(points = {{26, -64.8}, {26, -74}, {98, -74}, {98, 44}, {86, 44}, {86, 48.8}}, color = {0, 0, 127}));
+        connect(gear.flange_b, wheel.flangeR) annotation(
+          Line(points = {{-62, -42}, {-56, -42}}));
+        connect(powProp.flange_a, wheel.flangeT) annotation(
+          Line(points = {{-30, -41}, {-35, -41}, {-35, -42}, {-40, -42}}, color = {0, 127, 0}));
+        connect(mass.flange_a, powProp.flange_b) annotation(
+          Line(points = {{-2, -41}, {-12, -41}}, color = {0, 127, 0}));
+        connect(battery.SOC, ems.soc) annotation(
+          Line(points = {{-2, 37}, {-2, 52}, {-8, 52}}, color = {0, 0, 127}));
+        connect(gsPow.pv, gsPow.pc) annotation(
+          Line(points = {{-26, 20}, {-36, 20}, {-36, 10}}, color = {0, 0, 255}));
+        connect(powDrag.flange_b, dragForce.flange) annotation(
+          Line(points = {{60, -41}, {60, -42}, {76, -42}}, color = {0, 127, 0}));
+        connect(speedSensor1.flange, mass.flange_b) annotation(
+          Line(points = {{26, -48}, {26, -41}, {16, -41}}, color = {0, 127, 0}));
+        connect(powDrag.flange_a, mass.flange_b) annotation(
+          Line(points = {{42, -41}, {42, -41}, {16, -41}}, color = {0, 127, 0}));
+        connect(battery.p, gsPow.nc) annotation(
+          Line(points = {{4, 16}, {4, 10}, {-16, 10}}, color = {0, 0, 255}));
+        annotation(
+          Diagram(coordinateSystem(extent = {{-100, -80}, {100, 80}}, initialScale = 0.1), graphics = {Rectangle(origin = {-2, 4}, lineColor = {255, 0, 0}, pattern = LinePattern.Dash, extent = {{-88, -32}, {94, -74}}), Rectangle(origin = {-4, 0}, lineColor = {255, 0, 0}, pattern = LinePattern.Dash, extent = {{-88, 40}, {94, -20}}), Text(origin = {0, 4}, lineColor = {255, 0, 0}, fillPattern = FillPattern.Solid, extent = {{-96, -64}, {-44, -72}}, textString = "MechProp")}),
+          Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics),
+          experiment(StopTime = 2000, StartTime = 0, Tolerance = 1e-06, Interval = 0.4),
+          experimentSetupOutput(derivatives = false),
+          Documentation(info = "<html>
+      <p>This is a SHEV model which has an Energy Management System able to control the power flow with:</p>
+      <p>- basic logic: requests the ICE to deliver the average load power </p>
+      <p>- additional logic: SOC loop to avoid SOC drift</p>
+      <p>- further ON/OFF control to switch OFF the engine when the average power is too low to permit efficient operation.</p>
+      </html>"),
+          __OpenModelica_commandLineOptions = "");
+      end BusAcc;
+      annotation(
+        Diagram(coordinateSystem(extent = {{-100, -80}, {100, 80}})));
+    end Proposte;
   end sHEV;
 
   package PSD
@@ -713,7 +1005,7 @@
         Placement(visible = true, transformation(extent = {{2, -40}, {28, -16}}, rotation = 0), iconTransformation(extent = {{4, -52}, {30, -28}}, rotation = 0)));
       wbEHPTlib.MapBased.ECUs.Ecu1 ECU(genLoopGain = 1.0) annotation(
         Placement(visible = true, transformation(origin = {-10, -41}, extent = {{-10, -9}, {10, 9}}, rotation = 0)));
-      wbEHPTlib.MapBased.TwoFlangeConn mot( effTableName = "motEffTable", mapsFileName = "PSDmaps.txt",mapsOnFile = true) annotation(
+      wbEHPTlib.MapBased.TwoFlangeConn mot(effTableName = "motEffTable", mapsFileName = "PSDmaps.txt", mapsOnFile = true) annotation(
         Placement(visible = true, transformation(extent = {{-28, 62}, {-8, 42}}, rotation = 0)));
       Modelica.Mechanics.Rotational.Components.IdealRollingWheel wheel(radius = 0.31) annotation(
         Placement(visible = true, transformation(origin = {38, 52}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -822,7 +1114,7 @@
         Placement(visible = true, transformation(origin = {10, 26}, extent = {{10, 10}, {-10, -10}}, rotation = 270)));
       wbEHPTlib.MapBased.OneFlangeConn gen(mapsOnFile = true, mapsFileName = "PSDmaps.txt", effTableName = "genEffTable") annotation(
         Placement(visible = true, transformation(extent = {{-38, 10}, {-58, 30}}, rotation = 0)));
-      wbEHPTlib.SupportModels.Miscellaneous.PropDriver driver( CycleFileName = "NEDC.txt", k = 1,yMax = 1.8) annotation(
+      wbEHPTlib.SupportModels.Miscellaneous.PropDriver driver(CycleFileName = "NEDC.txt", k = 1, yMax = 1.8) annotation(
         Placement(visible = true, transformation(extent = {{-60, -50}, {-40, -30}}, rotation = 0)));
     equation
       connect(carVel.flange, mass.flange_b) annotation(
@@ -1540,12 +1832,12 @@ Poi con velocità max di 120 km/h")}));
       parameter Real rho = 1.226;
       parameter Real kContr = 100;
       /* Per il calcolo di J abbiamo usato Tavv=2s, Pn=50kW, Wbase= quella 
-           corrispondente a 36 km/h, quindi 252 rad/s*/
+                                                     corrispondente a 36 km/h, quindi 252 rad/s*/
       annotation(
         Icon(coordinateSystem(preserveAspectRatio = false), graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {162, 29, 33}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{-94, 22}, {96, -16}}, lineColor = {162, 29, 33}, textString = "Car"), Text(extent = {{-100, -104}, {100, -140}}, lineColor = {0, 0, 255}, textString = "%name")}),
         Diagram(coordinateSystem(preserveAspectRatio = false)));
     end Car;
   end VehicleData;
   annotation(
-    uses(Modelica(version = "3.2.2")));
+    uses(Modelica(version = "3.2.3")));
 end wbEHVpkg;
