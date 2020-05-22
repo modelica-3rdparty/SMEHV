@@ -439,7 +439,9 @@ has a 3D icon (e.g., used in Blocks.Logical library).
 <p>This component models the total (rolling and aerodynamic) vehicle drag resistance: </p>
 <p>F=fc*m*g+(1/2)*rho*Cx*S*v^2 </p>
 <p>It models reliably the stuck phase. Based on Modelica-Intrerfaces.PartialFriction model </p>
-</html>"),Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics = {Polygon(points = {{-98, 10}, {22, 10}, {22, 41}, {92, 0}, {22, -41}, {22, -10}, {-98, -10}, {-98, 10}}, lineColor = {0, 127, 0}, fillColor = {215, 215, 215}, fillPattern = FillPattern.Solid), Line(points = {{-42, -50}, {87, -50}}, color = {0, 0, 0}), Polygon(points = {{-72, -50}, {-41, -40}, {-41, -60}, {-72, -50}}, lineColor = {0, 0, 0}, fillColor = {128, 128, 128}, fillPattern = FillPattern.Solid), Line(points = {{-90, -90}, {-70, -88}, {-50, -82}, {-30, -72}, {-10, -58}, {10, -40}, {30, -18}, {50, 8}, {70, 38}, {90, 72}, {110, 110}}, color = {0, 0, 255}, thickness = 0.5), Text(extent = {{-82, 90}, {80, 50}}, lineColor = {0, 0, 255}, textString = "%name")}),
+</html>"),Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics={  Polygon(points = {{-98, 10}, {22, 10}, {22, 41}, {92, 0}, {22, -41}, {22, -10}, {-98, -10}, {-98, 10}}, lineColor = {0, 127, 0}, fillColor = {215, 215, 215},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Line(points = {{-42, -50}, {87, -50}}, color = {0, 0, 0}), Polygon(points = {{-72, -50}, {-41, -40}, {-41, -60}, {-72, -50}}, lineColor = {0, 0, 0}, fillColor = {128, 128, 128},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Line(points = {{-90, -90}, {-70, -88}, {-50, -82}, {-30, -72}, {-10, -58}, {10, -40}, {30, -18}, {50, 8}, {70, 38}, {90, 72}, {110, 110}}, color = {0, 0, 255}, thickness = 0.5), Text(extent = {{-82, 90}, {80, 50}}, lineColor = {0, 0, 255}, textString = "%name")}),
           Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics));
       end DragForce;
 
@@ -468,7 +470,7 @@ has a 3D icon (e.g., used in Blocks.Logical library).
           Placement(visible = true, transformation(origin = {110, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(extent = {{100, 52}, {120, 72}}, rotation = 0)));
         Modelica.Blocks.Interfaces.RealOutput brakeTau(unit = "N.m") annotation (
           Placement(visible = true, transformation(origin = {110, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(extent = {{100, -70}, {120, -50}}, rotation = 0)));
-        Modelica.Blocks.Nonlinear.Limiter limiter1(limitsAtInit = true,uMax = yMax) annotation (
+        Modelica.Blocks.Nonlinear.Limiter limiter1(limitsAtInit = true, uMax = yMax) annotation (
           Placement(visible = true, transformation(origin = {4, 0}, extent = {{52, -10}, {72, 10}}, rotation = 0)));
       equation
         connect(V, feedback.u2) annotation (
@@ -487,16 +489,28 @@ has a 3D icon (e.g., used in Blocks.Logical library).
           Line(points = {{50, -40}, {40, -40}, {40, 0}, {35, 0}, {35, 0}}, color = {0, 0, 127}));
         connect(limAcc.u, gain.y) annotation (
           Line(points = {{52, 40}, {40, 40}, {40, 0}, {35, 0}, {35, 0}}, color = {0, 0, 127}));
-        connect(
-          limiter1.u, gain.y) annotation (
+        connect(limiter1.u, gain.y) annotation (
           Line(points = {{54, 0}, {34, 0}, {34, 0}, {36, 0}}, color = {0, 0, 127}));
-        connect(
-          limiter1.y, tauRef) annotation (
+        connect(limiter1.y, tauRef) annotation (
           Line(points = {{78, 0}, {102, 0}, {102, 0}, {110, 0}}, color = {0, 0, 127}));
         annotation (
           Documentation(info = "<html><head></head><body><p>Simple driver model.</p><p>It reads a reference cycle from a file then controls speed with a simple proportional feedback law.</p>
             </body></html>"),
-          Icon(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1), graphics = {Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Ellipse(fillColor = {255, 213, 170}, fillPattern = FillPattern.Solid, extent = {{-23, 22}, {-12, -4}}, endAngle = 360), Text(origin = {2, -0.1894}, lineColor = {0, 0, 255}, extent = {{-104, 142.189}, {98, 104}}, textString = "%name"), Polygon(fillColor = {215, 215, 215}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-22, -60}, {-42, -88}, {-16, -88}, {16, -88}, {-22, -60}}), Polygon(fillColor = {135, 135, 135}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-32, 40}, {-62, -52}, {-30, -52}, {-30, -52}, {-32, 40}}, smooth = Smooth.Bezier), Polygon(fillColor = {135, 135, 135}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-68, -36}, {-14, -90}, {10, -50}, {0, -50}, {-68, -36}}, smooth = Smooth.Bezier), Polygon(fillColor = {175, 175, 175}, fillPattern = FillPattern.Solid, points = {{-22, 10}, {-30, 6}, {-40, -48}, {2, -46}, {2, -34}, {0, 2}, {-22, 10}}, smooth = Smooth.Bezier), Ellipse(fillColor = {255, 213, 170}, fillPattern = FillPattern.Solid, extent = {{-30, 44}, {-3, 10}}, endAngle = 360), Polygon(pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-38, 34}, {-16, 50}, {-2, 36}, {4, 36}, {6, 36}, {-38, 34}}, smooth = Smooth.Bezier), Polygon(fillColor = {95, 95, 95}, fillPattern = FillPattern.Solid, points = {{30, -44}, {-32, -28}, {-36, -44}, {-24, -58}, {30, -44}}, smooth = Smooth.Bezier), Polygon(fillPattern = FillPattern.Solid, points = {{42, -70}, {36, -84}, {48, -78}, {52, -72}, {50, -68}, {42, -70}}, smooth = Smooth.Bezier), Line(points = {{48, -14}, {26, 0}, {26, 0}}, thickness = 0.5), Line(points = {{20, -10}, {34, 10}, {34, 10}}, thickness = 0.5), Polygon(fillColor = {255, 213, 170}, fillPattern = FillPattern.Solid, points = {{28, 4}, {32, 8}, {28, 2}, {34, 6}, {30, 2}, {34, 4}, {30, 0}, {26, 2}, {34, 0}, {26, 0}, {26, 2}, {28, 4}, {28, 4}, {26, 2}, {26, 2}, {26, 2}, {28, 8}, {28, 6}, {28, 4}}, smooth = Smooth.Bezier), Polygon(fillColor = {175, 175, 175}, fillPattern = FillPattern.Solid, points = {{-18, 0}, {28, 6}, {26, -2}, {-16, -16}, {-20, -16}, {-24, -6}, {-18, 0}}, smooth = Smooth.Bezier), Polygon(fillColor = {215, 215, 215}, fillPattern = FillPattern.Solid, points = {{72, -6}, {48, -6}, {36, -26}, {58, -86}, {72, -86}, {72, -6}}), Polygon(fillColor = {95, 95, 95}, fillPattern = FillPattern.Solid, points = {{49, -94}, {17, -40}, {7, -44}, {-1, -50}, {49, -94}}, smooth = Smooth.Bezier), Line(points = {{-7, 31}, {-3, 29}}), Line(points = {{-9, 18}, {-5, 18}}), Line(points = {{-7, 31}, {-3, 31}}), Text(lineColor = {238, 46, 47}, extent = {{-100, 90}, {100, 58}}, textString = "%CycleFileName")}),
+          Icon(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1), graphics={  Rectangle(fillColor = {255, 255, 255},
+                  fillPattern =                                                                                                                    FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Ellipse(fillColor = {255, 213, 170},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-23, 22}, {-12, -4}}, endAngle = 360), Text(origin = {2, -0.1894}, lineColor = {0, 0, 255}, extent = {{-104, 142.189}, {98, 104}}, textString = "%name"), Polygon(fillColor = {215, 215, 215}, pattern = LinePattern.None,
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, points = {{-22, -60}, {-42, -88}, {-16, -88}, {16, -88}, {-22, -60}}), Polygon(fillColor = {135, 135, 135}, pattern = LinePattern.None,
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, points = {{-32, 40}, {-62, -52}, {-30, -52}, {-30, -52}, {-32, 40}}, smooth = Smooth.Bezier), Polygon(fillColor = {135, 135, 135}, pattern = LinePattern.None,
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, points = {{-68, -36}, {-14, -90}, {10, -50}, {0, -50}, {-68, -36}}, smooth = Smooth.Bezier), Polygon(fillColor = {175, 175, 175},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, points = {{-22, 10}, {-30, 6}, {-40, -48}, {2, -46}, {2, -34}, {0, 2}, {-22, 10}}, smooth = Smooth.Bezier), Ellipse(fillColor = {255, 213, 170},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-30, 44}, {-3, 10}}, endAngle = 360), Polygon(pattern = LinePattern.None,
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, points = {{-38, 34}, {-16, 50}, {-2, 36}, {4, 36}, {6, 36}, {-38, 34}}, smooth = Smooth.Bezier), Polygon(fillColor = {95, 95, 95},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, points = {{30, -44}, {-32, -28}, {-36, -44}, {-24, -58}, {30, -44}}, smooth = Smooth.Bezier), Polygon(
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, points = {{42, -70}, {36, -84}, {48, -78}, {52, -72}, {50, -68}, {42, -70}}, smooth = Smooth.Bezier), Line(points = {{48, -14}, {26, 0}, {26, 0}}, thickness = 0.5), Line(points = {{20, -10}, {34, 10}, {34, 10}}, thickness = 0.5), Polygon(fillColor = {255, 213, 170},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, points = {{28, 4}, {32, 8}, {28, 2}, {34, 6}, {30, 2}, {34, 4}, {30, 0}, {26, 2}, {34, 0}, {26, 0}, {26, 2}, {28, 4}, {28, 4}, {26, 2}, {26, 2}, {26, 2}, {28, 8}, {28, 6}, {28, 4}}, smooth = Smooth.Bezier), Polygon(fillColor = {175, 175, 175},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, points = {{-18, 0}, {28, 6}, {26, -2}, {-16, -16}, {-20, -16}, {-24, -6}, {-18, 0}}, smooth = Smooth.Bezier), Polygon(fillColor = {215, 215, 215},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, points = {{72, -6}, {48, -6}, {36, -26}, {58, -86}, {72, -86}, {72, -6}}), Polygon(fillColor = {95, 95, 95},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, points = {{49, -94}, {17, -40}, {7, -44}, {-1, -50}, {49, -94}}, smooth = Smooth.Bezier), Line(points = {{-7, 31}, {-3, 29}}), Line(points = {{-9, 18}, {-5, 18}}), Line(points = {{-7, 31}, {-3, 31}}), Text(lineColor = {238, 46, 47}, extent = {{-100, 90}, {100, 58}}, textString = "%CycleFileName")}),
           Diagram(coordinateSystem(extent = {{-100, -60}, {100, 60}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2})));
       end PropDriver;
 
@@ -784,7 +798,12 @@ has a 3D icon (e.g., used in Blocks.Logical library).
     </table>
     </html>"),
           Diagram(coordinateSystem(extent = {{-100, -80}, {100, 80}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics),
-          Icon(coordinateSystem(extent = {{-100, -80}, {100, 80}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {95, 95, 95}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 80}, {80, -82}}), Line(points = {{-92, 6}, {-52, 6}}, color = {0, 0, 255}), Rectangle(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, fillPattern = FillPattern.Solid, extent = {{-82, -3}, {-65, -10}}), Line(points = {{-73, 63}, {98, 64}}, color = {0, 0, 255}), Rectangle(lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{38, 69}, {68, 57}}), Rectangle(lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-37.5, 68}, {-6.5, 56}}), Line(points = {{-19.5, 49}, {-19.5, 32}}, color = {0, 0, 255}), Line(points = {{-54.5, 63}, {-54.5, 41}, {-25.5, 41}}, color = {0, 0, 255}), Line(points = {{9.5, 62}, {9.5, 40}, {-19.5, 40}}, color = {0, 0, 255}), Line(points = {{-73, 63}, {-73, 5}}, color = {0, 0, 255}), Line(points = {{-73, -6}, {-73, -60}, {96, -60}}, color = {0, 0, 255}), Line(points = {{26, 63}, {26, -61}}, color = {0, 0, 255}), Line(points = {{-25.5, 49}, {-25.5, 32}}, color = {0, 0, 255}), Polygon(lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, points = {{26, 22}, {14, 4}, {26, -14}, {38, 4}, {26, 22}}), Line(points = {{20, 4}, {32, 4}}, color = {0, 0, 255}), Polygon(lineColor = {0, 0, 255}, points = {{22, -20}, {30, -20}, {26, -32}, {22, -20}}), Text(origin = {-4, -22}, lineColor = {0, 0, 255}, extent = {{-100, 150}, {100, 110}}, textString = "%name")}));
+          Icon(coordinateSystem(extent = {{-100, -80}, {100, 80}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics={  Rectangle(lineColor = {95, 95, 95}, fillColor = {255, 255, 255},
+                  fillPattern =                                                                                                                                                                                                FillPattern.Solid, extent = {{-100, 80}, {80, -82}}), Line(points = {{-92, 6}, {-52, 6}}, color = {0, 0, 255}), Rectangle(lineColor = {0, 0, 255}, fillColor = {0, 0, 255},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-82, -3}, {-65, -10}}), Line(points = {{-73, 63}, {98, 64}}, color = {0, 0, 255}), Rectangle(lineColor = {0, 0, 255}, fillColor = {255, 255, 255},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{38, 69}, {68, 57}}), Rectangle(lineColor = {0, 0, 255}, fillColor = {255, 255, 255},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-37.5, 68}, {-6.5, 56}}), Line(points = {{-19.5, 49}, {-19.5, 32}}, color = {0, 0, 255}), Line(points = {{-54.5, 63}, {-54.5, 41}, {-25.5, 41}}, color = {0, 0, 255}), Line(points = {{9.5, 62}, {9.5, 40}, {-19.5, 40}}, color = {0, 0, 255}), Line(points = {{-73, 63}, {-73, 5}}, color = {0, 0, 255}), Line(points = {{-73, -6}, {-73, -60}, {96, -60}}, color = {0, 0, 255}), Line(points = {{26, 63}, {26, -61}}, color = {0, 0, 255}), Line(points = {{-25.5, 49}, {-25.5, 32}}, color = {0, 0, 255}), Polygon(lineColor = {0, 0, 255}, fillColor = {255, 255, 255},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, points = {{26, 22}, {14, 4}, {26, -14}, {38, 4}, {26, 22}}), Line(points = {{20, 4}, {32, 4}}, color = {0, 0, 255}), Polygon(lineColor = {0, 0, 255}, points = {{22, -20}, {30, -20}, {26, -32}, {22, -20}}), Text(origin = {-4, -22}, lineColor = {0, 0, 255}, extent = {{-100, 150}, {100, 110}}, textString = "%name")}));
       end Batt1Conn;
 
       model DragForceAngle "Vehicle rolling and aerodinamical drag force"
@@ -860,11 +879,7 @@ has a 3D icon (e.g., used in Blocks.Logical library).
         y = pc.pin[1].i * (pc.pin[1].v - pc.pin[2].v) + pc.pin[3].i * (pc.pin[3].v - pc.pin[2].v);
         annotation (
           Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
-          Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics={  Line(points = {{-104, 0}, {96, 0}}, color = {0, 0, 255}), Ellipse(extent = {{-70, 70}, {70, -70}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255},
-                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Line(points = {{0, 70}, {0, 40}}, color = {0, 0, 0}), Line(points = {{22.9, 32.8}, {40.2, 57.3}}, color = {0, 0, 0}), Line(points = {{-22.9, 32.8}, {-40.2, 57.3}}, color = {0, 0, 0}), Line(points = {{37.6, 13.7}, {65.8, 23.9}}, color = {0, 0, 0}), Line(points = {{-37.6, 13.7}, {-65.8, 23.9}}, color = {0, 0, 0}), Line(points = {{0, 0}, {9.02, 28.6}}, color = {0, 0, 0}), Polygon(points = {{-0.48, 31.6}, {18, 26}, {18, 57.2}, {-0.48, 31.6}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0},
-                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Ellipse(extent = {{-5, 5}, {5, -5}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0},
-                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Text(extent = {{-39, -3}, {40, -66}}, lineColor = {0, 0, 0}, textString = "P3"), Line(points = {{-20, -104}, {-20, -66}}, color = {0, 0, 127}, smooth = Smooth.None), Text(origin = {0, 10}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255},
-                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-100, 102}, {100, 62}}, textString = "%name")}),
+          Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics = {Line(points = {{-104, 0}, {96, 0}}, color = {0, 0, 255}), Ellipse(extent = {{-70, 70}, {70, -70}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Line(points = {{0, 70}, {0, 40}}, color = {0, 0, 0}), Line(points = {{22.9, 32.8}, {40.2, 57.3}}, color = {0, 0, 0}), Line(points = {{-22.9, 32.8}, {-40.2, 57.3}}, color = {0, 0, 0}), Line(points = {{37.6, 13.7}, {65.8, 23.9}}, color = {0, 0, 0}), Line(points = {{-37.6, 13.7}, {-65.8, 23.9}}, color = {0, 0, 0}), Line(points = {{0, 0}, {9.02, 28.6}}, color = {0, 0, 0}), Polygon(points = {{-0.48, 31.6}, {18, 26}, {18, 57.2}, {-0.48, 31.6}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid), Ellipse(extent = {{-5, 5}, {5, -5}}, lineColor = {0, 0, 0}, fillColor = {0, 0, 0}, fillPattern = FillPattern.Solid), Text(extent = {{-39, -3}, {40, -66}}, lineColor = {0, 0, 0}, textString = "P3"), Line(points = {{-20, -104}, {-20, -66}}, color = {0, 0, 127}, smooth = Smooth.None), Text(origin = {0, 10}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 102}, {100, 62}}, textString = "%name")}),
           Documentation(info = "<html>
 <p><code><span style=\"font-family: Courier New,courier;\">&nbsp;Uses the <span style=\"color: #006400;\">Aron&nbsp;formula&nbsp;for&nbsp;power&nbsp;(common&nbsp;wire&nbsp;is&nbsp;wire&nbsp;2):</span></code></p>
 <pre><span style=\"font-family: Courier New,courier; color: #006400;\">y=i1*(v1-v2) + i3*(v3-v2)</span></pre>
@@ -993,7 +1008,7 @@ has a 3D icon (e.g., used in Blocks.Logical library).
 <p>From the generated torque and speed the fuel consumption is computed.</p>
 <p>Compare ICE input tau and internal Tice.tau.</p>
 </html>"),
-        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics = {Text(extent = {{-100, -44}, {-22, -72}}, lineColor = {0, 0, 127}, textString = "Nm")}));
+        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics={  Text(extent = {{-100, -44}, {-22, -72}}, lineColor = {0, 0, 127}, textString = "Nm")}));
     end IceT;
 
     model IceT01 "Simple  map-based ice model with connector"
@@ -1029,7 +1044,7 @@ has a 3D icon (e.g., used in Blocks.Logical library).
 <p>The generated torque is the product of the maximum deliverable torque at the actual engine speed, defined by means of a table, and the normalised input signal</p>
 <p>From the generated torque and speed the fuel consumption is computed.</p>
 </html>"),
-        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics = {Text(extent = {{-100, -40}, {-20, -70}}, lineColor = {0, 0, 127}, textString = "0..1")}));
+        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics={  Text(extent = {{-100, -40}, {-20, -70}}, lineColor = {0, 0, 127}, textString = "0..1")}));
     end IceT01;
 
     model OneFlange "Simple map-based model of an electric drive"
@@ -1061,7 +1076,9 @@ has a 3D icon (e.g., used in Blocks.Logical library).
         Line(points = {{0, -114}, {0, -114}, {0, -60}, {0, -58}, {-60, -58}, {-60, -9.6}, {-54.2, -9.6}}, color = {0, 0, 127}));
       annotation (
         Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
-        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-100, 10}, {-66, -10}}), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{66, 8}, {100, -12}}), Rectangle(origin = {-25, 2}, extent = {{-75, 74}, {125, -74}}), Line(origin = {20, -2}, points = {{-60, 94}, {-60, 76}}, color = {0, 0, 255}), Line(origin = {-20, -2}, points = {{60, 94}, {60, 76}}, color = {0, 0, 255})}),
+        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics={  Rectangle(fillColor = {192, 192, 192},
+                fillPattern =                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{-100, 10}, {-66, -10}}), Rectangle(fillColor = {192, 192, 192},
+                fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{66, 8}, {100, -12}}), Rectangle(origin = {-25, 2}, extent = {{-75, 74}, {125, -74}}), Line(origin = {20, -2}, points = {{-60, 94}, {-60, 76}}, color = {0, 0, 255}), Line(origin = {-20, -2}, points = {{60, 94}, {60, 76}}, color = {0, 0, 255})}),
         Documentation(info = "<html>
 <p>This is a model that models an electric drive: electornic converter + electric machine.</p>
 <p>The only model dynamics is its inertia. </p>
@@ -1095,7 +1112,9 @@ has a 3D icon (e.g., used in Blocks.Logical library).
         Text(string = "%second", index = 1, extent = {{6, 3}, {6, 3}}));
       annotation (
         Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
-        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-100, 10}, {-66, -10}}), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{66, 8}, {100, -12}}), Rectangle(origin = {-25, 2}, extent = {{-75, 74}, {125, -74}}), Line(origin = {20, -2}, points = {{-60, 94}, {-60, 76}}, color = {0, 0, 255}), Line(origin = {-20, -2}, points = {{60, 94}, {60, 76}}, color = {0, 0, 255})}),
+        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics={  Rectangle(fillColor = {192, 192, 192},
+                fillPattern =                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{-100, 10}, {-66, -10}}), Rectangle(fillColor = {192, 192, 192},
+                fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{66, 8}, {100, -12}}), Rectangle(origin = {-25, 2}, extent = {{-75, 74}, {125, -74}}), Line(origin = {20, -2}, points = {{-60, 94}, {-60, 76}}, color = {0, 0, 255}), Line(origin = {-20, -2}, points = {{60, 94}, {60, 76}}, color = {0, 0, 255})}),
         Documentation(info = "<html>
 <p><b><span style=\"font-family: MS Shell Dlg 2;\">Simple map-based ICE model for power-split power trains - with connector</b> </span></p>
 <p><span style=\"font-family: MS Shell Dlg 2;\">This is a &QUOT;connector&QUOT; version of MBice.</span></p>
@@ -1111,10 +1130,10 @@ has a 3D icon (e.g., used in Blocks.Logical library).
       import Modelica.Constants.inf;
       import Modelica.Constants.pi;
       parameter Real gsRatio = 2 "IdealGear speed reduction factor";
-      parameter String mapsFileName = "maps.txt" "Name of the file containing data maps (names: maxIceTau, specificCons, optiSpeed)";
-      parameter Modelica.SIunits.AngularVelocity maxGenW = 1e6;
-      parameter Modelica.SIunits.Torque maxTau = 200 "Max mechanical torque";
-      parameter Modelica.SIunits.Power maxPow = 20e3 "Max mechanical power";
+      parameter String mapsFileName = "maps.txt" "File containing data maps (maxIceTau, gensetDriveEffTable, specificCons, optiSpeed)";
+      parameter Modelica.SIunits.AngularVelocity maxGenW = 1e6 "Max generator angular speed";
+      parameter Modelica.SIunits.Torque maxTau = 200 "Max mechanical torque between internal ICE and generator";
+      parameter Modelica.SIunits.Power maxPow = 20e3 "Max mechanical of the internal generator";
       parameter Modelica.SIunits.AngularVelocity wIceStart = 167;
       Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor annotation (
         Placement(transformation(extent = {{-8, -8}, {8, 8}}, rotation = 180, origin = {-24, -20})));
@@ -1148,7 +1167,7 @@ has a 3D icon (e.g., used in Blocks.Logical library).
       connect(gain.y, gen.tauRef) annotation (
         Line(points = {{7, 40}, {75.4, 40}, {75.4, 5.5556}, {69.4, 5.5556}, {69.4, 9.11111}}, color = {0, 0, 127}));
       connect(gen.pin_n, pin_p) annotation (
-        Line(points = {{68, 13.5556}, {80, 13.5556}, {80, 60}, {100, 60}}, color = {0, 0, 255}));
+        Line(points={{68,13.5556},{80,13.5556},{80,60},{100,60}},          color = {0, 0, 255}));
       connect(IcePow.flange_b, gen.flange_a) annotation (
         Line(points = {{42, 7}, {46, 7}, {46, 9.11111}, {48, 9.11111}}));
       connect(gain1.u, speedSensor.w) annotation (
@@ -1175,11 +1194,17 @@ has a 3D icon (e.g., used in Blocks.Logical library).
         Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -60}, {100, 100}})),
         experiment(StopTime = 20, Interval = 0.01),
         experimentSetupOutput,
-        Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{-98, 94}, {78, 68}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, textString = "%name"), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-20, 0}, {26, -14}}), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-44, 30}, {-14, -44}}), Line(points = {{-72, 30}, {-72, 6}}), Polygon(points = {{-72, -2}, {-78, 8}, {-66, 8}, {-72, -2}}), Rectangle(extent = {{-96, 38}, {-50, -48}}), Rectangle(fillColor = {95, 95, 95}, fillPattern = FillPattern.Solid, extent = {{-96, -6}, {-50, -24}}), Rectangle(fillColor = {135, 135, 135}, fillPattern = FillPattern.Solid, extent = {{-78, -24}, {-68, -44}}), Polygon(points = {{-72, 34}, {-78, 24}, {-66, 24}, {-72, 34}}), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{6, 30}, {62, -44}}), Line(points = {{94, 60}, {74, 60}, {74, 18}, {62, 18}}, color = {0, 0, 255}), Line(points = {{100, -60}, {74, -60}, {74, -28}, {62, -28}}, color = {0, 0, 255})}),
-        Documentation(info = "<html>
-<p>Generator set containing Internal Combustion Engine, Electric generator (with DC output), and the related control.</p>
-<p>The control logic tends to deliver at the DC port the input power, using the optimal generator speed.</p>
-</html>"));
+        Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics={  Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255},
+                fillPattern =                                                                                                                                                                                                FillPattern.Solid), Text(extent = {{-98, 94}, {78, 68}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255},
+                fillPattern =                                                                                                                                                                                                        FillPattern.Solid, textString = "%name"), Rectangle(fillColor = {192, 192, 192},
+                fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{-20, 0}, {26, -14}}), Rectangle(fillColor = {192, 192, 192},
+                fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{-44, 30}, {-14, -44}}), Line(points = {{-72, 30}, {-72, 6}}), Polygon(points = {{-72, -2}, {-78, 8}, {-66, 8}, {-72, -2}}), Rectangle(extent = {{-96, 38}, {-50, -48}}), Rectangle(fillColor = {95, 95, 95},
+                fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-96, -6}, {-50, -24}}), Rectangle(fillColor = {135, 135, 135},
+                fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-78, -24}, {-68, -44}}), Polygon(points = {{-72, 34}, {-78, 24}, {-66, 24}, {-72, 34}}), Rectangle(fillColor = {192, 192, 192},
+                fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{6, 30}, {62, -44}}), Line(points = {{94, 60}, {74, 60}, {74, 18}, {62, 18}}, color = {0, 0, 255}), Line(points = {{100, -60}, {74, -60}, {74, -28}, {62, -28}}, color = {0, 0, 255})}),
+        Documentation(info = "<html><head></head><body><p>Generator set containing Internal Combustion Engine (ICE), Electric generator (with DC output), and the related control.</p>
+<p>The control logic tends to deliver at the DC port the input power, using the optimal generator speed.</p><p><i>Note on parameters.</i></p><p>The internal ICE data are supplied through maps to be provided through a txt file. The values explicitly set through the <i>Parameters </i>dialog box refer to the internal generator (except wIceStart). Any change on these should be made considering joint changes in the ICE maps.</p>
+</body></html>"));
     end Genset;
 
     model GensetOO "GenSet GMS+GEN+SEngine with On/Off"
@@ -1250,7 +1275,14 @@ has a 3D icon (e.g., used in Blocks.Logical library).
         Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -60}, {100, 60}})),
         experiment(StopTime = 20, Interval = 0.01),
         experimentSetupOutput,
-        Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{-98, 94}, {78, 68}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, textString = "%name"), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-20, 0}, {26, -14}}), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-44, 30}, {-14, -44}}), Line(points = {{-72, 30}, {-72, 6}}), Polygon(points = {{-72, -2}, {-78, 8}, {-66, 8}, {-72, -2}}), Rectangle(extent = {{-96, 38}, {-50, -48}}), Rectangle(fillColor = {95, 95, 95}, fillPattern = FillPattern.Solid, extent = {{-96, -6}, {-50, -24}}), Rectangle(fillColor = {135, 135, 135}, fillPattern = FillPattern.Solid, extent = {{-78, -24}, {-68, -44}}), Polygon(points = {{-72, 34}, {-78, 24}, {-66, 24}, {-72, 34}}), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{6, 30}, {62, -44}}), Line(points = {{94, 60}, {74, 60}, {74, 18}, {62, 18}}, color = {0, 0, 255}), Line(points = {{100, -60}, {74, -60}, {74, -28}, {62, -28}}, color = {0, 0, 255})}),
+        Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics={  Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255},
+                fillPattern =                                                                                                                                                                                                FillPattern.Solid), Text(extent = {{-98, 94}, {78, 68}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255},
+                fillPattern =                                                                                                                                                                                                        FillPattern.Solid, textString = "%name"), Rectangle(fillColor = {192, 192, 192},
+                fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{-20, 0}, {26, -14}}), Rectangle(fillColor = {192, 192, 192},
+                fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{-44, 30}, {-14, -44}}), Line(points = {{-72, 30}, {-72, 6}}), Polygon(points = {{-72, -2}, {-78, 8}, {-66, 8}, {-72, -2}}), Rectangle(extent = {{-96, 38}, {-50, -48}}), Rectangle(fillColor = {95, 95, 95},
+                fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-96, -6}, {-50, -24}}), Rectangle(fillColor = {135, 135, 135},
+                fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-78, -24}, {-68, -44}}), Polygon(points = {{-72, 34}, {-78, 24}, {-66, 24}, {-72, 34}}), Rectangle(fillColor = {192, 192, 192},
+                fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{6, 30}, {62, -44}}), Line(points = {{94, 60}, {74, 60}, {74, 18}, {62, 18}}, color = {0, 0, 255}), Line(points = {{100, -60}, {74, -60}, {74, -28}, {62, -28}}, color = {0, 0, 255})}),
         Documentation(info = "<html>
 <p>Generator set containing Internal Combustion Engine, Electric generator (with DC output), and the related control.</p>
 <p>The control logic tends to deliver at the DC port the input power, using the optimal generator speed.</p>
@@ -1297,7 +1329,7 @@ has a 3D icon (e.g., used in Blocks.Logical library).
         Line(points = {{58, 25}, {58, 25}, {58, 6}, {58, -98}, {0, -98}}, color = {0, 0, 127}),
         Text(string = "%second", index = 1, extent = {{6, 3}, {6, 3}}));
       annotation (
-        Diagram(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1, extent = {{-100, -100}, {100, 100}})),
+        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 80}})),
         experiment(StopTime = 200, __Dymola_NumberOfIntervals = 1000, __Dymola_Algorithm = "Lsodar"),
         __Dymola_experimentSetupOutput,
         Documentation(info = "<html>
@@ -1305,7 +1337,7 @@ has a 3D icon (e.g., used in Blocks.Logical library).
 <p><span style=\"font-family: MS Shell Dlg 2;\">This is an evolution of IceConnP: ON/OFF control is added though an hysteresis block. </span></p>
 <p><span style=\"font-family: MS Shell Dlg 2;\">For its general operation see the description of IceConnP.</span></p>
 </html>"),
-        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics = {Text(origin = {34, -1}, lineColor = {255, 255, 255}, extent = {{32, -19}, {-48, 29}}, textString = "OO")}));
+        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics={  Text(origin = {34, -1}, lineColor = {255, 255, 255}, extent = {{32, -19}, {-48, 29}}, textString = "OO")}));
     end IceConnPOO;
 
     model OneFlangeConn "Simple map-based one-flange electric drive"
@@ -1338,6 +1370,121 @@ has a 3D icon (e.g., used in Blocks.Logical library).
 <p>- genTauLim (output) maximum available torque at the given machine rotational speed (Nm)</p>
 </html>"));
     end OneFlangeConn;
+
+    model IceConnP
+      "Simple map-based ice model with connector; follows power request"
+      extends Partial.PartialMBiceP;
+      import Modelica.Constants.*;
+      parameter Modelica.SIunits.AngularVelocity wIceStart = 167;
+      SupportModels.ConnectorRelated.Conn conn annotation (
+        Placement(visible = true, transformation(extent = {{-20, -82}, {20, -122}}, rotation = 0), iconTransformation(extent = {{-20, -82}, {20, -122}}, rotation = 0)));
+      Modelica.Blocks.Continuous.Integrator toKgFuel(k = 1 / 3.6e6)  annotation (
+        Placement(visible = true, transformation(origin = {24, -80}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+    equation
+      connect(toKgFuel.u, toG_perHour.y) annotation (
+        Line(points={{24,-68},{24,-61}},      color = {0, 0, 127}));
+      connect(feedback.u1, conn.icePowRef) annotation (
+        Line(points = {{-88, 52}, {-88, 52}, {-88, -102}, {0, -102}}, color = {0, 0, 127}),
+        Text(string = "%second", index = 1, extent = {{6, 3}, {6, 3}}));
+      connect(Pice.power, conn.icePowDel) annotation (
+        Line(points = {{68, 63}, {68, 63}, {68, 6}, {78, 6}, {78, -102}, {0, -102}}, color = {0, 0, 127}),
+        Text(string = "%second", index = 1, extent = {{6, 3}, {6, 3}}));
+      connect(w.w, conn.iceW) annotation (
+        Line(points={{56,25},{58,25},{58,6},{58,-102},{0,-102}},            color = {0, 0, 127}),
+        Text(string = "%second", index = 1, extent = {{6, 3}, {6, 3}}));
+      annotation (
+        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 80}}, initialScale = 0.1)),
+        experiment(StopTime = 200, __Dymola_NumberOfIntervals = 1000, __Dymola_Algorithm = "Lsodar"),
+        __Dymola_experimentSetupOutput,
+        Documentation(info = "<html>
+<p><b><span style=\"font-family: MS Shell Dlg 2;\">Simple map-based ICE model for power-split power trains - with connector</span></b> </p>
+<p><span style=\"font-family: MS Shell Dlg 2;\">This is a &QUOT;connector&QUOT; version of MBiceP.</span></p>
+<p><span style=\"font-family: MS Shell Dlg 2;\">For a general descritiption see the info of MBiceP.</span></p>
+<p><span style=\"font-family: MS Shell Dlg 2;\">Signals connected to the connector:</span></p>
+<p><span style=\"font-family: MS Shell Dlg 2;\">- icePowRef (input) is the power request (W). Negative values are internally converted to zero</span></p>
+<p><span style=\"font-family: MS Shell Dlg 2;\">- iceW (output) is the measured ICE speed (rad/s)</span></p>
+<p><span style=\"font-family: MS Shell Dlg 2;\">- icePowDel (output) delivered power (W)</span></p>
+</html>"),
+        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2})));
+    end IceConnP;
+
+    model GensetImGm "GenSet GMS+GEN+SEngine"
+      import Modelica.Constants.inf;
+      import Modelica.Constants.pi;
+      parameter Modelica.SIunits.Time OptiTime "Time parameter of the PI OptiSpeed controller";
+      parameter String mapsFileName = "maps.txt" "Name of the file containing data maps (names: maxIceTau, specificCons, optiSpeed)";
+      parameter Modelica.SIunits.AngularVelocity wIceStart = 167;
+      parameter Modelica.SIunits.AngularVelocity wGenMax;
+      parameter Modelica.SIunits.Torque maxTau = 200 "Max mechanical torque";
+      parameter Modelica.SIunits.Power maxPow = 20e3 "Max mechanical power";
+      Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor annotation (
+        Placement(transformation(extent = {{-8, -8}, {8, 8}}, rotation = 180, origin = {-24, -20})));
+      Modelica.Mechanics.Rotational.Sensors.PowerSensor IcePow annotation (
+        Placement(transformation(extent = {{24, -2}, {42, 16}})));
+      Modelica.Blocks.Interfaces.RealInput powRef(unit = "W") "Reference genset power" annotation (
+        Placement(transformation(extent = {{15, -15}, {-15, 15}}, rotation = 90, origin = {61, 115})));
+      Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation (
+        Placement(transformation(extent = {{90, 50}, {110, 70}})));
+      Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation (
+        Placement(transformation(extent = {{92, -70}, {112, -50}})));
+      Modelica.Blocks.Nonlinear.Limiter limiter(uMax = inf, uMin = 0) annotation (
+        Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = 90, origin = {-80, 54})));
+      SHEV.PowerTrain.Gensets.GMS0 myGMS(mapsFileName = mapsFileName) annotation (
+        Placement(transformation(extent = {{-70, 10}, {-50, 30}})));
+      EHPowerTrain.MapBased.MBOneFlange gen(wMax = wGenMax, mapsFileName = mapsFileName, mapsOnFile = true, powMax = maxPow, tauMax = maxTau, effTableName = "gensetDriveEffTable") annotation (
+        Placement(transformation(extent = {{68, 16}, {48, -4}})));
+      EHPowerTrain.MapBased.MBiceT01 mBiceT(mapsFileName = mapsFileName, wIceStart = wIceStart, mapsOnFile = true, maxTauName = "maxIceTau", specConsName = "specificCons") annotation (
+        Placement(transformation(extent = {{-34, -2}, {-14, 18}})));
+      Modelica.Blocks.Math.Gain gain(k = -1) annotation (
+        Placement(transformation(extent = {{-14, 30}, {6, 50}})));
+      Modelica.Blocks.Math.Gain gain1(k = 1) annotation (
+        Placement(visible = true, transformation(origin = {-60, -8}, extent = {{-6, -6}, {6, 6}}, rotation = 90)));
+      Modelica.Blocks.Continuous.Integrator toGrams(k = 1 / 3600) annotation (
+        Placement(transformation(extent = {{18, -42}, {38, -22}})));
+    equation
+      connect(gain1.u, speedSensor.w) annotation (
+        Line(points = {{-60, -15.2}, {-60, -20}, {-32.8, -20}}, color = {0, 0, 127}));
+      connect(myGMS.Wmecc, gain1.y) annotation (
+        Line(points = {{-59.9, 8.5}, {-60, 8.5}, {-60, -1.4}}, color = {0, 0, 127}));
+      connect(limiter.u, powRef) annotation (
+        Line(points = {{-80, 66}, {-80, 80}, {61, 80}, {61, 115}}, color = {0, 0, 127}, smooth = Smooth.None));
+      connect(limiter.y, myGMS.pRef) annotation (
+        Line(points = {{-80, 43}, {-80, 20}, {-72, 20}}, color = {0, 0, 127}, smooth = Smooth.None));
+      connect(IcePow.flange_b, gen.flange_a) annotation (
+        Line(points = {{42, 7}, {46, 7}, {46, 6}, {48, 6}}, color = {0, 0, 0}));
+      connect(gen.pin_n, pin_p) annotation (
+        Line(points = {{68, 10}, {80, 10}, {80, 60}, {100, 60}}, color = {0, 0, 255}));
+      connect(gen.pin_p, pin_n) annotation (
+        Line(points = {{68, 2}, {78, 2}, {78, -60}, {102, -60}}, color = {0, 0, 255}));
+      connect(mBiceT.nTauRef, myGMS.throttle) annotation (
+        Line(points = {{-30, -2}, {-30, -6}, {-49, -6}, {-49, 14}}, color = {0, 0, 127}));
+      connect(IcePow.flange_a, mBiceT.flange_a) annotation (
+        Line(points = {{24, 7}, {6, 7}, {6, 10}, {-14, 10}}, color = {0, 0, 0}));
+      connect(speedSensor.flange, mBiceT.flange_a) annotation (
+        Line(points = {{-16, -20}, {-6, -20}, {-6, 10}, {-14, 10}}, color = {0, 0, 0}));
+      connect(gain.u, myGMS.tRef) annotation (
+        Line(points = {{-16, 40}, {-40, 40}, {-40, 26}, {-49, 26}}, color = {0, 0, 127}));
+      connect(gain.y, gen.tauRef) annotation (
+        Line(points = {{7, 40}, {49, 40}, {49, 14.6}}, color = {0, 0, 127}));
+      connect(toGrams.u, mBiceT.fuelCons) annotation (
+        Line(points = {{16, -32}, {12, -32}, {8, -32}, {8, -6}, {-18, -6}, {-18, -1}}, color = {0, 0, 127}));
+      annotation (
+        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -60}, {100, 100}})),
+        experiment(StopTime = 20, Interval = 0.01),
+        experimentSetupOutput,
+        Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics={  Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255},
+                fillPattern =                                                                                                                                                                                                FillPattern.Solid), Text(extent = {{-98, 94}, {78, 68}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255},
+                fillPattern =                                                                                                                                                                                                        FillPattern.Solid, textString = "%name"), Rectangle(fillColor = {192, 192, 192},
+                fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{-20, 0}, {26, -14}}), Rectangle(fillColor = {192, 192, 192},
+                fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{-44, 30}, {-14, -44}}), Line(points = {{-72, 30}, {-72, 6}}), Polygon(points = {{-72, -2}, {-78, 8}, {-66, 8}, {-72, -2}}), Rectangle(extent = {{-96, 38}, {-50, -48}}), Rectangle(fillColor = {95, 95, 95},
+                fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-96, -6}, {-50, -24}}), Rectangle(fillColor = {135, 135, 135},
+                fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-78, -24}, {-68, -44}}), Polygon(points = {{-72, 34}, {-78, 24}, {-66, 24}, {-72, 34}}), Rectangle(fillColor = {192, 192, 192},
+                fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{6, 30}, {62, -44}}), Line(points = {{94, 60}, {74, 60}, {74, 18}, {62, 18}}, color = {0, 0, 255}), Line(points = {{100, -60}, {74, -60}, {74, -28}, {62, -28}}, color = {0, 0, 255})}),
+        Documentation(info = "<html>
+<p>Convertitore primario con ICE e generatore</p>
+
+</html>"));
+    end GensetImGm;
 
     package Partial
       partial model PartialTwoFlange "Simple map-based two-flange electric drive model"
@@ -1413,7 +1560,12 @@ has a 3D icon (e.g., used in Blocks.Logical library).
           Line(points = {{-60.2, 3}, {-80, 3}, {-80, 29}}, color = {0, 0, 127}));
         annotation (
           Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
-          Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(origin = {-25, 2}, extent = {{-75, 74}, {125, -74}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(origin = {4, -6}, lineColor = {0, 0, 255}, extent = {{-110, 84}, {100, 44}}, textString = "%name"), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-64, 38}, {64, -42}}), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-100, 10}, {-64, -10}}), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{64, 8}, {100, -12}}), Line(origin = {20, 0}, points = {{-60, 94}, {-60, 76}}, color = {0, 0, 255}), Line(origin = {-20, 0}, points = {{60, 94}, {60, 76}}, color = {0, 0, 255}), Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-58, 14}, {58, -18}}), Text(origin = {-0.07637, 48.3161}, extent = {{-51.9236, -36.3161}, {48.0764, -66.3161}}, textString = "J=%J")}),
+          Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics={  Rectangle(origin = {-25, 2}, extent = {{-75, 74}, {125, -74}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Text(origin = {4, -6}, lineColor = {0, 0, 255}, extent = {{-110, 84}, {100, 44}}, textString = "%name"), Rectangle(fillColor = {192, 192, 192},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{-64, 38}, {64, -42}}), Rectangle(fillColor = {192, 192, 192},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{-100, 10}, {-64, -10}}), Rectangle(fillColor = {192, 192, 192},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{64, 8}, {100, -12}}), Line(origin = {20, 0}, points = {{-60, 94}, {-60, 76}}, color = {0, 0, 255}), Line(origin = {-20, 0}, points = {{60, 94}, {60, 76}}, color = {0, 0, 255}), Rectangle(fillColor = {255, 255, 255},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-58, 14}, {58, -18}}), Text(origin = {-0.07637, 48.3161}, extent = {{-51.9236, -36.3161}, {48.0764, -66.3161}}, textString = "J=%J")}),
           Documentation(info = "<html>
 <p>This model receives from the connector the torque request (variable MotTauInt) and trieds to deliver it.</p>
 <p>Howeve,r before delivering the requested torque, the model limits it considering the maximum deliverable torque and power. In addition it computes and considers inner losses as determined by means of a map. </p>
@@ -1438,7 +1590,7 @@ has a 3D icon (e.g., used in Blocks.Logical library).
           Placement(visible = true, transformation(extent = {{66, 50}, {86, 70}}, rotation = 0)));
         Modelica.Mechanics.Rotational.Sources.Torque Tice annotation (
           Placement(visible = true, transformation(extent = {{-12, 50}, {8, 70}}, rotation = 0)));
-        Modelica.Mechanics.Rotational.Components.Inertia ICE(w(fixed = true, start = wIceStart, displayUnit = "rpm"), J = iceJ) annotation (
+        Modelica.Mechanics.Rotational.Components.Inertia inertia(w(fixed = true, start = wIceStart, displayUnit = "rpm"), J = iceJ) annotation (
           Placement(visible = true, transformation(extent = {{16, 50}, {36, 70}}, rotation = 0)));
         Modelica.Blocks.Math.Product toPowW annotation (
           Placement(visible = true, transformation(origin = {0, 12}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
@@ -1458,11 +1610,17 @@ has a 3D icon (e.g., used in Blocks.Logical library).
       equation
         connect(toPowW.u1, w.w) annotation (
           Line(points = {{6, 24}, {6, 33}, {52, 33}}, color = {0, 0, 127}));
-        connect(w.flange, ICE.flange_b) annotation (
+        connect(
+          w.flange, inertia.flange_b)
+          annotation (
           Line(points = {{52, 54}, {52, 60}, {36, 60}}));
-        connect(icePow.flange_a, ICE.flange_b) annotation (
+        connect(
+          icePow.flange_a, inertia.flange_b)
+          annotation (
           Line(points = {{66, 60}, {36, 60}}));
-        connect(Tice.flange, ICE.flange_a) annotation (
+        connect(
+          Tice.flange, inertia.flange_a)
+          annotation (
           Line(points = {{8, 60}, {16, 60}}));
         connect(icePow.flange_b, flange_a) annotation (
           Line(points = {{86, 60}, {94, 60}, {94, 20}, {100, 20}}));
@@ -1490,7 +1648,12 @@ has a 3D icon (e.g., used in Blocks.Logical library).
 <p>The generated torque is the minimum between this signal and the maximum deliverable torque at the actual engine speed (defined by means of a table).</p>
 <p>From the generated torque and speed the fuel consumption is computed.</p>
 <p>The used maxTorque (toLimTau) and specific fuel consumption (toSpecCons) maps are inspired to public data related to the Toyota Prius&apos; engine </p>
-</html>"),Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(extent = {{-100, 80}, {100, -80}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-24, 68}, {76, -24}}), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{76, 30}, {100, 10}}), Text(origin = {0, 30}, lineColor = {0, 0, 255}, extent = {{-140, 100}, {140, 60}}, textString = "%name"), Rectangle(extent = {{-90, 68}, {-32, -26}}), Rectangle(fillColor = {95, 95, 95}, fillPattern = FillPattern.Solid, extent = {{-90, 22}, {-32, 0}}), Line(points = {{-60, 56}, {-60, 32}}), Polygon(points = {{-60, 66}, {-66, 56}, {-54, 56}, {-60, 66}}), Polygon(points = {{-60, 24}, {-66, 34}, {-54, 34}, {-60, 24}}), Rectangle(fillColor = {135, 135, 135}, fillPattern = FillPattern.Solid, extent = {{-64, 0}, {-54, -20}})}));
+</html>"),Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics={  Rectangle(extent = {{-100, 80}, {100, -80}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Rectangle(fillColor = {192, 192, 192},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{-24, 68}, {76, -24}}), Rectangle(fillColor = {192, 192, 192},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{76, 30}, {100, 10}}), Text(origin = {0, 30}, lineColor = {0, 0, 255}, extent = {{-140, 100}, {140, 60}}, textString = "%name"), Rectangle(extent = {{-90, 68}, {-32, -26}}), Rectangle(fillColor = {95, 95, 95},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-90, 22}, {-32, 0}}), Line(points = {{-60, 56}, {-60, 32}}), Polygon(points = {{-60, 66}, {-66, 56}, {-54, 56}, {-60, 66}}), Polygon(points = {{-60, 24}, {-66, 34}, {-54, 34}, {-60, 24}}), Rectangle(fillColor = {135, 135, 135},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-64, 0}, {-54, -20}})}));
       end PartialIce;
 
       partial model PartialOneFlange2 "Partial map-based one-Flange electric drive model"
@@ -1555,8 +1718,13 @@ has a 3D icon (e.g., used in Blocks.Logical library).
         connect(constPg.pin_n, pin_n) annotation (
           Line(points = {{-88, -9.8}, {-88, -9.8}, {-88, -58}, {-100, -58}}, color = {0, 0, 255}));
         annotation (
-          Diagram(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1)),
-          Icon(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1), graphics = {Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 80}, {100, -80}}), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{56, 10}, {100, -10}}), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-72, 50}, {58, -46}}), Line(origin = {2, 122}, rotation = 90, points = {{-72, 62}, {-60, 62}, {-60, 96}}, color = {0, 0, 255}), Text(origin = {-14.9415, 30}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-79.0585, 98}, {112.936, 60}}, textString = "%name"), Line(origin = {-138, -16}, rotation = 90, points = {{-42, -48}, {-42, -76}, {-30, -76}}, color = {0, 0, 255}), Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-66, 14}, {50, -14}}), Text(origin = {-9.8571, 49.1}, extent = {{-54.1429, -35.1}, {61.8571, -61.1}}, textString = "J=%J")}),
+          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -80}, {100, 80}})),
+          Icon(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1), graphics={  Rectangle(fillColor = {255, 255, 255},
+                  fillPattern =                                                                                                                    FillPattern.Solid, extent = {{-100, 80}, {100, -80}}), Rectangle(fillColor = {192, 192, 192},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{56, 10}, {100, -10}}), Rectangle(fillColor = {192, 192, 192},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{-72, 50}, {58, -46}}), Line(origin = {2, 122}, rotation = 90, points = {{-72, 62}, {-60, 62}, {-60, 96}}, color = {0, 0, 255}), Text(origin = {-14.9415, 30}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-79.0585, 98}, {112.936, 60}}, textString = "%name"), Line(origin = {-138, -16}, rotation = 90, points = {{-42, -48}, {-42, -76}, {-30, -76}}, color = {0, 0, 255}), Rectangle(fillColor = {255, 255, 255},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-66, 14}, {50, -14}}), Text(origin = {-9.8571, 49.1}, extent = {{-54.1429, -35.1}, {61.8571, -61.1}}, textString = "J=%J")}),
           Documentation(info = "<html>
 <p>One-flange electric drive.</p>
 <p>The input signal is the requested normalised torque (1 means nominal torque)</p>
@@ -1627,8 +1795,12 @@ has a 3D icon (e.g., used in Blocks.Logical library).
 <p><span style=\"font-family: MS Shell Dlg 2;\">- icePowRef (input) is the power request (W). Negative values are internally converted to zero</span></p>
 <p><span style=\"font-family: MS Shell Dlg 2;\">- iceW (output) is the measured ICE speed (rad/s)</span></p>
 <p><span style=\"font-family: MS Shell Dlg 2;\">- icePowDel (output) delivered power (W)</span></p>
-</html>"),Icon(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1), graphics = {Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-24, 48}, {76, -44}}), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{76, 10}, {100, -10}}), Text(origin = {-2, 0}, extent = {{-140, -52}, {140, -86}}, textString = "J=%J"), Rectangle(extent = {{-100, 62}, {100, -100}}), Text(origin = {0, 10}, lineColor = {0, 0, 255}, extent = {{-140, 100}, {140, 60}}, textString = "%name"), Rectangle(extent = {{-90, 48}, {-32, -46}}), Rectangle(fillColor = {95, 95, 95}, fillPattern = FillPattern.Solid, extent = {{-90, 2}, {-32, -20}}), Line(points = {{-60, 36}, {-60, 12}}), Polygon(points = {{-60, 46}, {-66, 36}, {-54, 36}, {-60, 46}}), Polygon(points = {{-60, 4}, {-66, 14}, {-54, 14}, {-60, 4}}), Rectangle(fillColor = {135, 135, 135}, fillPattern = FillPattern.Solid, extent = {{-64, -20}, {-54, -40}})}),
-          Diagram(coordinateSystem(extent = {{-100, -80}, {100, 80}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics = {Text(extent = {{-90, 20}, {-46, -16}}, textString = "follows the power
+</html>"),Icon(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1), graphics={  Rectangle(fillColor = {192, 192, 192},
+                  fillPattern =                                                                                                                    FillPattern.HorizontalCylinder, extent = {{-24, 48}, {76, -44}}), Rectangle(fillColor = {192, 192, 192},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{76, 10}, {100, -10}}), Text(origin = {-2, 0}, extent = {{-140, -52}, {140, -86}}, textString = "J=%J"), Rectangle(extent = {{-100, 62}, {100, -100}}), Text(origin = {0, 10}, lineColor = {0, 0, 255}, extent = {{-140, 100}, {140, 60}}, textString = "%name"), Rectangle(extent = {{-90, 48}, {-32, -46}}), Rectangle(fillColor = {95, 95, 95},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-90, 2}, {-32, -20}}), Line(points = {{-60, 36}, {-60, 12}}), Polygon(points = {{-60, 46}, {-66, 36}, {-54, 36}, {-60, 46}}), Polygon(points = {{-60, 4}, {-66, 14}, {-54, 14}, {-60, 4}}), Rectangle(fillColor = {135, 135, 135},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-64, -20}, {-54, -40}})}),
+          Diagram(coordinateSystem(extent = {{-100, -80}, {100, 80}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics={  Text(extent = {{-90, 20}, {-46, -16}}, textString = "follows the power
 reference \nand computes consumption")}));
       end PartialIceP;
 
@@ -1701,7 +1873,12 @@ reference \nand computes consumption")}));
           Line(points = {{42, 30}, {78, 30}, {78, 35.2}}, color = {0, 0, 127}));
         annotation (
           Diagram(coordinateSystem(extent = {{-100, -80}, {100, 80}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2})),
-          Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(extent = {{-70, 80}, {100, -80}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Line(points = {{62, -7}, {82, -7}}), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{52, 10}, {100, -10}}), Line(points = {{-98, 40}, {-70, 40}}, color = {0, 0, 255}), Line(points = {{-92, -40}, {-70, -40}}, color = {0, 0, 255}), Text(origin = {0, 20}, lineColor = {0, 0, 255}, extent = {{-70, 98}, {100, 60}}, textString = "%name", fillPattern = FillPattern.Solid, fillColor = {255, 255, 255}), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-56, 48}, {76, -48}}), Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-48, 14}, {66, -14}}), Text(origin = {6.1429, 47.1}, extent = {{-54.1429, -35.1}, {61.8571, -61.1}}, textString = "J=%J")}),
+          Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics={  Rectangle(extent = {{-70, 80}, {100, -80}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Line(points = {{62, -7}, {82, -7}}), Rectangle(fillColor = {192, 192, 192},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{52, 10}, {100, -10}}), Line(points = {{-98, 40}, {-70, 40}}, color = {0, 0, 255}), Line(points = {{-92, -40}, {-70, -40}}, color = {0, 0, 255}), Text(origin = {0, 20}, lineColor = {0, 0, 255}, extent = {{-70, 98}, {100, 60}}, textString = "%name",
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, fillColor = {255, 255, 255}), Rectangle(fillColor = {192, 192, 192},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{-56, 48}, {76, -48}}), Rectangle(fillColor = {255, 255, 255},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-48, 14}, {66, -14}}), Text(origin = {6.1429, 47.1}, extent = {{-54.1429, -35.1}, {61.8571, -61.1}}, textString = "J=%J")}),
           Documentation(info = "<html>
 <p>One-flange electric drive.</p>
 <p>The input signal is the requested normalised torque (1 means nominal torque)</p>
@@ -1731,7 +1908,7 @@ reference \nand computes consumption")}));
           Placement(visible = true, transformation(extent = {{66, 50}, {86, 70}}, rotation = 0)));
         Modelica.Mechanics.Rotational.Sources.Torque Tice annotation (
           Placement(visible = true, transformation(extent = {{-12, 50}, {8, 70}}, rotation = 0)));
-        Modelica.Mechanics.Rotational.Components.Inertia ICE(w(fixed = true, start = wIceStart, displayUnit = "rpm"), J = iceJ) annotation (
+        Modelica.Mechanics.Rotational.Components.Inertia inertia(w(fixed = true, start = wIceStart, displayUnit = "rpm"), J = iceJ) annotation (
           Placement(visible = true, transformation(extent = {{16, 50}, {36, 70}}, rotation = 0)));
         Modelica.Blocks.Math.Product toPow0 annotation (
           Placement(visible = true, transformation(origin = {0, 12}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
@@ -1751,11 +1928,17 @@ reference \nand computes consumption")}));
       equation
         connect(toPow0.u1, w.w) annotation (
           Line(points = {{6, 24}, {6, 33}, {52, 33}}, color = {0, 0, 127}));
-        connect(w.flange, ICE.flange_b) annotation (
+        connect(
+          w.flange, inertia.flange_b)
+          annotation (
           Line(points = {{52, 54}, {52, 60}, {36, 60}}));
-        connect(icePow.flange_a, ICE.flange_b) annotation (
+        connect(
+          icePow.flange_a, inertia.flange_b)
+          annotation (
           Line(points = {{66, 60}, {36, 60}}));
-        connect(Tice.flange, ICE.flange_a) annotation (
+        connect(
+          Tice.flange, inertia.flange_a)
+          annotation (
           Line(points = {{8, 60}, {16, 60}}));
         connect(icePow.flange_b, flange_a) annotation (
           Line(points = {{86, 60}, {94, 60}, {94, 20}, {100, 20}}));
@@ -1779,7 +1962,12 @@ reference \nand computes consumption")}));
 <p>The generated torque is the minimum between this signal and the maximum deliverable torque at the actual engine speed (defined by means of a table).</p>
 <p>From the generated torque and speed the fuel consumption is computed.</p>
 <p>The used maxTorque (toLimTau) and specific fuel consumption (toSpecCons) maps are inspired to public data related to the Toyota Prius&apos; engine </p>
-</html>"),Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(extent = {{-100, 80}, {100, -80}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-24, 68}, {76, -24}}), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{76, 30}, {100, 10}}), Text(origin = {0, 30}, lineColor = {0, 0, 255}, extent = {{-140, 100}, {140, 60}}, textString = "%name"), Rectangle(extent = {{-90, 68}, {-32, -26}}), Rectangle(fillColor = {95, 95, 95}, fillPattern = FillPattern.Solid, extent = {{-90, 22}, {-32, 0}}), Line(points = {{-60, 56}, {-60, 32}}), Polygon(points = {{-60, 66}, {-66, 56}, {-54, 56}, {-60, 66}}), Polygon(points = {{-60, 24}, {-66, 34}, {-54, 34}, {-60, 24}}), Rectangle(fillColor = {135, 135, 135}, fillPattern = FillPattern.Solid, extent = {{-64, 0}, {-54, -20}})}));
+</html>"),Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics={  Rectangle(extent = {{-100, 80}, {100, -80}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Rectangle(fillColor = {192, 192, 192},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{-24, 68}, {76, -24}}), Rectangle(fillColor = {192, 192, 192},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{76, 30}, {100, 10}}), Text(origin = {0, 30}, lineColor = {0, 0, 255}, extent = {{-140, 100}, {140, 60}}, textString = "%name"), Rectangle(extent = {{-90, 68}, {-32, -26}}), Rectangle(fillColor = {95, 95, 95},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-90, 22}, {-32, 0}}), Line(points = {{-60, 56}, {-60, 32}}), Polygon(points = {{-60, 66}, {-66, 56}, {-54, 56}, {-60, 66}}), Polygon(points = {{-60, 24}, {-66, 34}, {-54, 34}, {-60, 24}}), Rectangle(fillColor = {135, 135, 135},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-64, 0}, {-54, -20}})}));
       end PartialMBice;
 
       partial model PartialMBiceP "Simple map-based ice model with connector and Power request"
@@ -1794,59 +1982,69 @@ reference \nand computes consumption")}));
           Dialog(enable = mapsOnFile));
         parameter Real specificCons[:, :](each unit = "g/(kW.h)") = [0.0, 100, 200, 300, 400, 500; 10, 630, 580, 550, 580, 630; 20, 430, 420, 400, 400, 450; 30, 320, 325, 330, 340, 350; 40, 285, 285, 288, 290, 300; 50, 270, 265, 265, 270, 275; 60, 255, 248, 250, 255, 258; 70, 245, 237, 238, 243, 246; 80, 245, 230, 233, 237, 240; 90, 235, 230, 228, 233, 235] "ICE specific consumption map. First column torque, first row speed" annotation (
           Dialog(enable = not mapsOnFile));
-        Modelica.Mechanics.Rotational.Components.Inertia ICE(w(fixed = true, start = wIceStart, displayUnit = "rpm"), J = iceJ) annotation (
-          Placement(transformation(extent = {{20, 42}, {40, 62}})));
+        Modelica.Mechanics.Rotational.Components.Inertia inertia(w(fixed = true, start = wIceStart, displayUnit = "rpm"), J = iceJ) annotation (
+          Placement(visible = true, transformation(extent = {{30, 42}, {50, 62}}, rotation = 0)));
         Modelica.Mechanics.Rotational.Sources.Torque iceTau annotation (
-          Placement(transformation(extent = {{-12, 42}, {8, 62}})));
+          Placement(visible = true, transformation(extent = {{4, 42}, {24, 62}}, rotation = 0)));
         Modelica.Mechanics.Rotational.Sensors.PowerSensor Pice annotation (
           Placement(transformation(extent = {{66, 62}, {86, 42}})));
         Modelica.Mechanics.Rotational.Sensors.SpeedSensor w annotation (
-          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {52, 36})));
+          Placement(visible = true, transformation(origin = {56, 36}, extent = {{-10, -10}, {10, 10}}, rotation = 270)));
         Modelica.Blocks.Math.Product toPow0 annotation (
-          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = -90, origin = {2, 6})));
-        Modelica.Blocks.Math.Product toG_perHour annotation (
-          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = -90, origin = {24, -50})));
+          Placement(visible = true, transformation(origin = {-10, 8}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
         Modelica.Blocks.Math.Feedback feedback annotation (
           Placement(transformation(extent = {{-90, 62}, {-70, 42}})));
         Modelica.Blocks.Math.Gain gain(k = contrGain) annotation (
-          Placement(transformation(extent = {{-58, 42}, {-38, 62}})));
+          Placement(visible = true, transformation(extent = {{-62, 42}, {-42, 62}}, rotation = 0)));
         Modelica.Mechanics.Rotational.Interfaces.Flange_a flange_a annotation (
           Placement(transformation(extent = {{90, -10}, {110, 10}}), iconTransformation(extent = {{90, -10}, {110, 10}})));
-        Modelica.Blocks.Tables.CombiTable2D toSpecCons(table = specificCons, tableOnFile = mapsOnFile, tableName = specConsName, fileName = mapsFileName) annotation (
+        Modelica.Blocks.Tables.CombiTable2D toGramsPerKWh(table = specificCons, tableOnFile = mapsOnFile, tableName = specConsName, fileName = mapsFileName) annotation (
           Placement(transformation(extent = {{-10, 10}, {10, -10}}, rotation = -90, origin = {42, -2})));
         Modelica.Blocks.Math.Gain tokW(k = 1e-3) annotation (
-          Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = -90, origin = {2, -24})));
+          Placement(visible = true, transformation(origin = {-10, -22}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+        Modelica.Blocks.Nonlinear.Limiter limiter1(
+          limitsAtInit=true,
+          uMax=1e99,
+          uMin=0) annotation (
+          Placement(visible = true, transformation(origin = {-22, 52}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Math.Product toG_perHour annotation (
+          Placement(visible = true, transformation(origin = {24, -50}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
       equation
-        connect(iceTau.flange, ICE.flange_a) annotation (
-          Line(points = {{8, 52}, {20, 52}}, color = {0, 0, 0}, smooth = Smooth.None));
-        connect(Pice.flange_a, ICE.flange_b) annotation (
-          Line(points = {{66, 52}, {40, 52}}, color = {0, 0, 0}, smooth = Smooth.None));
+        connect(toPow0.u2, iceTau.tau) annotation (
+          Line(points = {{-16, 20}, {-16, 34}, {-6, 34}, {-6, 52}, {2, 52}}, color = {0, 0, 127}));
+        connect(iceTau.tau, limiter1.y) annotation (
+          Line(points={{2,52},{-12,52},{-12,52},{-11,52}},          color = {0, 0, 127}));
+        connect(limiter1.u, gain.y) annotation (
+          Line(points={{-34,52},{-42,52},{-42,52},{-41,52}},          color = {0, 0, 127}));
+        connect(
+          toGramsPerKWh.y, toG_perHour.u1) annotation (
+          Line(points = {{42, -13}, {42, -20}, {30, -20}, {30, -38}}, color = {0, 0, 127}));
+        connect(tokW.y, toG_perHour.u2) annotation (
+          Line(points = {{-10, -33}, {10, -33}, {10, -20}, {18, -20}, {18, -38}}, color = {0, 0, 127}));
+        connect(tokW.u, toPow0.y) annotation (
+          Line(points = {{-10, -10}, {-10, -3}}, color = {0, 0, 127}));
+        connect(
+          toPow0.u2, toGramsPerKWh.u1) annotation (
+          Line(points = {{-16, 20}, {-16, 34}, {36, 34}, {36, 10}}, color = {0, 0, 127}));
+        connect(toPow0.u1, w.w) annotation (
+          Line(points = {{-4, 20}, {-4, 25}, {56, 25}}, color = {0, 0, 127}));
+        connect(iceTau.flange, inertia.flange_a) annotation (
+          Line(points = {{24, 52}, {30, 52}}));
+        connect(
+          toGramsPerKWh.u2, w.w) annotation (
+          Line(points = {{48, 10}, {48, 20}, {56, 20}, {56, 25}}, color = {0, 0, 127}));
+        connect(w.flange, inertia.flange_b) annotation (
+          Line(points = {{56, 46}, {56, 52}, {50, 52}}));
+        connect(Pice.flange_a, inertia.flange_b) annotation (
+          Line(points = {{66, 52}, {50, 52}}));
+        connect(gain.u, feedback.y) annotation (
+          Line(points = {{-64, 52}, {-71, 52}}, color = {0, 0, 127}));
         connect(Pice.flange_b, flange_a) annotation (
           Line(points = {{86, 52}, {94, 52}, {94, 0}, {100, 0}}, color = {0, 0, 0}, smooth = Smooth.None));
-        connect(w.flange, ICE.flange_b) annotation (
-          Line(points = {{52, 46}, {52, 52}, {40, 52}}, color = {0, 0, 0}, smooth = Smooth.None));
-        connect(toPow0.u1, w.w) annotation (
-          Line(points = {{8, 18}, {8, 25}, {52, 25}}, color = {0, 0, 127}, smooth = Smooth.None));
-        connect(toPow0.u2, iceTau.tau) annotation (
-          Line(points = {{-4, 18}, {-4, 22}, {-28, 22}, {-28, 52}, {-14, 52}}, color = {0, 0, 127}, smooth = Smooth.None));
         connect(feedback.u2, Pice.power) annotation (
           Line(points = {{-80, 60}, {-80, 72}, {68, 72}, {68, 63}}, color = {0, 0, 127}, smooth = Smooth.None));
-        connect(gain.y, iceTau.tau) annotation (
-          Line(points = {{-37, 52}, {-14, 52}}, color = {0, 0, 127}, smooth = Smooth.None));
-        connect(gain.u, feedback.y) annotation (
-          Line(points = {{-60, 52}, {-71, 52}}, color = {0, 0, 127}, smooth = Smooth.None));
-        connect(toSpecCons.y, toG_perHour.u1) annotation (
-          Line(points = {{42, -13}, {42, -20}, {30, -20}, {30, -38}}, color = {0, 0, 127}));
-        connect(toSpecCons.u2, w.w) annotation (
-          Line(points = {{48, 10}, {48, 10}, {48, 16}, {48, 20}, {50, 20}, {52, 20}, {52, 25}}, color = {0, 0, 127}));
-        connect(toSpecCons.u1, iceTau.tau) annotation (
-          Line(points = {{36, 10}, {36, 32}, {-28, 32}, {-28, 52}, {-14, 52}}, color = {0, 0, 127}));
-        connect(tokW.u, toPow0.y) annotation (
-          Line(points = {{2, -12}, {2, -5}}, color = {0, 0, 127}));
-        connect(tokW.y, toG_perHour.u2) annotation (
-          Line(points = {{2, -35}, {10, -35}, {10, -34}, {18, -34}, {18, -38}}, color = {0, 0, 127}));
         annotation (
-          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -80}, {100, 80}}, initialScale = 0.1), graphics = {Text(extent = {{-78, 6}, {-38, -16}}, lineColor = {0, 0, 0}, textString = "follows the power
+          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -60}, {100, 80}}), graphics={  Text(extent = {{-78, 6}, {-38, -16}}, textString = "follows the power
  reference and
  computes consumption")}),
           experiment(StopTime = 200, __Dymola_NumberOfIntervals = 1000, __Dymola_Algorithm = "Lsodar"),
@@ -1859,42 +2057,13 @@ reference \nand computes consumption")}));
 <p><span style=\"font-family: MS Shell Dlg 2;\">- icePowRef (input) is the power request (W). Negative values are internally converted to zero</span></p>
 <p><span style=\"font-family: MS Shell Dlg 2;\">- iceW (output) is the measured ICE speed (rad/s)</span></p>
 <p><span style=\"font-family: MS Shell Dlg 2;\">- icePowDel (output) delivered power (W)</span></p>
-</html>"),Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-24, 48}, {76, -44}}), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{76, 10}, {100, -10}}), Text(origin = {-2, 0}, extent = {{-140, -52}, {140, -90}}, textString = "J=%J"), Rectangle(extent = {{-100, 62}, {100, -100}}), Text(origin = {0, 10}, lineColor = {0, 0, 255}, extent = {{-140, 100}, {140, 60}}, textString = "%name"), Rectangle(extent = {{-90, 48}, {-32, -46}}), Rectangle(fillColor = {95, 95, 95}, fillPattern = FillPattern.Solid, extent = {{-90, 2}, {-32, -20}}), Line(points = {{-60, 36}, {-60, 12}}), Polygon(points = {{-60, 46}, {-66, 36}, {-54, 36}, {-60, 46}}), Polygon(points = {{-60, 4}, {-66, 14}, {-54, 14}, {-60, 4}}), Rectangle(fillColor = {135, 135, 135}, fillPattern = FillPattern.Solid, extent = {{-64, -20}, {-54, -40}})}));
+</html>"),Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics={  Rectangle(fillColor = {192, 192, 192},
+                  fillPattern =                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{-24, 48}, {76, -44}}), Rectangle(fillColor = {192, 192, 192},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.HorizontalCylinder, extent = {{76, 10}, {100, -10}}), Text(origin = {-2, 0}, extent = {{-140, -52}, {140, -90}}, textString = "J=%J"), Rectangle(extent = {{-100, 62}, {100, -100}}), Text(origin = {0, 10}, lineColor = {0, 0, 255}, extent = {{-140, 100}, {140, 60}}, textString = "%name"), Rectangle(extent = {{-90, 48}, {-32, -46}}), Rectangle(fillColor = {95, 95, 95},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-90, 2}, {-32, -20}}), Line(points = {{-60, 36}, {-60, 12}}), Polygon(points = {{-60, 46}, {-66, 36}, {-54, 36}, {-60, 46}}), Polygon(points = {{-60, 4}, {-66, 14}, {-54, 14}, {-60, 4}}), Rectangle(fillColor = {135, 135, 135},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-64, -20}, {-54, -40}})}));
       end PartialMBiceP;
 
-      model IceConnP "Simple map-based ice model with connector; follows power request"
-        extends Partial.PartialMBiceP;
-        import Modelica.Constants.*;
-        parameter Modelica.SIunits.AngularVelocity wIceStart = 167;
-        SupportModels.ConnectorRelated.Conn conn annotation (
-          Placement(visible = true, transformation(extent = {{-20, -82}, {20, -122}}, rotation = 0), iconTransformation(extent = {{-20, -82}, {20, -122}}, rotation = 0)));
-      equation
-        connect(feedback.u1, conn.icePowRef) annotation (
-          Line(points = {{-88, 52}, {-88, 52}, {-88, -102}, {0, -102}}, color = {0, 0, 127}),
-          Text(string = "%second", index = 1, extent = {{6, 3}, {6, 3}}));
-        connect(Pice.power, conn.icePowDel) annotation (
-          Line(points = {{68, 63}, {68, 63}, {68, 6}, {78, 6}, {78, -102}, {0, -102}}, color = {0, 0, 127}),
-          Text(string = "%second", index = 1, extent = {{6, 3}, {6, 3}}));
-        connect(w.w, conn.iceW) annotation (
-          Line(points = {{52, 25}, {58, 25}, {58, 6}, {58, -102}, {0, -102}}, color = {0, 0, 127}),
-          Text(string = "%second", index = 1, extent = {{6, 3}, {6, 3}}));
-        connect(toG_perHour.y, conn.iceGramsPerHour) annotation (
-          Line(points = {{24, -61}, {22, -61}, {22, -84}, {0, -84}, {0, -102}, {0, -102}}, color = {0, 0, 127}),
-          Text(string = "%second", index = 1, extent = {{6, 3}, {6, 3}}));
-        annotation (
-          Diagram(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1)),
-          experiment(StopTime = 200, __Dymola_NumberOfIntervals = 1000, __Dymola_Algorithm = "Lsodar"),
-          __Dymola_experimentSetupOutput,
-          Documentation(info = "<html>
-<p><b><span style=\"font-family: MS Shell Dlg 2;\">Simple map-based ICE model for power-split power trains - with connector</span></b> </p>
-<p><span style=\"font-family: MS Shell Dlg 2;\">This is a &QUOT;connector&QUOT; version of MBiceP.</span></p>
-<p><span style=\"font-family: MS Shell Dlg 2;\">For a general descritiption see the info of MBiceP.</span></p>
-<p><span style=\"font-family: MS Shell Dlg 2;\">Signals connected to the connector:</span></p>
-<p><span style=\"font-family: MS Shell Dlg 2;\">- icePowRef (input) is the power request (W). Negative values are internally converted to zero</span></p>
-<p><span style=\"font-family: MS Shell Dlg 2;\">- iceW (output) is the measured ICE speed (rad/s)</span></p>
-<p><span style=\"font-family: MS Shell Dlg 2;\">- icePowDel (output) delivered power (W)</span></p>
-</html>"),Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2})));
-      end IceConnP;
     end Partial;
 
     package TestingModels
@@ -1993,8 +2162,8 @@ reference \nand computes consumption")}));
           Placement(transformation(extent = {{-14, 0}, {6, 20}})));
         Modelica.Mechanics.Rotational.Sources.QuadraticSpeedDependentTorque loadTorque(w_nominal = 100, tau_nominal = -80) annotation (
           Placement(transformation(extent = {{64, 0}, {44, 20}})));
-        Partial.IceConnP ice(wIceStart = 90, mapsFileName = "PSDmaps.txt") annotation (
-          Placement(transformation(extent = {{-42, 0}, {-22, 20}})));
+        IceConnP ice(wIceStart=90, mapsFileName="PSDmaps.txt")
+          annotation (Placement(transformation(extent={{-42,0},{-22,20}})));
         SupportModels.ConnectorRelated.ToConnIcePowRef toConnIceTauRef annotation (
           Placement(transformation(extent = {{-6, -6}, {6, 6}}, rotation = 90, origin = {-32, -18})));
         Modelica.Blocks.Sources.Trapezoid powReq(rising = 10, width = 10, falling = 10, period = 1e6, startTime = 10, offset = 60, amplitude = 10e3) annotation (
@@ -2301,7 +2470,44 @@ reference tau
 to gen", horizontalAlignment = TextAlignment.Right), Text(extent = {{28, 66}, {54, 54}}, textString = "send 
 ref pow
 to ice", horizontalAlignment = TextAlignment.Right)}),
-          Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics = {Text(lineColor = {0, 0, 255}, extent = {{-100, -102}, {100, -140}}, textString = "%name"), Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Polygon(points = {{-4, -40}, {74, 16}, {74, -6}, {-4, -62}, {-4, -40}}, lineColor = {95, 95, 95}, fillColor = {175, 175, 175}, fillPattern = FillPattern.Solid), Polygon(points = {{8, -38}, {28, -48}, {20, -54}, {0, -44}, {8, -38}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0}, fillPattern = FillPattern.Solid), Polygon(points = {{20, -54}, {28, -48}, {32, -56}, {24, -62}, {20, -54}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0}, fillPattern = FillPattern.Solid), Polygon(points = {{24, -62}, {32, -56}, {32, -78}, {24, -84}, {24, -62}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 127}, fillPattern = FillPattern.Solid), Polygon(points = {{0, -44}, {20, -54}, {24, -62}, {24, -84}, {22, -84}, {22, -62}, {20, -58}, {0, -48}, {0, -44}}, lineColor = {0, 0, 255}, fillColor = {191, 191, 0}, fillPattern = FillPattern.Solid), Polygon(points = {{-14, 40}, {-18, 32}, {-10, 38}, {-8, 44}, {-14, 40}}, lineColor = {128, 128, 128}, fillColor = {128, 128, 128}, fillPattern = FillPattern.Solid), Polygon(points = {{-18, 32}, {-10, 38}, {-10, 14}, {-18, 8}, {-18, 32}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 127}, fillPattern = FillPattern.Solid), Polygon(points = {{-20, 10}, {-20, 32}, {-16, 40}, {4, 30}, {4, 26}, {-16, 36}, {-18, 32}, {-18, 8}, {-20, 10}}, lineColor = {0, 0, 255}, fillColor = {191, 191, 0}, fillPattern = FillPattern.Solid), Polygon(points = {{-8, 46}, {12, 36}, {4, 30}, {-16, 40}, {-8, 46}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0}, fillPattern = FillPattern.Solid), Polygon(points = {{28, -22}, {48, -32}, {40, -38}, {20, -28}, {28, -22}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0}, fillPattern = FillPattern.Solid), Polygon(points = {{40, -38}, {48, -32}, {52, -40}, {44, -46}, {40, -38}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0}, fillPattern = FillPattern.Solid), Polygon(points = {{44, -46}, {52, -40}, {52, -62}, {44, -68}, {44, -46}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 127}, fillPattern = FillPattern.Solid), Polygon(points = {{20, -28}, {40, -38}, {44, -46}, {44, -68}, {42, -68}, {42, -46}, {40, -42}, {20, -32}, {20, -28}}, lineColor = {0, 0, 255}, fillColor = {191, 191, 0}, fillPattern = FillPattern.Solid), Polygon(points = {{48, -8}, {68, -18}, {60, -24}, {40, -14}, {48, -8}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0}, fillPattern = FillPattern.Solid), Polygon(points = {{60, -24}, {68, -18}, {72, -26}, {64, -32}, {60, -24}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0}, fillPattern = FillPattern.Solid), Polygon(points = {{64, -32}, {72, -26}, {72, -48}, {64, -54}, {64, -32}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 127}, fillPattern = FillPattern.Solid), Polygon(points = {{40, -14}, {60, -24}, {64, -32}, {64, -54}, {62, -54}, {62, -32}, {60, -28}, {40, -18}, {40, -14}}, lineColor = {0, 0, 255}, fillColor = {191, 191, 0}, fillPattern = FillPattern.Solid), Polygon(points = {{68, 6}, {88, -4}, {80, -10}, {60, 0}, {68, 6}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0}, fillPattern = FillPattern.Solid), Polygon(points = {{80, -10}, {88, -4}, {92, -12}, {84, -18}, {80, -10}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0}, fillPattern = FillPattern.Solid), Polygon(points = {{84, -18}, {92, -12}, {92, -34}, {84, -40}, {84, -18}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 127}, fillPattern = FillPattern.Solid), Polygon(points = {{60, 0}, {80, -10}, {84, -18}, {84, -40}, {82, -40}, {82, -18}, {80, -14}, {60, -4}, {60, 0}}, lineColor = {0, 0, 255}, fillColor = {191, 191, 0}, fillPattern = FillPattern.Solid), Polygon(points = {{-34, 26}, {-38, 18}, {-30, 24}, {-28, 30}, {-34, 26}}, lineColor = {128, 128, 128}, fillColor = {128, 128, 128}, fillPattern = FillPattern.Solid), Polygon(points = {{-38, 18}, {-30, 24}, {-30, 0}, {-38, -6}, {-38, 18}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 127}, fillPattern = FillPattern.Solid), Polygon(points = {{-40, -4}, {-40, 18}, {-36, 26}, {-16, 16}, {-16, 12}, {-36, 22}, {-38, 18}, {-38, -6}, {-40, -4}}, lineColor = {0, 0, 255}, fillColor = {191, 191, 0}, fillPattern = FillPattern.Solid), Polygon(points = {{-28, 32}, {-8, 22}, {-16, 16}, {-36, 26}, {-28, 32}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0}, fillPattern = FillPattern.Solid), Polygon(points = {{-54, 12}, {-58, 4}, {-50, 10}, {-48, 16}, {-54, 12}}, lineColor = {128, 128, 128}, fillColor = {128, 128, 128}, fillPattern = FillPattern.Solid), Polygon(points = {{-58, 4}, {-50, 10}, {-50, -14}, {-58, -20}, {-58, 4}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 127}, fillPattern = FillPattern.Solid), Polygon(points = {{-60, -18}, {-60, 4}, {-56, 12}, {-36, 2}, {-36, -2}, {-56, 8}, {-58, 4}, {-58, -20}, {-60, -18}}, lineColor = {0, 0, 255}, fillColor = {191, 191, 0}, fillPattern = FillPattern.Solid), Polygon(points = {{-48, 18}, {-28, 8}, {-36, 2}, {-56, 12}, {-48, 18}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0}, fillPattern = FillPattern.Solid), Polygon(points = {{-74, -4}, {-78, -12}, {-70, -6}, {-68, 0}, {-74, -4}}, lineColor = {128, 128, 128}, fillColor = {128, 128, 128}, fillPattern = FillPattern.Solid), Polygon(points = {{-78, -12}, {-70, -6}, {-70, -30}, {-78, -36}, {-78, -12}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 127}, fillPattern = FillPattern.Solid), Polygon(points = {{-80, -34}, {-80, -12}, {-76, -4}, {-56, -14}, {-56, -18}, {-76, -8}, {-78, -12}, {-78, -36}, {-80, -34}}, lineColor = {0, 0, 255}, fillColor = {191, 191, 0}, fillPattern = FillPattern.Solid), Polygon(points = {{-68, 2}, {-48, -8}, {-56, -14}, {-76, -4}, {-68, 2}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0}, fillPattern = FillPattern.Solid), Polygon(points = {{-64, -8}, {-4, -40}, {-4, -62}, {-64, -30}, {-64, -8}}, lineColor = {95, 95, 95}, fillColor = {75, 75, 75}, fillPattern = FillPattern.Solid), Polygon(points = {{-64, -8}, {-4, -40}, {74, 16}, {14, 48}, {-64, -8}}, lineColor = {95, 95, 95}, fillColor = {160, 160, 164}, fillPattern = FillPattern.Solid), Rectangle(extent = {{-98, 92}, {98, 62}}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, pattern = LinePattern.None), Text(extent = {{-100, 82}, {100, 54}}, lineColor = {0, 0, 0}, textString = "PSD-ecu2")}),
+          Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics={  Text(lineColor = {0, 0, 255}, extent = {{-100, -102}, {100, -140}}, textString = "%name"), Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{-4, -40}, {74, 16}, {74, -6}, {-4, -62}, {-4, -40}}, lineColor = {95, 95, 95}, fillColor = {175, 175, 175},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{8, -38}, {28, -48}, {20, -54}, {0, -44}, {8, -38}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{20, -54}, {28, -48}, {32, -56}, {24, -62}, {20, -54}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{24, -62}, {32, -56}, {32, -78}, {24, -84}, {24, -62}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 127},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{0, -44}, {20, -54}, {24, -62}, {24, -84}, {22, -84}, {22, -62}, {20, -58}, {0, -48}, {0, -44}}, lineColor = {0, 0, 255}, fillColor = {191, 191, 0},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{-14, 40}, {-18, 32}, {-10, 38}, {-8, 44}, {-14, 40}}, lineColor = {128, 128, 128}, fillColor = {128, 128, 128},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{-18, 32}, {-10, 38}, {-10, 14}, {-18, 8}, {-18, 32}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 127},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{-20, 10}, {-20, 32}, {-16, 40}, {4, 30}, {4, 26}, {-16, 36}, {-18, 32}, {-18, 8}, {-20, 10}}, lineColor = {0, 0, 255}, fillColor = {191, 191, 0},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{-8, 46}, {12, 36}, {4, 30}, {-16, 40}, {-8, 46}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{28, -22}, {48, -32}, {40, -38}, {20, -28}, {28, -22}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{40, -38}, {48, -32}, {52, -40}, {44, -46}, {40, -38}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{44, -46}, {52, -40}, {52, -62}, {44, -68}, {44, -46}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 127},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{20, -28}, {40, -38}, {44, -46}, {44, -68}, {42, -68}, {42, -46}, {40, -42}, {20, -32}, {20, -28}}, lineColor = {0, 0, 255}, fillColor = {191, 191, 0},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{48, -8}, {68, -18}, {60, -24}, {40, -14}, {48, -8}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{60, -24}, {68, -18}, {72, -26}, {64, -32}, {60, -24}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{64, -32}, {72, -26}, {72, -48}, {64, -54}, {64, -32}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 127},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{40, -14}, {60, -24}, {64, -32}, {64, -54}, {62, -54}, {62, -32}, {60, -28}, {40, -18}, {40, -14}}, lineColor = {0, 0, 255}, fillColor = {191, 191, 0},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{68, 6}, {88, -4}, {80, -10}, {60, 0}, {68, 6}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{80, -10}, {88, -4}, {92, -12}, {84, -18}, {80, -10}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{84, -18}, {92, -12}, {92, -34}, {84, -40}, {84, -18}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 127},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{60, 0}, {80, -10}, {84, -18}, {84, -40}, {82, -40}, {82, -18}, {80, -14}, {60, -4}, {60, 0}}, lineColor = {0, 0, 255}, fillColor = {191, 191, 0},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{-34, 26}, {-38, 18}, {-30, 24}, {-28, 30}, {-34, 26}}, lineColor = {128, 128, 128}, fillColor = {128, 128, 128},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{-38, 18}, {-30, 24}, {-30, 0}, {-38, -6}, {-38, 18}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 127},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{-40, -4}, {-40, 18}, {-36, 26}, {-16, 16}, {-16, 12}, {-36, 22}, {-38, 18}, {-38, -6}, {-40, -4}}, lineColor = {0, 0, 255}, fillColor = {191, 191, 0},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{-28, 32}, {-8, 22}, {-16, 16}, {-36, 26}, {-28, 32}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{-54, 12}, {-58, 4}, {-50, 10}, {-48, 16}, {-54, 12}}, lineColor = {128, 128, 128}, fillColor = {128, 128, 128},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{-58, 4}, {-50, 10}, {-50, -14}, {-58, -20}, {-58, 4}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 127},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{-60, -18}, {-60, 4}, {-56, 12}, {-36, 2}, {-36, -2}, {-56, 8}, {-58, 4}, {-58, -20}, {-60, -18}}, lineColor = {0, 0, 255}, fillColor = {191, 191, 0},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{-48, 18}, {-28, 8}, {-36, 2}, {-56, 12}, {-48, 18}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{-74, -4}, {-78, -12}, {-70, -6}, {-68, 0}, {-74, -4}}, lineColor = {128, 128, 128}, fillColor = {128, 128, 128},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{-78, -12}, {-70, -6}, {-70, -30}, {-78, -36}, {-78, -12}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 127},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{-80, -34}, {-80, -12}, {-76, -4}, {-56, -14}, {-56, -18}, {-76, -8}, {-78, -12}, {-78, -36}, {-80, -34}}, lineColor = {0, 0, 255}, fillColor = {191, 191, 0},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{-68, 2}, {-48, -8}, {-56, -14}, {-76, -4}, {-68, 2}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 0},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{-64, -8}, {-4, -40}, {-4, -62}, {-64, -30}, {-64, -8}}, lineColor = {95, 95, 95}, fillColor = {75, 75, 75},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Polygon(points = {{-64, -8}, {-4, -40}, {74, 16}, {14, 48}, {-64, -8}}, lineColor = {95, 95, 95}, fillColor = {160, 160, 164},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Rectangle(extent = {{-98, 92}, {98, 62}}, fillColor = {255, 255, 255},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, pattern = LinePattern.None), Text(extent = {{-100, 82}, {100, 54}}, lineColor = {0, 0, 0}, textString = "PSD-ecu2")}),
           Documentation(info = "<html>
 <p><b><span style=\"font-family: MS Shell Dlg 2;\">Power Split Power Train Controller without ON/OFF</span></b></p>
 <p><span style=\"font-family: MS Shell Dlg 2;\">This controller is derived from MBecu1, in which the basic description can be found.</span></p>
@@ -2444,7 +2650,7 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
           Placement(transformation(extent = {{66, -50}, {86, -30}})));
         Modelica.Blocks.Math.UnitConversions.To_rpm to_rpm annotation (
           Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {34, -70})));
-        Modelica.Blocks.Tables.CombiTable1D maxTau(tableOnFile = true, columns = {2}, fileName = mapsFileName, tableName = "maxIceTau") "gives the optimal spees ad a function of requested power" annotation (
+        Modelica.Blocks.Tables.CombiTable1D maxTau(columns = {2}, extrapolation = Modelica.Blocks.Types.Extrapolation.HoldLastPoint, fileName = mapsFileName, tableName = "maxIceTau", tableOnFile = true) "gives the optimal spees ad a function of requested power" annotation (
           Placement(transformation(extent = {{6, 68}, {26, 88}})));
         Modelica.Blocks.Nonlinear.VariableLimiter tauLimiter annotation (
           Placement(transformation(extent = {{48, 50}, {68, 70}})));
@@ -2483,7 +2689,9 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
           Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
           experiment(StopTime = 3, Interval = 0.01),
           experimentSetupOutput,
-          Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {-2, 0}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-98, 22}, {98, -16}}, textString = "%name")}),
+          Icon(coordinateSystem(initialScale = 0.1), graphics={  Rectangle(lineColor = {0, 0, 127}, fillColor = {255, 255, 255},
+                  fillPattern =                                                                                                                FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {-2, 0}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255},
+                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-98, 22}, {98, -16}}, textString = "%name")}),
           Documentation(info = "<html>
 <p>Genset Management System.</p>
 <p>The control logic commands the genset to deliver at the DC port the input power, using the optimal generator speed.</p>
@@ -2605,7 +2813,7 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
         parameter Real powLow = 3000 "hysteresis control lower limit";
         parameter Real powHigh = 5000 "hysteresis control higher limit";
         parameter Real powPerSoc = 100e3 "SOC loop gain";
-        parameter Real powMax = 100e3;
+        parameter Real powMax = 100e3 "Max power that can be requested as output";
         parameter Real socRef = 0.7;
         Modelica.Blocks.Nonlinear.Limiter limiter(uMin = 0, uMax = powMax) annotation (
           Placement(visible = true, transformation(origin = {12, 46}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -2675,76 +2883,6 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
       end EMS;
     end ECUs;
 
-    model GensetImGm "GenSet GMS+GEN+SEngine"
-      import Modelica.Constants.inf;
-      import Modelica.Constants.pi;
-      parameter Modelica.SIunits.Time OptiTime "Time parameter of the PI OptiSpeed controller";
-      parameter String mapsFileName = "maps.txt" "Name of the file containing data maps (names: maxIceTau, specificCons, optiSpeed)";
-      parameter Modelica.SIunits.AngularVelocity wIceStart = 167;
-      parameter Modelica.SIunits.AngularVelocity wGenMax;
-      parameter Modelica.SIunits.Torque maxTau = 200 "Max mechanical torque";
-      parameter Modelica.SIunits.Power maxPow = 20e3 "Max mechanical power";
-      Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor annotation (
-        Placement(transformation(extent = {{-8, -8}, {8, 8}}, rotation = 180, origin = {-24, -20})));
-      Modelica.Mechanics.Rotational.Sensors.PowerSensor IcePow annotation (
-        Placement(transformation(extent = {{24, -2}, {42, 16}})));
-      Modelica.Blocks.Interfaces.RealInput powRef(unit = "W") "Reference genset power" annotation (
-        Placement(transformation(extent = {{15, -15}, {-15, 15}}, rotation = 90, origin = {61, 115})));
-      Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation (
-        Placement(transformation(extent = {{90, 50}, {110, 70}})));
-      Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation (
-        Placement(transformation(extent = {{92, -70}, {112, -50}})));
-      Modelica.Blocks.Nonlinear.Limiter limiter(uMax = inf, uMin = 0) annotation (
-        Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = 90, origin = {-80, 54})));
-      SHEV.PowerTrain.Gensets.GMS0 myGMS(mapsFileName = mapsFileName) annotation (
-        Placement(transformation(extent = {{-70, 10}, {-50, 30}})));
-      EHPowerTrain.MapBased.MBOneFlange gen(wMax = wGenMax, mapsFileName = mapsFileName, mapsOnFile = true, powMax = maxPow, tauMax = maxTau, effTableName = "gensetDriveEffTable") annotation (
-        Placement(transformation(extent = {{68, 16}, {48, -4}})));
-      EHPowerTrain.MapBased.MBiceT01 mBiceT(mapsFileName = mapsFileName, wIceStart = wIceStart, mapsOnFile = true, maxTauName = "maxIceTau", specConsName = "specificCons") annotation (
-        Placement(transformation(extent = {{-34, -2}, {-14, 18}})));
-      Modelica.Blocks.Math.Gain gain(k = -1) annotation (
-        Placement(transformation(extent = {{-14, 30}, {6, 50}})));
-      Modelica.Blocks.Math.Gain gain1(k = 1) annotation (
-        Placement(visible = true, transformation(origin = {-60, -8}, extent = {{-6, -6}, {6, 6}}, rotation = 90)));
-      Modelica.Blocks.Continuous.Integrator toGrams(k = 1 / 3600) annotation (
-        Placement(transformation(extent = {{18, -42}, {38, -22}})));
-    equation
-      connect(gain1.u, speedSensor.w) annotation (
-        Line(points = {{-60, -15.2}, {-60, -20}, {-32.8, -20}}, color = {0, 0, 127}));
-      connect(myGMS.Wmecc, gain1.y) annotation (
-        Line(points = {{-59.9, 8.5}, {-60, 8.5}, {-60, -1.4}}, color = {0, 0, 127}));
-      connect(limiter.u, powRef) annotation (
-        Line(points = {{-80, 66}, {-80, 80}, {61, 80}, {61, 115}}, color = {0, 0, 127}, smooth = Smooth.None));
-      connect(limiter.y, myGMS.pRef) annotation (
-        Line(points = {{-80, 43}, {-80, 20}, {-72, 20}}, color = {0, 0, 127}, smooth = Smooth.None));
-      connect(IcePow.flange_b, gen.flange_a) annotation (
-        Line(points = {{42, 7}, {46, 7}, {46, 6}, {48, 6}}, color = {0, 0, 0}));
-      connect(gen.pin_n, pin_p) annotation (
-        Line(points = {{68, 10}, {80, 10}, {80, 60}, {100, 60}}, color = {0, 0, 255}));
-      connect(gen.pin_p, pin_n) annotation (
-        Line(points = {{68, 2}, {78, 2}, {78, -60}, {102, -60}}, color = {0, 0, 255}));
-      connect(mBiceT.nTauRef, myGMS.throttle) annotation (
-        Line(points = {{-30, -2}, {-30, -6}, {-49, -6}, {-49, 14}}, color = {0, 0, 127}));
-      connect(IcePow.flange_a, mBiceT.flange_a) annotation (
-        Line(points = {{24, 7}, {6, 7}, {6, 10}, {-14, 10}}, color = {0, 0, 0}));
-      connect(speedSensor.flange, mBiceT.flange_a) annotation (
-        Line(points = {{-16, -20}, {-6, -20}, {-6, 10}, {-14, 10}}, color = {0, 0, 0}));
-      connect(gain.u, myGMS.tRef) annotation (
-        Line(points = {{-16, 40}, {-40, 40}, {-40, 26}, {-49, 26}}, color = {0, 0, 127}));
-      connect(gain.y, gen.tauRef) annotation (
-        Line(points = {{7, 40}, {49, 40}, {49, 14.6}}, color = {0, 0, 127}));
-      connect(toGrams.u, mBiceT.fuelCons) annotation (
-        Line(points = {{16, -32}, {12, -32}, {8, -32}, {8, -6}, {-18, -6}, {-18, -1}}, color = {0, 0, 127}));
-      annotation (
-        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -60}, {100, 100}})),
-        experiment(StopTime = 20, Interval = 0.01),
-        experimentSetupOutput,
-        Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {100, 100}}), graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 0}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{-98, 94}, {78, 68}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, textString = "%name"), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-20, 0}, {26, -14}}), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-44, 30}, {-14, -44}}), Line(points = {{-72, 30}, {-72, 6}}), Polygon(points = {{-72, -2}, {-78, 8}, {-66, 8}, {-72, -2}}), Rectangle(extent = {{-96, 38}, {-50, -48}}), Rectangle(fillColor = {95, 95, 95}, fillPattern = FillPattern.Solid, extent = {{-96, -6}, {-50, -24}}), Rectangle(fillColor = {135, 135, 135}, fillPattern = FillPattern.Solid, extent = {{-78, -24}, {-68, -44}}), Polygon(points = {{-72, 34}, {-78, 24}, {-66, 24}, {-72, 34}}), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.HorizontalCylinder, extent = {{6, 30}, {62, -44}}), Line(points = {{94, 60}, {74, 60}, {74, 18}, {62, 18}}, color = {0, 0, 255}), Line(points = {{100, -60}, {74, -60}, {74, -28}, {62, -28}}, color = {0, 0, 255})}),
-        Documentation(info = "<html>
-<p>Convertitore primario con ICE e generatore</p>
-
-</html>"));
-    end GensetImGm;
     annotation (
       Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Line(points = {{-80, -84}, {-80, 68}}, color = {0, 0, 0}, smooth = Smooth.None), Line(points = {{-88, -80}, {78, -80}}, color = {0, 0, 0}, smooth = Smooth.None), Polygon(points = {{94, -80}, {78, -74}, {78, -86}, {94, -80}}, lineColor = {0, 0, 0}, smooth = Smooth.None), Polygon(points = {{8, 0}, {-8, 6}, {-8, -6}, {8, 0}}, lineColor = {0, 0, 0}, smooth = Smooth.None, origin = {-80, 76}, rotation = 90), Line(points = {{-84, 40}, {-14, 40}}, color = {0, 0, 0}, smooth = Smooth.None), Line(points = {{-14, 40}, {-4, 2}, {22, -32}, {62, -44}, {62, -80}}, color = {0, 0, 0}, smooth = Smooth.None)}));
   end MapBased;
@@ -2773,8 +2911,7 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
       model StartASMA "Compares U/f=cost and mains start-ups"
         //
         import Modelica.Constants.pi;
-        Modelica.Electrical.Machines.Utilities.TerminalBox terminalBox(
-            terminalConnection="Y")                                    annotation (
+        Modelica.Electrical.Machines.Utilities.TerminalBox terminalBox(terminalConnection = "Y") annotation (
           Placement(visible = true, transformation(extent = {{4, 38}, {24, 58}}, rotation = 0)));
         Modelica.Electrical.Machines.BasicMachines.AsynchronousInductionMachines.AIM_SquirrelCage aimc annotation (
           Placement(visible = true, transformation(extent = {{4, 8}, {24, 28}}, rotation = 0)));
@@ -2794,8 +2931,7 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
           Placement(visible = true, transformation(origin = {61, -1}, extent = {{-7, -7}, {7, 7}}, rotation = 270)));
         Modelica.Mechanics.Rotational.Sources.Torque torque1 annotation (
           Placement(visible = true, transformation(origin = {76, -56}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
-        Modelica.Electrical.Machines.Utilities.TerminalBox terminalBox1(
-            terminalConnection="Y")                                     annotation (
+        Modelica.Electrical.Machines.Utilities.TerminalBox terminalBox1(terminalConnection = "Y") annotation (
           Placement(visible = true, transformation(extent = {{10, -36}, {30, -16}}, rotation = 0)));
         Modelica.Electrical.Machines.BasicMachines.AsynchronousInductionMachines.AIM_SquirrelCage aimc0 annotation (
           Placement(visible = true, transformation(extent = {{10, -66}, {30, -46}}, rotation = 0)));
@@ -2869,7 +3005,7 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
         connect(actuator.Westar, logic.Westar) annotation (
           Line(points = {{-60.57, 15.9}, {-61.35, 15.9}, {-61.35, 16}, {-53, 16}}, color = {0, 0, 127}));
         connect(actuator.U, signalV.v) annotation (
-          Line(points={{-85.1,10},{-88,10},{-88,12},{-88,40},{-72,40},{-72,42.2}},              color = {0, 0, 127}));
+          Line(points = {{-85.1, 10}, {-88, 10}, {-88, 12}, {-88, 40}, {-72, 40}, {-72, 42.2}}, color = {0, 0, 127}));
         connect(pUp.pc, signalV.plug_p) annotation (
           Line(points = {{-52, 53}, {-62, 53}}, color = {0, 0, 255}));
         connect(signalV.plug_n, star.plug_p) annotation (
@@ -2958,15 +3094,15 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
         connect(integrator.y, fromPark.phi) annotation (
           Line(points = {{-10, 5}, {-10, 30}}, color = {0, 0, 127}));
         connect(groundM1.p, terminalBox1.starpoint) annotation (
-          Line(points={{24,14},{30,14}},      color = {0, 0, 255}));
+          Line(points = {{24, 14}, {30, 14}}, color = {0, 0, 255}));
         connect(firstOrder1.u, fromPark.y) annotation (
           Line(points = {{8.4, 42}, {1, 42}}, color = {0, 0, 127}));
         connect(firstOrder1.y, signalCurr1.i) annotation (
-          Line(points={{26.8,42},{28,42}},      color = {0, 0, 127}));
+          Line(points = {{26.8, 42}, {28, 42}}, color = {0, 0, 127}));
         connect(tqRef.y, myMTPA.torqueReq) annotation (
           Line(points = {{-75, -28}, {-66, -28}, {-66, 48}, {-50, 48}}, color = {0, 0, 127}));
         annotation (
-          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -80}, {120, 80}}, initialScale = 0.1), graphics={  Text(origin = {-56, -50}, lineColor = {238, 46, 47}, extent = {{30, -4}, {98, -20}}, textString = "torque constant=1.564 Nm/A"), Rectangle(lineColor = {238, 46, 47}, pattern = LinePattern.Dash, extent = {{6, 62}, {54, 26}}), Text(lineColor = {238, 46, 47}, pattern = LinePattern.Dash, extent = {{52, 70}, {8, 66}}, textString = "simulates inverter")}),
+          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -80}, {120, 80}}, initialScale = 0.1), graphics = {Text(origin = {-56, -50}, lineColor = {238, 46, 47}, extent = {{30, -4}, {98, -20}}, textString = "torque constant=1.564 Nm/A"), Rectangle(lineColor = {238, 46, 47}, pattern = LinePattern.Dash, extent = {{6, 62}, {54, 26}}), Text(lineColor = {238, 46, 47}, pattern = LinePattern.Dash, extent = {{52, 70}, {8, 66}}, textString = "simulates inverter")}),
           __Dymola_experimentSetupOutput,
           Documentation(info = "<html>
 <p>Permanent magnet synchronous machine drive with MTPA control specifically designed for isotropic machines.</p>
@@ -3038,17 +3174,17 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
         connect(integrator.y, fromPark.phi) annotation (
           Line(points = {{-12, 109}, {-12, 134}}, color = {0, 0, 127}));
         connect(groundM1.p, terminalBox1.starpoint) annotation (
-          Line(points={{22,118},{28,118}},      color = {0, 0, 255}));
+          Line(points = {{22, 118}, {28, 118}}, color = {0, 0, 255}));
         connect(firstOrder1.u, fromPark.y) annotation (
           Line(points = {{6.4, 146}, {-1, 146}}, color = {0, 0, 127}));
         connect(firstOrder1.y, signalCurr1.i) annotation (
-          Line(points={{24.8,146},{26,146}},      color = {0, 0, 127}));
+          Line(points = {{24.8, 146}, {26, 146}}, color = {0, 0, 127}));
         connect(tqRef.y, myMTPA.torqueReq) annotation (
           Line(points = {{-77, 110}, {-68, 110}, {-68, 152}, {-52, 152}}, color = {0, 0, 127}));
         connect(inertia.flange_b, tRes.flange) annotation (
           Line(points = {{90, 94}, {96, 94}}, color = {0, 0, 0}));
         annotation (
-          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, 40}, {120, 180}}), graphics={  Rectangle(extent = {{4, 166}, {52, 130}}, lineColor = {238, 46, 47}, pattern = LinePattern.Dash), Text(extent = {{50, 172}, {6, 170}}, lineColor = {238, 46, 47}, pattern = LinePattern.Dash, textString = "simulates inverter")}),
+          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, 40}, {120, 180}}), graphics = {Rectangle(extent = {{4, 166}, {52, 130}}, lineColor = {238, 46, 47}, pattern = LinePattern.Dash), Text(extent = {{50, 172}, {6, 170}}, lineColor = {238, 46, 47}, pattern = LinePattern.Dash, textString = "simulates inverter")}),
           __Dymola_experimentSetupOutput,
           Documentation(info = "<html>
 <p>Permanent magnet synchronous machine drive with MTPA control specifically designed for isotropic machines.</p>
@@ -3095,11 +3231,11 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
         connect(inertia.flange_b, tqRes.flange) annotation (
           Line(points = {{54, -6}, {80, -6}}));
         connect(logic.Tstar, tqReq.y) annotation (
-          Line(points={{-16.1,-44.1},{-10,-44.1},{-10,-44},{-1,-44}},          color = {0, 0, 127}));
+          Line(points = {{-16.1, -44.1}, {-10, -44.1}, {-10, -44}, {-1, -44}}, color = {0, 0, 127}));
         connect(genSines.Westar, logic.Westar) annotation (
           Line(points = {{-53.1, -18.43}, {-54.1, -18.43}, {-54.1, -36.43}, {-52.6, -36.43}, {-52.6, -38}, {-39, -38}}, color = {0, 0, 127}));
         connect(genSines.U, signalV.v) annotation (
-          Line(points={{-59,6.1},{-58,6.1},{-58,12.2}},        color = {0, 0, 127}));
+          Line(points = {{-59, 6.1}, {-58, 6.1}, {-58, 12.2}}, color = {0, 0, 127}));
         connect(genSines.Ustar, logic.Ustar) annotation (
           Line(points = {{-64.9, -18.43}, {-63.9, -18.43}, {-63.9, -50}, {-39, -50}}, color = {0, 0, 127}));
         connect(terminalBox.plug_sn, aimc.plug_sn) annotation (
@@ -3117,9 +3253,9 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
         connect(logic.Wm, speedSensor.w) annotation (
           Line(points = {{-28.1, -55.3}, {-28.1, -62.3}, {61, -62.3}, {61, -32.7}}, color = {0, 0, 127}));
         connect(pUp.plug_p, signalV.plug_p) annotation (
-          Line(points={{-38,23},{-48,23},{-48,23},{-48,23}},          color = {0, 0, 255}));
+          Line(points = {{-38, 23}, {-48, 23}, {-48, 23}, {-48, 23}}, color = {0, 0, 255}));
         connect(pUp.plug_n, iUp.plug_p) annotation (
-          Line(points={{-20,23},{-18,23},{-18,40},{-14,40},{-14,40}},            color = {0, 0, 255}));
+          Line(points = {{-20, 23}, {-18, 23}, {-18, 40}, {-14, 40}, {-14, 40}}, color = {0, 0, 255}));
         annotation (
           experimentSetupOutput,
           Documentation(info = "<html><head></head><body><p><font size=\"5\">This system simulates variable-frequency start-up of an asyncronous motor.</font></p>
@@ -3138,7 +3274,7 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
       </body></html>"),
           experimentSetupOutput,
           Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -80}, {100, 60}})),
-          Diagram(coordinateSystem(extent = {{-100, -80}, {100, 60}}, preserveAspectRatio = false), graphics={  Rectangle(origin = {-57, 26}, lineColor = {255, 0, 0}, pattern = LinePattern.Dash, extent = {{-15, 10}, {15, -48}}), Text(origin = {-30, -1}, extent = {{-8, 3}, {8, -3}}, textString = "inverter")}),
+          Diagram(coordinateSystem(extent = {{-100, -80}, {100, 60}}, preserveAspectRatio = false), graphics = {Rectangle(origin = {-57, 26}, lineColor = {255, 0, 0}, pattern = LinePattern.Dash, extent = {{-15, 10}, {15, -48}}), Text(origin = {-30, -1}, extent = {{-8, 3}, {8, -3}}, textString = "inverter")}),
           experiment(StartTime = 0, StopTime = 12, Tolerance = 0.0001, Interval = 0.0024),
           __OpenModelica_commandLineOptions = "");
       end tqFollowing;
@@ -3169,9 +3305,7 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
           Line(points = {{110, 0}, {86, 0}, {63, 0}}, color = {0, 0, 127}));
         annotation (
           Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -40}, {100, 40}})),
-          Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255},
-                  fillPattern =                                                                                                                                                                                                   FillPattern.Solid), Line(points = {{-62, -62}, {-62, 64}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-70, 54}, {-62, 66}, {-56, 54}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-76, -54}, {68, -54}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-7, -6}, {1, 6}, {7, -6}}, color = {0, 0, 127}, smooth = Smooth.None, origin = {65, -54}, rotation = 270), Line(points = {{-68, -62}, {2, 28}, {54, 28}}, color = {0, 0, 127}, smooth = Smooth.None), Text(extent = {{-50, 68}, {-14, 40}}, lineColor = {0, 0, 127}, textString = "I"), Line(points = {{-69, 27}, {-53, 27}}, color = {0, 0, 127}, smooth = Smooth.None), Text(extent = {{-100, 144}, {98, 106}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255},
-                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, textString = "%name")}),
+          Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Line(points = {{-62, -62}, {-62, 64}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-70, 54}, {-62, 66}, {-56, 54}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-76, -54}, {68, -54}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-7, -6}, {1, 6}, {7, -6}}, color = {0, 0, 127}, smooth = Smooth.None, origin = {65, -54}, rotation = 270), Line(points = {{-68, -62}, {2, 28}, {54, 28}}, color = {0, 0, 127}, smooth = Smooth.None), Text(extent = {{-50, 68}, {-14, 40}}, lineColor = {0, 0, 127}, textString = "I"), Line(points = {{-69, 27}, {-53, 27}}, color = {0, 0, 127}, smooth = Smooth.None), Text(extent = {{-100, 144}, {98, 106}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, textString = "%name")}),
           __OpenModelica_commandLineOptions = "");
       end DWToI;
 
@@ -3222,9 +3356,7 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
           Line(points = {{60, -34}, {60, -34}, {60, -40}, {-120, -40}}, color = {0, 0, 127}));
         annotation (
           Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -80}, {100, 80}})),
-          Icon(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1), graphics={  Rectangle(lineColor = {0, 0, 127}, fillColor = {255, 255, 255},
-                  fillPattern =                                                                                                                                             FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(lineColor = {0, 0, 255}, fillColor = {255, 255, 255},
-                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, extent = {{-100, 144}, {98, 106}}, textString = "%name"), Line(points = {{-4, 28}, {8, 48}, {28, 48}, {48, 8}, {70, 8}, {82, 28}}), Line(points = {{-6, 4}, {6, 24}, {26, 24}, {46, -16}, {68, -16}, {80, 4}}), Line(points = {{-8, -16}, {4, 4}, {24, 4}, {44, -36}, {66, -36}, {78, -16}}), Rectangle(extent = {{-88, 10}, {-60, -4}}), Polygon(points = {{-60, 18}, {-34, 4}, {-60, -10}, {-60, 18}}), Text(lineColor = {0, 0, 127}, extent = {{-60, -78}, {-102, -46}}, textString = "U"), Text(origin = {0, -4}, lineColor = {0, 0, 127}, extent = {{-62, 48}, {-98, 78}}, textString = "W")}),
+          Icon(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1), graphics = {Rectangle(lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 144}, {98, 106}}, textString = "%name"), Line(points = {{-4, 28}, {8, 48}, {28, 48}, {48, 8}, {70, 8}, {82, 28}}), Line(points = {{-6, 4}, {6, 24}, {26, 24}, {46, -16}, {68, -16}, {80, 4}}), Line(points = {{-8, -16}, {4, 4}, {24, 4}, {44, -36}, {66, -36}, {78, -16}}), Rectangle(extent = {{-88, 10}, {-60, -4}}), Polygon(points = {{-60, 18}, {-34, 4}, {-60, -10}, {-60, 18}}), Text(lineColor = {0, 0, 127}, extent = {{-60, -78}, {-102, -46}}, textString = "U"), Text(origin = {0, -4}, lineColor = {0, 0, 127}, extent = {{-62, 48}, {-98, 78}}, textString = "W")}),
           Documentation(info = "<html>
 <p>This class produces a three-phase voltage system to variable-frequency control of an asynchronous motor.</p>
 <p>The output voltages constitute a three-phase system of quasi-sinusoidal shapes, created according to the following equations:</p>
@@ -3296,9 +3428,7 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
         end if;
         annotation (
           Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
-          Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255},
-                  fillPattern =                                                                                                                                                                                                   FillPattern.Solid), Text(extent = {{-100, 144}, {98, 106}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255},
-                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, textString = "%name"), Line(points = {{-67, -26}, {-51, -26}, {-51, -22}, {-49, -15}, {-40, -8}, {18, 25}, {26, 32}, {29, 37}, {29, 42}, {49, 42}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-66, 8}, {78, 8}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-12, -44}, {-12, 82}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-20, 72}, {-12, 84}, {-6, 72}}, color = {0, 0, 127}, smooth = Smooth.None), Text(extent = {{16, 72}, {52, 44}}, lineColor = {0, 0, 127}, textString = "DW"), Line(points = {{-7, -6}, {1, 6}, {7, -6}}, color = {0, 0, 127}, smooth = Smooth.None, origin = {75, 8}, rotation = 270), Text(extent = {{60, -6}, {96, -34}}, lineColor = {0, 0, 127}, textString = "T")}));
+          Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{-100, 144}, {98, 106}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, textString = "%name"), Line(points = {{-67, -26}, {-51, -26}, {-51, -22}, {-49, -15}, {-40, -8}, {18, 25}, {26, 32}, {29, 37}, {29, 42}, {49, 42}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-66, 8}, {78, 8}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-12, -44}, {-12, 82}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-20, 72}, {-12, 84}, {-6, 72}}, color = {0, 0, 127}, smooth = Smooth.None), Text(extent = {{16, 72}, {52, 44}}, lineColor = {0, 0, 127}, textString = "DW"), Line(points = {{-7, -6}, {1, 6}, {7, -6}}, color = {0, 0, 127}, smooth = Smooth.None, origin = {75, 8}, rotation = 270), Text(extent = {{60, -6}, {96, -34}}, lineColor = {0, 0, 127}, textString = "T")}));
       end TorqueToDW;
 
       block ControlLogic "Follows upper fig. 12.15 from FEPE Book"
@@ -3336,7 +3466,7 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
           Placement(visible = true, transformation(origin = {66, -36}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
         Modelica.Blocks.Logical.GreaterThreshold toMaxSpeed(threshold = limWm.uMax) annotation (
           Placement(visible = true, transformation(origin = {-10, 28}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-        Modelica.Blocks.Sources.RealExpression toIstar(y = sqrt(Tstar * tauToDW.y / (3 * Rs))) annotation (
+        Modelica.Blocks.Sources.RealExpression toIstar(y = sqrt(abs(Tstar * tauToDW.y / (3 * Rs)))) annotation (
           Placement(transformation(extent = {{-30, -18}, {8, 0}})));
       equation
         connect(toMaxSpeed.u, limWm.u) annotation (
@@ -3366,11 +3496,10 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
         connect(toIstar.y, add1.u1) annotation (
           Line(points = {{9.9, -9}, {22, -9}, {22, -6}, {38, -6}}, color = {0, 0, 127}));
         annotation (
-          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-120, -80}, {120, 80}}, initialScale = 0.1), graphics={  Text(origin = {0, -4}, lineColor = {0, 0, 127}, extent = {{-48, -12}, {22, -22}}, textString = "This is the first equality \nin 12.14 of FEPE Book")}),
-          Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255},
-                  fillPattern =                                                                                                                                                                                                   FillPattern.Solid), Line(points = {{-64, -54}, {-64, 72}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-72, 62}, {-64, 74}, {-58, 62}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-78, -46}, {66, -46}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-7, -6}, {1, 6}, {7, -6}}, color = {0, 0, 127}, smooth = Smooth.None, origin = {59, -45}, rotation = 270), Line(points = {{-70, -32}, {0, 36}, {52, 36}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-71, -27}, {-55, -27}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-71, 35}, {-55, 35}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-2, -18}, {-2, -50}, {-2, -40}}, color = {0, 0, 127}, smooth = Smooth.None), Text(extent = {{-102, 144}, {96, 106}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255},
-                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, textString = "%name"), Text(extent = {{58, 72}, {94, 44}}, lineColor = {0, 0, 127}, textString = "W"), Text(extent = {{64, -48}, {96, -74}}, lineColor = {0, 0, 127}, textString = "U")}),
-          Documentation(info="<html>
+          Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-120, -80}, {120, 80}}, initialScale = 0.1), graphics = {Text(origin = {0, -4}, lineColor = {0, 0, 127}, extent = {{-48, -12}, {22, -22}}, textString = "This is the first equality \nin 12.14 of FEPE Book"), Text(origin = {0, -16}, lineColor = {0, 0, 127}, extent = {{-48, -12}, {22, -22}}, textString = "The sqrt argument might become negative
+because of roundoff errors. This justifies abs()")}),
+          Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Line(points = {{-64, -54}, {-64, 72}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-72, 62}, {-64, 74}, {-58, 62}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-78, -46}, {66, -46}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-7, -6}, {1, 6}, {7, -6}}, color = {0, 0, 127}, smooth = Smooth.None, origin = {59, -45}, rotation = 270), Line(points = {{-70, -32}, {0, 36}, {52, 36}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-71, -27}, {-55, -27}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-71, 35}, {-55, 35}}, color = {0, 0, 127}, smooth = Smooth.None), Line(points = {{-2, -18}, {-2, -50}, {-2, -40}}, color = {0, 0, 127}, smooth = Smooth.None), Text(extent = {{-102, 144}, {96, 106}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, textString = "%name"), Text(extent = {{58, 72}, {94, 44}}, lineColor = {0, 0, 127}, textString = "W"), Text(extent = {{64, -48}, {96, -74}}, lineColor = {0, 0, 127}, textString = "U")}),
+          Documentation(info = "<html>
 <p>This class produces a three-phase voltage system to variable-frequency control of an asynchronous motor.</p>
 <p>The output voltages constitute a three-phase system of quasi-sinusoidal shapes, created according to the following equations:</p>
 <p>Wel=Wmecc*PolePairs+DeltaWel</p>
@@ -3385,11 +3514,7 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
 </html>"),experiment(StopTime = 500, Interval = 0.1));
       end ControlLogic;
       annotation (
-        Icon(graphics={  Ellipse(extent = {{-100, 100}, {100, -98}}, lineColor = {0, 0, 0},
-                lineThickness =                                                                             0.5, fillColor = {255, 255, 255},
-                fillPattern =                                                                                                                               FillPattern.Solid), Text(extent = {{-100, 38}, {100, -40}}, lineColor = {28, 108, 200},
-                lineThickness =                                                                                                                                                                                                        0.5, fillColor = {255, 255, 255},
-                fillPattern =                                                                                                                                                                                                        FillPattern.Solid, textStyle = {TextStyle.Bold}, textString = "A")}));
+        Icon(graphics = {Ellipse(extent = {{-100, 100}, {100, -98}}, lineColor = {0, 0, 0}, lineThickness = 0.5, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{-100, 38}, {100, -40}}, lineColor = {28, 108, 200}, lineThickness = 0.5, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, textStyle = {TextStyle.Bold}, textString = "A")}));
     end ASMArelated;
 
     package SMArelated "Models related to Synchronos Machine Electric Drives"
@@ -3471,8 +3596,7 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
         torqueReq = 1.5 * pp * Psi * Ipark * cos(gammaStar);
         assert(gammaStar < 0.98 * PI / 2, "\n***\nmaximum gamma reached\n***\n");
         annotation (
-          Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics={  Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255},
-                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Text(extent = {{-100, 142}, {100, 106}}, lineColor = {0, 0, 127}, textString = "%name"), Text(extent = {{-98, 28}, {98, -28}}, lineColor = {0, 0, 127}, textString = "MTPAi")}),
+          Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{-100, 142}, {100, 106}}, lineColor = {0, 0, 127}, textString = "%name"), Text(extent = {{-98, 28}, {98, -28}}, lineColor = {0, 0, 127}, textString = "MTPAi")}),
           Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2})));
       end MTPAi;
 
@@ -3563,8 +3687,7 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
         T2 = 1.5 * pp * (Lq - Ld) / 2 * Ipark ^ 2 * sin(2 * gammaStar);
         torqueReq = T1 + T2;
         annotation (
-          Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics={  Text(extent = {{-98, -110}, {102, -146}}, lineColor = {0, 0, 127}, textString = "%name"), Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255},
-                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Text(extent = {{-100, 26}, {100, -26}}, lineColor = {0, 0, 127}, textString = "MTPAa")}),
+          Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics = {Text(extent = {{-98, -110}, {102, -146}}, lineColor = {0, 0, 127}, textString = "%name"), Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{-100, 26}, {100, -26}}, lineColor = {0, 0, 127}, textString = "MTPAa")}),
           Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2})),
           experiment(StartTime = 0, StopTime = 8, Tolerance = 0.0001, Interval = 0.0016));
       end MTPAa;
@@ -3579,9 +3702,6 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
         parameter Modelica.SIunits.Inductance Lq = 1.1 "Basic quadrature-axis inductance (H)";
         parameter Modelica.SIunits.Voltage Umax = 100 "Max rms voltage per phase to the motor";
         parameter Modelica.SIunits.Current Ilim = 100 "nominal current (rms per phase)";
-      protected
-        parameter Modelica.SIunits.Current IlimPk = sqrt(2) * Ilim "current limit (A peak)";
-      public
         Modelica.Blocks.Interfaces.RealInput torqueReq annotation (
           Placement(transformation(extent = {{-140, 40}, {-100, 80}}), iconTransformation(extent = {{-140, 40}, {-100, 80}})));
         Modelica.Blocks.Interfaces.RealInput wMech annotation (
@@ -3595,36 +3715,40 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
         MTPAa mTPAa(Ipm = Ipm, pp = pp, Rs = Rs, Ld = Ld, Lq = Lq, Umax = Umax) annotation (
           Placement(transformation(extent = {{6, -36}, {26, -16}})));
         Modelica.Blocks.Math.Feedback feedback annotation (
-          Placement(transformation(extent = {{38, 28}, {58, 48}})));
+          Placement(visible = true, transformation(extent = {{38, 14}, {58, 34}}, rotation = 0)));
         Modelica.Blocks.Sources.Constant Ilim_(k = IlimPk) annotation (
-          Placement(visible = true, transformation(origin = {48, 10}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
+          Placement(visible = true, transformation(origin = {48, 0}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
         Modelica.Blocks.Continuous.FirstOrder firstOrder(T = 0.01, k = gain) annotation (
-          Placement(transformation(extent = {{56, 68}, {36, 88}})));
+          Placement(visible = true, transformation(extent = {{60, 50}, {40, 70}}, rotation = 0)));
         Modelica.Blocks.Nonlinear.Limiter limiter1(uMax = 1e99, uMin = 0) annotation (
-          Placement(visible = true, transformation(origin = {2, 80}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+          Placement(visible = true, transformation(origin = {6, 60}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
         Modelica.Blocks.Math.Add add1(k1 = -1) annotation (
-          Placement(visible = true, transformation(origin = {-34, 22}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+          Placement(visible = true, transformation(origin = {-34, 8}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
         Modelica.Blocks.Continuous.FirstOrder firstOrder1(T = 0.01, k = 1) annotation (
-          Placement(transformation(extent = {{-70, 70}, {-50, 90}})));
+          Placement(visible = true, transformation(extent = {{-74, 50}, {-54, 70}}, rotation = 0)));
         Modelica.Blocks.Logical.GreaterThreshold limiting(threshold = IlimPk / 1e6) annotation (
-          Placement(transformation(extent = {{-18, 40}, {2, 60}})));
+          Placement(visible = true, transformation(extent = {{-14, 18}, {6, 38}}, rotation = 0)));
+      protected
+        parameter Modelica.SIunits.Current IlimPk = sqrt(2) * Ilim "current limit (A peak)";
       equation
-        connect(Ilim_.y, feedback.u2) annotation (
-          Line(points = {{48, 21}, {48, 21}, {48, 30}}, color = {0, 0, 127}));
-        connect(feedback.u1, mTPAa.Ipark) annotation (
-          Line(points = {{40, 38}, {16, 38}, {16, 32}, {16, 8}, {16, -15}}, color = {0, 0, 127}));
-        connect(firstOrder.u, feedback.y) annotation (
-          Line(points = {{58, 78}, {72, 78}, {72, 38}, {57, 38}}, color = {0, 0, 127}));
-        connect(firstOrder.y, limiter1.u) annotation (
-          Line(points = {{35, 78}, {14, 78}, {14, 80}}, color = {0, 0, 127}));
-        connect(limiter1.y, add1.u1) annotation (
-          Line(points = {{-9, 80}, {-16, 80}, {-28, 80}, {-28, 34}}, color = {0, 0, 127}));
         connect(firstOrder1.y, add1.u2) annotation (
-          Line(points = {{-49, 80}, {-46, 80}, {-40, 80}, {-40, 34}}, color = {0, 0, 127}));
+          Line(points = {{-53, 60}, {-40, 60}, {-40, 20}}, color = {0, 0, 127}));
         connect(firstOrder1.u, torqueReq) annotation (
-          Line(points = {{-72, 80}, {-86, 80}, {-86, 60}, {-120, 60}}, color = {0, 0, 127}));
+          Line(points = {{-76, 60}, {-120, 60}}, color = {0, 0, 127}));
+        connect(limiting.u, add1.u1) annotation (
+          Line(points = {{-16, 28}, {-28, 28}, {-28, 20}}, color = {0, 0, 127}));
         connect(add1.y, mTPAa.torqueReq) annotation (
-          Line(points = {{-34, 11}, {-34, 11}, {-34, 14}, {-34, -20}, {4, -20}}, color = {0, 0, 127}));
+          Line(points = {{-34, -3}, {-34, -20}, {4, -20}}, color = {0, 0, 127}));
+        connect(limiter1.y, add1.u1) annotation (
+          Line(points = {{-5, 60}, {-28, 60}, {-28, 20}}, color = {0, 0, 127}));
+        connect(firstOrder.y, limiter1.u) annotation (
+          Line(points = {{39, 60}, {18, 60}}, color = {0, 0, 127}));
+        connect(firstOrder.u, feedback.y) annotation (
+          Line(points = {{62, 60}, {72, 60}, {72, 24}, {57, 24}}, color = {0, 0, 127}));
+        connect(feedback.u1, mTPAa.Ipark) annotation (
+          Line(points = {{40, 24}, {16, 24}, {16, -15}}, color = {0, 0, 127}));
+        connect(Ilim_.y, feedback.u2) annotation (
+          Line(points = {{48, 11}, {48, 16}}, color = {0, 0, 127}));
         connect(mTPAa.uDC, uDC) annotation (
           Line(points = {{4, -26}, {-68, -26}, {-68, 0}, {-120, 0}}, color = {0, 0, 127}));
         connect(mTPAa.wMech, wMech) annotation (
@@ -3633,12 +3757,9 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
           Line(points = {{27, -20}, {27, -20}, {86, -20}, {86, 60}, {110, 60}}, color = {0, 0, 127}));
         connect(mTPAa.Iq, Iq) annotation (
           Line(points = {{27, -32}, {27, -32}, {86, -32}, {86, -60}, {110, -60}}, color = {0, 0, 127}));
-        connect(limiting.u, add1.u1) annotation (
-          Line(points = {{-20, 50}, {-28, 50}, {-28, 34}}, color = {0, 0, 127}));
         annotation (
-          Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics={  Text(extent = {{-100, 142}, {100, 106}}, lineColor = {0, 0, 127}, textString = "%name"), Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255},
-                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid), Text(extent = {{-100, 24}, {100, -26}}, lineColor = {0, 0, 127}, textString = "MTPAal")}),
-          Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2})),
+          Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics = {Text(extent = {{-100, 142}, {100, 106}}, lineColor = {0, 0, 127}, textString = "%name"), Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{-100, 24}, {100, -26}}, lineColor = {0, 0, 127}, textString = "MTPAal")}),
+          Diagram(coordinateSystem(extent = {{-100, -80}, {100, 80}}, preserveAspectRatio = false)),
           experiment(StartTime = 0, StopTime = 8, Tolerance = 0.0001, Interval = 0.0016));
       end MTPAal;
 
@@ -3693,8 +3814,7 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
  <p><br/><br/>A synchronous induction machine with permanent magnets accelerates a quadratic speed dependent load from standstill. The rms values of d- and q-current in rotor fixed coordinate system are converted to threephase currents, and fed to the machine. The result shows that the torque is influenced by the q-current, whereas the stator voltage is influenced by the d-current.</p><p><br/><br/>Default machine parameters of model <i>SM_PermanentMagnet</i> are used. </p>
  </html>"),
           __Dymola_experimentSetupOutput,
-          Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics={  Rectangle(lineColor = {0, 0, 127}, fillColor = {255, 255, 255},
-                  fillPattern =                                                                                                                                                                                                 FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(lineColor = {0, 0, 127}, extent = {{-96, 28}, {96, -26}}, textString = "P=>"), Text(lineColor = {0, 0, 255}, extent = {{-108, 150}, {102, 110}}, textString = "%name")}));
+          Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = false, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(lineColor = {0, 0, 127}, extent = {{-96, 28}, {96, -26}}, textString = "P=>"), Text(lineColor = {0, 0, 255}, extent = {{-108, 150}, {102, 110}}, textString = "%name")}));
       end FromPark;
 
       model ToPark "Semplice PMM con modello funzionale inverter"
@@ -3735,8 +3855,7 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
 
 <p><br/><br/>A synchronous induction machine with permanent magnets accelerates a quadratic speed dependent load from standstill. The rms values of d- and q-current in rotor fixed coordinate system are converted to threephase currents, and fed to the machine. The result shows that the torque is influenced by the q-current, whereas the stator voltage is influenced by the d-current.</p><p><br/><br/>Default machine parameters of model <i>SM_PermanentMagnet</i> are used. </p>
 </html>"),__Dymola_experimentSetupOutput,
-          Icon(graphics={  Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255},
-                  fillPattern =                                                                                                               FillPattern.Solid), Text(extent = {{-96, 32}, {96, -22}}, lineColor = {0, 0, 127}, textString = "=>P"), Text(extent = {{-106, 144}, {104, 106}}, lineColor = {0, 0, 255}, textString = "%name")}));
+          Icon(graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{-96, 32}, {96, -22}}, lineColor = {0, 0, 127}, textString = "=>P"), Text(extent = {{-106, 144}, {104, 106}}, lineColor = {0, 0, 255}, textString = "%name")}));
       end ToPark;
 
       block GenSines "Generates three-phase sine waves"
@@ -3786,9 +3905,7 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
           Line(points = {{60, -34}, {60, -34}, {60, -40}, {-120, -40}}, color = {0, 0, 127}));
         annotation (
           Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -80}, {100, 80}})),
-          Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics={  Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255},
-                  fillPattern =                                                                                                                                                                                                   FillPattern.Solid), Text(extent = {{-100, 144}, {98, 106}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255},
-                  fillPattern =                                                                                                                                                                                                        FillPattern.Solid, textString = "%name"), Line(points = {{-4, 28}, {8, 48}, {28, 48}, {48, 8}, {70, 8}, {82, 28}}, color = {0, 0, 0}), Line(points = {{-6, 4}, {6, 24}, {26, 24}, {46, -16}, {68, -16}, {80, 4}}, color = {0, 0, 0}), Line(points = {{-8, -16}, {4, 4}, {24, 4}, {44, -36}, {66, -36}, {78, -16}}, color = {0, 0, 0}), Rectangle(extent = {{-88, 10}, {-60, -4}}, lineColor = {0, 0, 0}), Polygon(points = {{-60, 18}, {-34, 4}, {-60, -10}, {-60, 18}}, lineColor = {0, 0, 0})}),
+          Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 127}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{-100, 144}, {98, 106}}, lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, textString = "%name"), Line(points = {{-4, 28}, {8, 48}, {28, 48}, {48, 8}, {70, 8}, {82, 28}}, color = {0, 0, 0}), Line(points = {{-6, 4}, {6, 24}, {26, 24}, {46, -16}, {68, -16}, {80, 4}}, color = {0, 0, 0}), Line(points = {{-8, -16}, {4, 4}, {24, 4}, {44, -36}, {66, -36}, {78, -16}}, color = {0, 0, 0}), Rectangle(extent = {{-88, 10}, {-60, -4}}, lineColor = {0, 0, 0}), Polygon(points = {{-60, 18}, {-34, 4}, {-60, -10}, {-60, 18}}, lineColor = {0, 0, 0})}),
           Documentation(info = "<html>
 <p>This class produces a three-phase voltage system to variable-frequency control of an asynchronous motor.</p>
 <p>The output voltages constitute a three-phase system of quasi-sinusoidal shapes, created according to the following equations:</p>
@@ -3804,11 +3921,7 @@ to ice", horizontalAlignment = TextAlignment.Right)}),
 </html>"));
       end GenSines;
       annotation (
-        Icon(graphics={  Ellipse(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 0},
-                lineThickness =                                                                              0.5, fillColor = {255, 255, 255},
-                fillPattern =                                                                                                                                FillPattern.Solid), Text(extent = {{-100, 40}, {100, -40}}, lineColor = {28, 108, 200},
-                lineThickness =                                                                                                                                                                                                        0.5, fillColor = {255, 255, 255},
-                fillPattern =                                                                                                                                                                                                        FillPattern.Solid, textStyle = {TextStyle.Bold}, textString = "S")}));
+        Icon(graphics = {Ellipse(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 0}, lineThickness = 0.5, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Text(extent = {{-100, 40}, {100, -40}}, lineColor = {28, 108, 200}, lineThickness = 0.5, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, textStyle = {TextStyle.Bold}, textString = "S")}));
     end SMArelated;
     annotation (
       Icon(graphics={  Ellipse(extent = {{-100, 100}, {98, -100}}, lineColor = {0, 0, 0},
